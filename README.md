@@ -32,13 +32,13 @@ Every number here is produced by the code in this repository: `scr demo`,
 |---|---|
 | **Dev world** (110 files, 8 sites) | **109 of 110** right; the miss is a clean studio recording held as possibly synthetic ([why](docs/adr/0004-undeclared-synthetic-speech-is-held.md)) |
 | **Blind worlds, first run** (never rewritten) | set1 **43/50** · set2 **50/56** · set3 **48/59** · set4 **50/55** |
-| Same worlds after the fixes they prompted (all four are regression sets now) | set1 {{SET1_LATEST}} · set2 {{SET2_LATEST}} · set3 {{SET3_LATEST}} · set4 {{SET4_LATEST}} |
+| Same worlds after the fixes they prompted (all four are regression sets now) | set1 46/50 · set2 52/56 · set3 48/59 · set4 52/55 |
 | **Rights**, from the test servers' own request logs | **0** requests to blocked domains, robots-disallowed paths or `tdmrep.json`-reserved paths; **0** header/meta-reserved files stored, on every world |
 | Synthetic speech, dev world | declared: 12 of 12 rejected before decoding; undeclared: 12 of 12 held for review, none kept |
 | Transcripts of kept segments, dev world | CER **0.016** where the source publishes its text (aligned) vs 0.137 for raw ASR; 97% of true speech covered |
-| **Cost** | **$0.065 per usable hour** (measured CPU at Cloud Run job prices); ASR is the largest stage; 1,000 h of audio a day needs about 3 vCPUs |
+| **Cost** | **$0.06–0.07 per usable hour** across reruns (measured CPU at Cloud Run job prices); ASR is the largest stage; 1,000 h of audio a day needs about 3 vCPUs |
 | Clipping probe, 240 flac/mp3/ogg files | 76 misjudged → **4**, all within a factor of two of the limit ([measurements](docs/MEASUREMENTS.md)) |
-| Tests | {{TESTS}} |
+| Tests | 98 Python tests (unit, PostgreSQL, API roles, crawler against the test world, infrastructure invariants, 6 end to end) and 19 console tests, all passing |
 
 ### What the blind worlds found
 

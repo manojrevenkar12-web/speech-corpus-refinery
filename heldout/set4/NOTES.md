@@ -29,4 +29,8 @@ The writer's judgement calls the refinery agrees with:
 
 ## After the change (latest.json)
 
-{{SET4_AFTER}}
+**52 of 55.** Both excerpt cases are now right: the full recording is kept and the quote is
+rejected as its duplicate. Still wrong, all documented limits:
+- the 24 dB music bed;
+- the undeclared TTS outro;
+- the clean studio recording held for review.

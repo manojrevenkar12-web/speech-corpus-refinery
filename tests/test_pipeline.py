@@ -63,7 +63,7 @@ def test_every_job_finished_and_the_audit_chain_holds(run):
 def test_the_release_is_attributed_speaker_disjoint_and_immutable(run):
     out = run["root"] / "releases" / "e2e"
     m = pq.read_table(out / "manifest.parquet").to_pylist()
-    assert len(m) == run["release"]["stats"]["segments"] > 0
+    assert len(m) == run["release"]["segments"] > 0
     assert all(r["licence"] and r["attribution"] for r in m)
     splits: dict[str, set[str]] = {}
     for r in m:
@@ -75,16 +75,27 @@ def test_the_release_is_attributed_speaker_disjoint_and_immutable(run):
         release.build("e2e", run["store"], run["root"] / "releases", run["url"])
 
 
-def test_analysing_a_file_twice_leaves_one_result(run):
+def test_analysing_a_file_twice_leaves_one_result_and_releases_stay_intact(run):
     url = run["url"]
     with db.tx(url) as c:
         item = c.execute("SELECT id FROM items WHERE state = 'kept' ORDER BY id LIMIT 1").fetchone()["id"]
         before = c.execute("SELECT count(*) AS n FROM segments WHERE item_id = %s", (item,)).fetchone()["n"]
-    process.analyse(item, run["store"], url)
+    assert process.analyse(item, run["store"], url)["unchanged"] is True  # same settings: nothing redone
     with db.tx(url) as c:
         after = c.execute("SELECT count(*) AS n FROM segments WHERE item_id = %s", (item,)).fetchone()["n"]
         state = c.execute("SELECT state FROM items WHERE id = %s", (item,)).fetchone()["state"]
     assert after == before and state == "kept"
+    # under new settings it is analysed again; the released segments stay, withdrawn, and new ones follow
+    with db.tx(url) as c:
+        c.execute("UPDATE items SET decided_config = 'older-settings' WHERE id = %s", (item,))
+    process.analyse(item, run["store"], url)
+    with db.tx(url) as c:
+        rows = c.execute("SELECT idx, state, reason FROM segments WHERE item_id = %s ORDER BY idx", (item,)).fetchall()
+        released = c.execute(
+            "SELECT count(*) AS n FROM release_segments rs JOIN segments s ON s.id = rs.segment_id WHERE s.item_id = %s", (item,)
+        ).fetchone()["n"]
+    assert [r["reason"] for r in rows[:before]] == ["reanalysed"] * before and released == before
+    assert len(rows) == 2 * before and {r["state"] for r in rows[before:]} == {"kept"}
 
 
 def test_after_a_takedown_a_reupload_is_refused_by_fingerprint(run):
@@ -96,6 +107,7 @@ def test_after_a_takedown_a_reupload_is_refused_by_fingerprint(run):
     assert out["items"] == 1 and out["releases"] == ["e2e"] and out["blobs_deleted"] == 1
     with db.tx(url) as c:
         rid = c.execute("SELECT i.id FROM items i JOIN urls u ON u.id = i.url_id WHERE u.url = %s", (reupload,)).fetchone()["id"]
+        c.execute("UPDATE items SET state = 'new' WHERE id = %s", (rid,))  # as if it had just been uploaded again
     process.analyse(rid, store, url)
     with db.tx(url) as c:
         r = c.execute("SELECT state, reason FROM items WHERE id = %s", (rid,)).fetchone()

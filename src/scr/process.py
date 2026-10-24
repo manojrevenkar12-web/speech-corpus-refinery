@@ -125,6 +125,9 @@ def analyse(item_id: int, store: Store, url: str | None = None) -> dict[str, Any
         item = c.execute("SELECT * FROM items WHERE id = %s", (item_id,)).fetchone()
     if item is None:
         raise LookupError(f"item {item_id}")
+    if item["state"] != "new" and item["decided_config"] == chash:
+        # already decided under these settings: a job that runs twice leaves one result
+        return {"state": item["state"], "reason": item["reason"], "unchanged": True}
 
     def finish(
         state: str,
@@ -139,7 +142,20 @@ def analyse(item_id: int, store: Store, url: str | None = None) -> dict[str, Any
                 # a better copy was kept while this one was being analysed: that verdict stands
                 state, reason, detail = "rejected", "duplicate", {**detail, **now["detail"]}
                 segments = [replace(sg, state="withdrawn", reason="duplicate") for sg in segments or []]
-            c.execute("DELETE FROM segments WHERE item_id = %s", (item_id,))
+            # segments in a release are immutable: they stay (withdrawn), and new ones follow them
+            released = [
+                r["id"]
+                for r in c.execute(
+                    "SELECT s.id FROM segments s WHERE s.item_id = %s AND EXISTS (SELECT 1 FROM release_segments rs WHERE rs.segment_id = s.id)",
+                    (item_id,),
+                )
+            ]
+            c.execute("DELETE FROM segments WHERE item_id = %s AND NOT (id = ANY(%s))", (item_id, released))
+            first_idx = 0
+            if released:
+                c.execute("UPDATE segments SET state = 'withdrawn', reason = 'reanalysed' WHERE id = ANY(%s)", (released,))
+                row = c.execute("SELECT max(idx) + 1 AS n FROM segments WHERE item_id = %s", (item_id,)).fetchone()
+                first_idx = int(row["n"]) if row and row["n"] is not None else 0
             if analysis is not None:
                 cols = ["item_id", "config_hash", *analysis]
                 c.execute(
@@ -153,7 +169,7 @@ def analyse(item_id: int, store: Store, url: str | None = None) -> dict[str, Any
                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
                     (
                         item_id,
-                        sg.idx,
+                        first_idx + sg.idx,
                         sg.start,
                         sg.end,
                         sg.asr,

@@ -25,9 +25,12 @@ The policy did not settle three of the writer's judgement calls. The system agre
 
 ## After the changes (latest.json)
 
-45 of 50. Still wrong:
-- the -30 dB music bed;
-- two undeclared amy files;
+46 of 50 on the latest rerun (45 on some earlier reruns). Still wrong:
+- the 30 dB music bed;
+- one undeclared amy file;
 - the 6.5 kHz file;
-- one clean studio recording held as possibly synthetic. This is the same trade-off as in the
-  dev world: the tag fires on clean read speech too.
+- one clean studio recording held as possibly synthetic.
+
+The second undeclared amy file sits on the 25 dB noise line, so its decision has flipped
+between reruns: rejected for noise (right decision, wrong reason) or kept. docs/MEASUREMENTS.md
+gives the estimator's error near the limit.

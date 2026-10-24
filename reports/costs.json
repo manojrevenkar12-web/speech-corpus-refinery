@@ -7,16 +7,16 @@
    "audio_hours": 0.1634,
    "kept_hours": 0.0,
    "yield": 0.0,
-   "cpu_seconds": 22.8,
-   "usd": 0.001121,
+   "cpu_seconds": 23.8,
+   "usd": 0.001145,
    "usd_per_kept_hour": null,
    "decisions": {
-    "rejected:licence": 7,
     "rejected:noise": 1,
     "held:synthetic_suspected": 1,
+    "rejected:licence": 7,
     "rejected:not_speech": 43,
-    "rejected:bandwidth": 6,
-    "rejected:duplicate": 2
+    "rejected:duplicate": 2,
+    "rejected:bandwidth": 6
    }
   },
   "audiobooks": {
@@ -24,9 +24,9 @@
    "audio_hours": 0.0496,
    "kept_hours": 0.0297,
    "yield": 0.599,
-   "cpu_seconds": 25.1,
-   "usd": 0.000607,
-   "usd_per_kept_hour": 0.0204,
+   "cpu_seconds": 26.9,
+   "usd": 0.000645,
+   "usd_per_kept_hour": 0.0217,
    "decisions": {
     "kept": 2,
     "rejected:protected": 1
@@ -60,15 +60,15 @@
    "audio_hours": 0.0426,
    "kept_hours": 0.0062,
    "yield": 0.146,
-   "cpu_seconds": 22.0,
-   "usd": 0.000542,
-   "usd_per_kept_hour": 0.0873,
+   "cpu_seconds": 22.5,
+   "usd": 0.000552,
+   "usd_per_kept_hour": 0.0888,
    "decisions": {
-    "rejected:licence": 1,
     "held:synthetic_suspected": 12,
-    "rejected:music": 1,
+    "rejected:licence": 1,
     "kept": 1,
     "rejected:duplicate": 1,
+    "rejected:music": 1,
     "rejected:clipping": 1
    }
   },
@@ -77,8 +77,8 @@
    "audio_hours": 0.0018,
    "kept_hours": 0.0,
    "yield": 0.0,
-   "cpu_seconds": 0.3,
-   "usd": 9e-06,
+   "cpu_seconds": 0.4,
+   "usd": 1.1e-05,
    "usd_per_kept_hour": null,
    "decisions": {
     "rejected:not_speech": 1
@@ -90,7 +90,7 @@
    "kept_hours": 0.0,
    "yield": 0.0,
    "cpu_seconds": 0.4,
-   "usd": 1.4e-05,
+   "usd": 1.5e-05,
    "usd_per_kept_hour": null,
    "decisions": {
     "rejected:not_speech": 2
@@ -110,23 +110,23 @@
   }
  },
  "stages": {
-  "asr": 27.05,
-  "bandwidth": 1.98,
-  "decode": 0.66,
-  "fingerprint": 15.05,
-  "language": 8.29,
+  "tags": 4.77,
+  "asr": 28.43,
+  "language": 8.09,
   "policy": 0.0,
-  "speaker": 7.49,
-  "tags": 4.44,
-  "vad": 6.16
+  "fingerprint": 15.78,
+  "bandwidth": 2.18,
+  "vad": 6.72,
+  "decode": 0.68,
+  "speaker": 7.77
  },
  "total": {
   "audio_hours": 0.268,
   "kept_hours": 0.0359,
-  "cpu_seconds": 71.1,
-  "usd": 0.002334,
-  "usd_per_kept_hour": 0.065,
-  "realtime_factor": 0.0737,
-  "vcpus_for_1000_hours_per_day": 3.1
+  "cpu_seconds": 74.4,
+  "usd": 0.002407,
+  "usd_per_kept_hour": 0.067,
+  "realtime_factor": 0.0771,
+  "vcpus_for_1000_hours_per_day": 3.2
  }
 }

@@ -1,7 +1,7 @@
 {
  "files": 59,
  "decisions_correct": 48,
- "reasons_correct": 45,
+ "reasons_correct": 46,
  "by_expected": {
   "keep": {
    "n": 15,
@@ -46,7 +46,7 @@
   "reject:not_speech": {
    "n": 3,
    "decision_ok": 3,
-   "reason_ok": 2
+   "reason_ok": 3
   },
   "reject:protected": {
    "n": 5,
@@ -186,16 +186,9 @@
  ],
  "reason_mismatches": [
   {
-   "url": "http://branchline-voices.example/lines/dawn-chorus-at-the-halt.ogg",
-   "expected": "reject:not_speech",
-   "got": "new:None",
-   "decision_ok": true,
-   "reason_ok": false
-  },
-  {
    "url": "http://townhall-library-tapes.example/download/e-louder-copy/e-louder-copy.mp3",
    "expected": "reject:duplicate",
-   "got": "new:None",
+   "got": "rejected:not_speech",
    "decision_ok": true,
    "reason_ok": false
   },

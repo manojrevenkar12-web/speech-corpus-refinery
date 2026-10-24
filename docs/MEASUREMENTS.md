@@ -40,7 +40,40 @@ the ripple. All four remaining errors are files within a factor of two of the li
 
 `python scripts/measure_snr.py`
 
-{{SNR}}
+**Setup.** 24 LJSpeech clips, excluding the protected ones. Each was mixed with rain, engine,
+wind and vacuum noise from ESC-50 at 15, 20, 23, 25, 27, 30 and 35 dB, plus the clean clip,
+and stored as mp3 128k: 696 files. The mix SNR is the clip's mean power over the noise's, as the
+held-out worlds define it. Files mixed at exactly 25 dB are not judged, leaving 600 files.
+
+**Which side of the 25 dB limit each estimator puts a file:**
+
+| Estimator | Wrong |
+|---|---:|
+| **Pipeline: VAD speech frames over the quietest tenth of frames (used)** | **46 of 600** |
+| Minimum statistics: noise floor per frequency band from its quiet moments (after Martin 2001) | 96 |
+| WADA-SNR (Kim and Stern 2008), from the amplitude distribution, no pauses needed | 130 |
+
+**Pipeline estimate minus mix SNR, in dB:**
+
+| Mixed at | 15 | 20 | 23 | 25 | 27 | 30 | 35 |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Mean | +1.7 | +0.9 | +0.5 | +0.1 | −0.3 | −0.9 | −2.6 |
+| Range | −2.9 to +6.1 | −4.3 to +5.3 | −5.2 to +5.0 | −5.9 to +4.8 | −6.8 to +4.6 | −8.7 to +4.2 | −12.7 to +3.1 |
+
+**What this means.**
+- Near the limit the estimate is unbiased on average, but a single file can be about 5 dB off.
+  A file truly at 23 dB can pass, and one at 27 dB can fail.
+- 31 of the 46 errors are in files with under 0.3 s of pause (275 of the 600). Without pauses,
+  the quietest frames are speech, not noise. The two clean clips read below 25 dB are 1.9 s and
+  2.6 s long with 0.02 s of pause: set2's "clean reading rejected for noise" exactly.
+- Neither pause-free alternative helped, so the estimator stays. A short file without pauses
+  is a known weak spot. Real sources (chapters, episodes) have pauses; very short clips are the
+  case to watch.
+- In the blind worlds the same error shows up in both directions:
+  - helicopter noise mixed at 23.5 dB passed (set3);
+  - a clean Valentini recording read lower than the same recording with rain added at 32 dB
+    (set3);
+  - an undeclared TTS file sits on the line, so its decision flipped between reruns (set1).
 
 ## Bandwidth: highest frequency within 50 dB of the peak (HiFiTTS-2)
 
@@ -105,7 +138,7 @@ and ±7–8% speed through mp3. It also asserts that unrelated speech does not m
 
 Measured CPU seconds per stage, priced at Cloud Run job rates (`config/pricing.yaml`):
 
-- the dev world costs **$0.065 per usable hour**, with ASR the largest stage;
+- the dev world costs **$0.06–0.07 per usable hour** across reruns (measured CPU varies a little), with ASR the largest stage;
 - 1,000 hours of audio a day needs about **3 vCPUs** running continuously.
 
 This is measured on short files, where per-file overhead (model start-up, fingerprint lookup)

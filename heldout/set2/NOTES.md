@@ -29,3 +29,10 @@ agrees with the writer:
   speech did not match the book. The writer expected `synthetic`.
 - A noisy re-upload was rejected as a `duplicate` of the clean copy. The writer expected `noise`.
   The policy says a copy we may not use does not count, but it does not say which reason wins.
+
+## After the changes (latest.json)
+
+52 of 56. Both clipped mp3s are rejected. Still wrong:
+- the 27 and 36 dB music beds;
+- the clean 2.6 s reading rejected for noise;
+- the clean studio recording held for review.
