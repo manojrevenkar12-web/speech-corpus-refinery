@@ -239,7 +239,7 @@ def analyse(item_id: int, store: Store, url: str | None = None) -> dict[str, Any
             if seconds <= float(dd["speed_search_max_seconds"]):
                 # a copy played at speed s lines up once its peaks are stretched back by s
                 variants = [(s, fp.hashes(fp.at_speed(pk, s))) for s in speed_factors(float(dd["speed_max"]), float(dd["speed_step"]))]
-            quality = quality_key(bw, snr_item.db, int(path.stat().st_size) / max(seconds, 1e-9))
+            quality = (*quality_key(bw, snr_item.db, int(path.stat().st_size) / max(seconds, 1e-9)), float(round(speech_s, 2)))
             dup = _dedup(item_id, marks, variants, quality, dd, url)
         if dup.get("takedown"):
             return finish("rejected", "takedown", dup, base | {"match": dup})
@@ -382,6 +382,16 @@ def speed_factors(max_change: float, step: float) -> list[float]:
     return out
 
 
+def outranks(a: tuple[float, ...], b: tuple[float, ...], excerpt_ratio: float) -> bool:
+    """Does copy `a` win against copy `b` (ties go to the copy already there)? Coverage first:
+    a copy with less than `excerpt_ratio` of the other's speech is an excerpt and never replaces
+    the fuller copy, however clean it is. Then bandwidth tier, SNR step and bitrate. Copies
+    indexed before speech seconds were stored (three values) compare on quality alone."""
+    if len(a) > 3 and len(b) > 3 and min(a[3], b[3]) < excerpt_ratio * max(a[3], b[3]):
+        return a[3] > b[3]
+    return tuple(a[:3]) >= tuple(b[:3])
+
+
 def quality_key(bandwidth_hz: float, snr_db: float, bytes_per_second: float) -> tuple[float, float, float]:
     """Which of two copies is better: the higher bandwidth tier (full, wide, below), then SNR in
     5 dB steps, then bitrate. Tiers rather than raw hertz, because broadband noise widens the
@@ -429,7 +439,7 @@ def _dedup(
     item_id: int,
     marks: list[tuple[int, int]],
     variants: list[tuple[float, list[tuple[int, int]]]],
-    quality: tuple[float, float, float],
+    quality: tuple[float, ...],
     dd: dict[str, Any],
     url: str | None,
 ) -> dict[str, Any]:
@@ -476,7 +486,7 @@ def _dedup(
                     continue
                 if o["state"] == "withdrawn" or (o["state"] == "rejected" and o["reason"] != "duplicate"):
                     continue  # an unusable copy does not stop this one
-                if tuple(o["quality"]) >= quality:
+                if outranks(tuple(o["quality"]), quality, float(dd["excerpt_ratio"])):
                     out = {
                         "duplicate_of": other,
                         "votes": m.votes,
@@ -491,7 +501,8 @@ def _dedup(
         if not out.get("protected"):
             c.execute("DELETE FROM fp_items WHERE item_id = %s", (item_id,))
             r = c.execute(
-                "INSERT INTO fp_items (item_id, n, quality) VALUES (%s, %s, %s) RETURNING id", (item_id, len(marks), list(quality))
+                "INSERT INTO fp_items (item_id, n, quality) VALUES (%s, %s, %s) RETURNING id",
+                (item_id, len(marks), [float(q) for q in quality]),
             ).fetchone()
             assert r is not None
             with c.cursor().copy("COPY fp_hashes (h, fp_id, t) FROM STDIN") as cp:

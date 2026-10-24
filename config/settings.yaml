@@ -58,6 +58,7 @@ dedup:
   min_match_ratio: 0.08       # share of the shorter recording's hashes
   speed_max: 0.10             # re-uploads played up to 10% faster or slower still match
   speed_step: 0.005           # searched in 0.5% steps (matches fall off within 1%), both ways: a copy may arrive before its original
+  excerpt_ratio: 0.8          # a copy with under 80% of the other's speech is an excerpt: it never replaces the fuller copy
   speed_min_match_ratio: 0.04 # rescaled peaks match less well than the real thing; unrelated audio scores near 0
   speed_search_max_seconds: 1800
 

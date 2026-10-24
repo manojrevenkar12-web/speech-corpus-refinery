@@ -31,8 +31,8 @@ Every number here is produced by the code in this repository: `scr demo`,
 | | |
 |---|---|
 | **Dev world** (110 files, 8 sites) | **109 of 110** right; the miss is a clean studio recording held as possibly synthetic ([why](docs/adr/0004-undeclared-synthetic-speech-is-held.md)) |
-| **Blind worlds, first run** (never rewritten) | set1 **43/50** · set2 **50/56** · set3 **48/59** · set4 **{{SET4}}** |
-| Same worlds after the fixes they prompted | set1 {{SET1_LATEST}} · set2 {{SET2_LATEST}} · set3 {{SET3_LATEST}} (regression sets now) |
+| **Blind worlds, first run** (never rewritten) | set1 **43/50** · set2 **50/56** · set3 **48/59** · set4 **50/55** |
+| Same worlds after the fixes they prompted (all four are regression sets now) | set1 {{SET1_LATEST}} · set2 {{SET2_LATEST}} · set3 {{SET3_LATEST}} · set4 {{SET4_LATEST}} |
 | **Rights**, from the test servers' own request logs | **0** requests to blocked domains, robots-disallowed paths or `tdmrep.json`-reserved paths; **0** header/meta-reserved files stored, on every world |
 | Synthetic speech, dev world | declared: 12 of 12 rejected before decoding; undeclared: 12 of 12 held for review, none kept |
 | Transcripts of kept segments, dev world | CER **0.016** where the source publishes its text (aligned) vs 0.137 for raw ASR; 97% of true speech covered |
@@ -51,9 +51,10 @@ not be fixed is written down.
 | set2 | mp3 coding hid clipping completely (measured 0 at +12 dB) | Clipping measured as the share of samples near full scale, which survives lossy coding |
 | set2 | A clean 2.6 s file with no pauses read 24.7 dB SNR | Two alternative estimators measured; both worse. Documented as a limit |
 | set3 | A better-looking copy demoted the clean one and was then rejected itself (clipped), so neither copy was kept | The better copy demotes others only once it is kept, and orphaned duplicates are re-queued |
+| set4 | A clean 6 s quote outranked the full recording it came from, and half the audio was lost | Coverage first: an excerpt never replaces the fuller recording |
 
 Still missed, and documented in [MEASUREMENTS.md](docs/MEASUREMENTS.md):
-- music beds 27 dB or more under the speech;
+- music beds 24 dB or more under the speech (caught 4 of 4 at 12–18 dB, 0 of 5 at 24–36 dB);
 - an undeclared TTS voice the tagger does not recognise;
 - bandwidth within ±0.5 kHz of 7 kHz;
 - clean studio speech held as possibly synthetic (held, not lost).

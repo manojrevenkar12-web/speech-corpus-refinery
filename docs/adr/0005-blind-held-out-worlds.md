@@ -17,4 +17,4 @@ outcome for every file.
 - A test written by the person who wrote the code tests what they thought of.
 - The dev world (109 of 110) is designed alongside the code, so it shows how good the
   refinery *can* be. The blind first runs show how good it *is* on cases nobody tuned for:
-  43/50, 50/56, 48/59, then set4.
+  43/50, 50/56, 48/59 and 50/55.

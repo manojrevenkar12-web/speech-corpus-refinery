@@ -1,0 +1,163 @@
+{
+ "files": 55,
+ "decisions_correct": 53,
+ "reasons_correct": 48,
+ "by_expected": {
+  "keep": {
+   "n": 13,
+   "decision_ok": 12,
+   "reason_ok": 12
+  },
+  "reject:bandwidth": {
+   "n": 4,
+   "decision_ok": 4,
+   "reason_ok": 4
+  },
+  "reject:blocked_domain": {
+   "n": 2,
+   "decision_ok": 2,
+   "reason_ok": 2
+  },
+  "reject:clipping": {
+   "n": 2,
+   "decision_ok": 2,
+   "reason_ok": 2
+  },
+  "reject:duplicate": {
+   "n": 5,
+   "decision_ok": 5,
+   "reason_ok": 5
+  },
+  "reject:licence": {
+   "n": 6,
+   "decision_ok": 6,
+   "reason_ok": 6
+  },
+  "reject:music": {
+   "n": 3,
+   "decision_ok": 2,
+   "reason_ok": 2
+  },
+  "reject:noise": {
+   "n": 2,
+   "decision_ok": 2,
+   "reason_ok": 1
+  },
+  "reject:not_speech": {
+   "n": 5,
+   "decision_ok": 5,
+   "reason_ok": 2
+  },
+  "reject:protected": {
+   "n": 4,
+   "decision_ok": 4,
+   "reason_ok": 4
+  },
+  "reject:robots": {
+   "n": 2,
+   "decision_ok": 2,
+   "reason_ok": 2
+  },
+  "reject:synthetic": {
+   "n": 4,
+   "decision_ok": 4,
+   "reason_ok": 3
+  },
+  "reject:tdm": {
+   "n": 3,
+   "decision_ok": 3,
+   "reason_ok": 3
+  }
+ },
+ "kept": {
+  "expected": 13,
+  "got": 13
+ },
+ "compliance": {
+  "requests": 108,
+  "requests_to_blocked_domains": 0,
+  "requests_disallowed_by_robots": 0,
+  "requests_to_tdm_reserved_paths_in_tdmrep_json": 0,
+  "reserved_files_stored": 0,
+  "user_agents": [
+   "ScrBot/0.1 (+https://github.com/manojrevenkar12-web/speech-corpus-refinery/blob/main/docs/CRAWLER.md)"
+  ]
+ },
+ "synthetic": {
+  "declared": 2,
+  "declared_rejected": 2,
+  "undeclared": 2,
+  "undeclared_held_for_review": 1,
+  "undeclared_rejected_for_another_reason": 1,
+  "undeclared_kept": 0,
+  "real_speech_held": 1
+ },
+ "transcripts": {
+  "published": {
+   "clips": 3,
+   "mean_cer": 0.0183,
+   "max_cer": 0.0548
+  },
+  "asr": {
+   "clips": 13,
+   "mean_cer": 0.1406,
+   "max_cer": 0.6242
+  },
+  "coverage_of_true_speech": 0.921
+ },
+ "wrong": [
+  {
+   "url": "http://riverside-radio.example/shows/read-sentences.wav",
+   "expected": "keep",
+   "got": "held:synthetic_suspected",
+   "decision_ok": false,
+   "reason_ok": false
+  },
+  {
+   "url": "http://greenway-walks.example/guides/mill-intro.mp3",
+   "expected": "reject:music",
+   "got": "kept",
+   "decision_ok": false,
+   "reason_ok": false
+  }
+ ],
+ "reason_mismatches": [
+  {
+   "url": "http://community-sound-archive.example/download/csa-voice-memo/csa-voice-memo.mp3",
+   "expected": "reject:synthetic",
+   "got": "rejected:noise",
+   "decision_ok": true,
+   "reason_ok": false
+  },
+  {
+   "url": "http://community-sound-archive.example/download/csa-sea-waves/csa-sea-waves.ogg",
+   "expected": "reject:not_speech",
+   "got": "new:None",
+   "decision_ok": true,
+   "reason_ok": false
+  },
+  {
+   "url": "http://riverside-radio.example/shows/street-sentences.wav",
+   "expected": "reject:noise",
+   "got": "rejected:duplicate",
+   "decision_ok": true,
+   "reason_ok": false
+  },
+  {
+   "url": "http://greenway-walks.example/guides/birdsong.mp3",
+   "expected": "reject:not_speech",
+   "got": "new:None",
+   "decision_ok": true,
+   "reason_ok": false
+  },
+  {
+   "url": "http://greenway-walks.example/guides/dog-park.mp3",
+   "expected": "reject:not_speech",
+   "got": "new:None",
+   "decision_ok": true,
+   "reason_ok": false
+  }
+ ],
+ "set": "set4",
+ "status": "regression"
+}

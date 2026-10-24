@@ -1,7 +1,7 @@
 {
  "files": 50,
  "decisions_correct": 45,
- "reasons_correct": 44,
+ "reasons_correct": 42,
  "by_expected": {
   "keep": {
    "n": 17,
@@ -46,7 +46,7 @@
   "reject:not_speech": {
    "n": 4,
    "decision_ok": 4,
-   "reason_ok": 4
+   "reason_ok": 2
   },
   "reject:protected": {
    "n": 5,
@@ -143,6 +143,20 @@
   }
  ],
  "reason_mismatches": [
+  {
+   "url": "http://talkback.example/shows/rain-interlude.wav",
+   "expected": "reject:not_speech",
+   "got": "new:None",
+   "decision_ok": true,
+   "reason_ok": false
+  },
+  {
+   "url": "http://stacks.example/download/stacks-dog/stacks-dog.wav",
+   "expected": "reject:not_speech",
+   "got": "new:None",
+   "decision_ok": true,
+   "reason_ok": false
+  },
   {
    "url": "http://audiobooks.example/audio/lv-tts-chapter.mp3",
    "expected": "reject:synthetic",

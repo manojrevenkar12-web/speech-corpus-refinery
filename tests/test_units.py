@@ -379,3 +379,14 @@ def test_publishing_a_release_twice_fails_instead_of_overwriting(tmp_path):
     assert set(client.objects) == {"v1/manifest.parquet", "v1/sub/x.txt"}
     with pytest.raises(PreconditionFailed):
         publish_dir("releases", "v1", rel, client=client)
+
+
+def test_an_excerpt_never_replaces_the_fuller_recording_however_clean():
+    full = (*process.quality_key(11000, 39, 16000), 11.0)
+    clean_excerpt = (*process.quality_key(11000, 45, 20000), 5.5)
+    assert process.outranks(full, clean_excerpt, 0.8) and not process.outranks(clean_excerpt, full, 0.8)
+    # within 80% (padding, a speed change) quality decides as before
+    slower_better = (*process.quality_key(11000, 45, 20000), 10.0)
+    assert process.outranks(slower_better, full, 0.8) and not process.outranks(full, slower_better, 0.8)
+    # copies indexed without speech seconds compare on quality alone
+    assert process.outranks((2.0, 8.0, 16000.0), clean_excerpt, 0.8) is False

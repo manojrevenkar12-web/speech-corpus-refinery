@@ -112,7 +112,7 @@ def test_failing_jobs_back_off_then_go_dead(fresh_db):
     for _ in range(jobs.MAX_ATTEMPTS):
         with db.tx(fresh_db) as c:
             c.execute("UPDATE jobs SET not_before = now()")
-        jobs.work(["analyse"], lambda j: 1 / 0, on_dead=lambda j, e: dead.append(e), url=fresh_db)
+        jobs.work(["analyse"], lambda j: 1 / 0, on_dead=lambda j, e: dead.append(e), url=fresh_db, retry_wait_seconds=0)
     assert jobs.counts(fresh_db) == {"analyse:dead": 1} and dead == ["ZeroDivisionError: division by zero"]
 
 
@@ -304,4 +304,20 @@ def test_keeping_a_held_better_copy_on_review_supersedes_the_kept_worse_one(api)
     r = client.post(f"/api/items/{held}/resolve", json={"decision": "keep"}, headers=_h("reviewer-key-00000001"))
     assert r.status_code == 200
     with db.tx(TEST_DB) as c:
-        assert c.execute("SELECT state, reason FROM items WHERE id = %s", (worse,)).fetchone() == {"state": "rejected", "reason": "duplicate"}
+        assert c.execute("SELECT state, reason FROM items WHERE id = %s", (worse,)).fetchone() == {
+            "state": "rejected",
+            "reason": "duplicate",
+        }
+
+
+def test_a_run_waits_for_a_retry_instead_of_leaving_it_behind(fresh_db):
+    _enqueue(fresh_db, 1)
+    calls: list[int] = []
+
+    def flaky(job: jobs.Job) -> None:
+        calls.append(job.attempts)
+        if job.attempts == 1:
+            raise RuntimeError("transient")
+
+    jobs.work(["analyse"], flaky, url=fresh_db)  # one call: fails, backs off 5 s, retries, succeeds
+    assert calls == [1, 2] and jobs.counts(fresh_db) == {"analyse:done": 1}

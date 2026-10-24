@@ -1,7 +1,7 @@
 {
  "files": 56,
  "decisions_correct": 52,
- "reasons_correct": 50,
+ "reasons_correct": 48,
  "by_expected": {
   "keep": {
    "n": 15,
@@ -46,7 +46,7 @@
   "reject:not_speech": {
    "n": 4,
    "decision_ok": 4,
-   "reason_ok": 4
+   "reason_ok": 2
   },
   "reject:protected": {
    "n": 3,
@@ -147,6 +147,20 @@
    "url": "http://morningbriefing.example/audio/2026-10-01-street.flac",
    "expected": "reject:noise",
    "got": "rejected:duplicate",
+   "decision_ok": true,
+   "reason_ok": false
+  },
+  {
+   "url": "http://morningbriefing.example/audio/storm-ambience.mp3",
+   "expected": "reject:not_speech",
+   "got": "new:None",
+   "decision_ok": true,
+   "reason_ok": false
+  },
+  {
+   "url": "http://mediahub-studio.example/media/sfx-dog.mp3",
+   "expected": "reject:not_speech",
+   "got": "new:None",
    "decision_ok": true,
    "reason_ok": false
   }

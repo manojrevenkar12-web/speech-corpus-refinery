@@ -36,8 +36,9 @@ as data.
 - **No duplicates.** One recording is kept once. When the same recording appears twice (another
   bitrate, another loudness, extra silence, another site, up to 10% faster or slower), the
   better usable copy is kept: the higher bandwidth tier first (`full`, then `wide`), then the
-  higher signal-to-noise ratio, then the higher bitrate. A copy we may not use (wrong licence,
-  say) does not count.
+  higher signal-to-noise ratio, then the higher bitrate. An excerpt (a copy with less than 80%
+  of the other's speech) never replaces the fuller recording. A copy we may not use (wrong
+  licence, say) does not count.
 - **Speech.** At least half of the file must be speech, and the audio must sound like speech
   rather than animals, weather, machines, laughter or music.
 - **Language.** English.

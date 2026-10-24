@@ -1,7 +1,7 @@
 {
  "files": 59,
  "decisions_correct": 48,
- "reasons_correct": 46,
+ "reasons_correct": 45,
  "by_expected": {
   "keep": {
    "n": 15,
@@ -46,7 +46,7 @@
   "reject:not_speech": {
    "n": 3,
    "decision_ok": 3,
-   "reason_ok": 3
+   "reason_ok": 2
   },
   "reject:protected": {
    "n": 5,
@@ -94,16 +94,16 @@
  },
  "transcripts": {
   "published": {
-   "clips": 2,
-   "mean_cer": 0.0798,
-   "max_cer": 0.0991
+   "clips": 3,
+   "mean_cer": 0.2355,
+   "max_cer": 0.5469
   },
   "asr": {
-   "clips": 7,
-   "mean_cer": 0.0387,
+   "clips": 6,
+   "mean_cer": 0.0441,
    "max_cer": 0.1806
   },
-  "coverage_of_true_speech": 0.98
+  "coverage_of_true_speech": 0.92
  },
  "wrong": [
   {
@@ -128,6 +128,13 @@
    "reason_ok": false
   },
   {
+   "url": "http://kitchen-almanac.example/episodes/ep103-rye-bread.mp3",
+   "expected": "keep",
+   "got": "rejected:duplicate",
+   "decision_ok": false,
+   "reason_ok": false
+  },
+  {
    "url": "http://kitchen-almanac.example/episodes/ep111-airfield-picnic.mp3",
    "expected": "reject:noise",
    "got": "kept",
@@ -145,13 +152,6 @@
    "url": "http://readaloud-circle.example/audio/f-insects.ogg",
    "expected": "keep",
    "got": "rejected:not_speech",
-   "decision_ok": false,
-   "reason_ok": false
-  },
-  {
-   "url": "http://readaloud-circle.example/audio/f-clean-of-clipped.mp3",
-   "expected": "keep",
-   "got": "rejected:duplicate",
    "decision_ok": false,
    "reason_ok": false
   },
@@ -186,9 +186,16 @@
  ],
  "reason_mismatches": [
   {
+   "url": "http://branchline-voices.example/lines/dawn-chorus-at-the-halt.ogg",
+   "expected": "reject:not_speech",
+   "got": "new:None",
+   "decision_ok": true,
+   "reason_ok": false
+  },
+  {
    "url": "http://townhall-library-tapes.example/download/e-louder-copy/e-louder-copy.mp3",
    "expected": "reject:duplicate",
-   "got": "rejected:not_speech",
+   "got": "new:None",
    "decision_ok": true,
    "reason_ok": false
   },
@@ -201,5 +208,5 @@
   }
  ],
  "set": "set3",
- "status": "blind"
+ "status": "regression"
 }

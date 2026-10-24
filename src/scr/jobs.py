@@ -74,6 +74,15 @@ def failed(job: Job, who: str, error: str, url: str | None = None) -> bool:
     return dead
 
 
+def retry_due_within(kinds: list[str], seconds: float, url: str | None = None) -> bool:
+    with db.tx(url) as c:
+        r = c.execute(
+            "SELECT 1 FROM jobs WHERE kind = ANY(%s) AND state = 'queued' AND not_before <= now() + make_interval(secs => %s) LIMIT 1",
+            (kinds, seconds),
+        ).fetchone()
+        return r is not None
+
+
 def counts(url: str | None = None) -> dict[str, int]:
     with db.tx(url) as c:
         return {f"{r['kind']}:{r['state']}": r["n"] for r in c.execute("SELECT kind, state, count(*) AS n FROM jobs GROUP BY kind, state")}
@@ -86,14 +95,16 @@ def work(
     url: str | None = None,
     stop_when_empty: bool = True,
     max_jobs: int | None = None,
+    retry_wait_seconds: float = 30.0,
 ) -> int:
-    """Process jobs until none are due. Returns the number handled."""
+    """Process jobs until none are due and no retry is due within `retry_wait_seconds` (a job
+    backing off after a failure is waited for, not left behind). Returns the number handled."""
     who = owner()
     n = 0
     while max_jobs is None or n < max_jobs:
         job = lease(kinds, who, url)
         if job is None:
-            if stop_when_empty:
+            if stop_when_empty and not retry_due_within(kinds, retry_wait_seconds, url):
                 return n
             threading.Event().wait(1.0)
             continue
