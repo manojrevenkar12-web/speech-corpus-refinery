@@ -1,0 +1,11 @@
+# Our evaluation recordings. No copy of these, wherever it is found, may enter training data.
+# (LJSpeech LJ001-0017 to LJ001-0024 stand in for an internal TTS evaluation set.)
+recordings:
+  - {label: eval/LJ001-0017, corpus: lj, path: tests/data/ljspeech/wavs/LJ001-0017.wav}
+  - {label: eval/LJ001-0018, corpus: lj, path: tests/data/ljspeech/wavs/LJ001-0018.wav}
+  - {label: eval/LJ001-0019, corpus: lj, path: tests/data/ljspeech/wavs/LJ001-0019.wav}
+  - {label: eval/LJ001-0020, corpus: lj, path: tests/data/ljspeech/wavs/LJ001-0020.wav}
+  - {label: eval/LJ001-0021, corpus: lj, path: tests/data/ljspeech/wavs/LJ001-0021.wav}
+  - {label: eval/LJ001-0022, corpus: lj, path: tests/data/ljspeech/wavs/LJ001-0022.wav}
+  - {label: eval/LJ001-0023, corpus: lj, path: tests/data/ljspeech/wavs/LJ001-0023.wav}
+  - {label: eval/LJ001-0024, corpus: lj, path: tests/data/ljspeech/wavs/LJ001-0024.wav}

@@ -1,0 +1,61 @@
+{
+ "timings_seconds": {
+  "world": 0.0,
+  "discovery": 56.2,
+  "crawl": 8.0,
+  "process": 45.3,
+  "release": 4.3
+ },
+ "crawl": {
+  "fetched": 186,
+  "audio": 100,
+  "skipped": {
+   "robots": 2,
+   "tdm": 4
+  },
+  "failed": 1,
+  "retried": 0,
+  "bytes": 41015938
+ },
+ "analysed": 100,
+ "release": {
+  "name": "v1",
+  "manifest_sha256": "ded59eb2118dbc147b692beb3add54a7bb6885436ede5ae406668f5f15ee590a",
+  "segments": 29,
+  "hours": 0.0359,
+  "speakers": 1,
+  "by_split": {
+   "train": 0.0359
+  },
+  "by_source": {
+   "audiobooks": 0.0297,
+   "podcasts": 0.0062
+  },
+  "by_licence": {
+   "CC-BY-4.0": 0.0062,
+   "LicenseRef-PublicDomain": 0.0297
+  },
+  "by_tier": {
+   "full": 0.0359
+  },
+  "by_text_source": {
+   "asr": 0.0062,
+   "published": 0.0297
+  },
+  "speakers_by_split": {
+   "train": 1
+  }
+ },
+ "decisions_correct": "109/110",
+ "compliance": {
+  "requests": 337,
+  "requests_to_blocked_domains": 0,
+  "requests_disallowed_by_robots": 0,
+  "requests_to_tdm_reserved_paths_in_tdmrep_json": 0,
+  "reserved_files_stored": 0,
+  "user_agents": [
+   "ScrBot/0.1 (+https://github.com/manojrevenkar12-web/speech-corpus-refinery/blob/main/docs/CRAWLER.md)"
+  ]
+ },
+ "usd_per_kept_hour": 0.0583
+}

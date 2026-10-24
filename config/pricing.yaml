@@ -1,0 +1,14 @@
+# List prices used to turn measured work into cost. Checked 2026-10-24 on cloud.google.com.
+currency: USD
+source: "https://cloud.google.com/run/pricing ; https://cloud.google.com/storage/pricing"
+cloud_run_job:
+  vcpu_second: 0.000018
+  gib_second: 0.000002
+  vcpu: 2
+  gib: 4
+storage:
+  standard_gib_month: 0.020
+  class_a_per_1000: 0.005
+  class_b_per_1000: 0.0004
+network:
+  ingress_gib: 0.0            # inbound transfer is not charged

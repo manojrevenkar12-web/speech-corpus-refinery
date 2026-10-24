@@ -1,0 +1,67 @@
+# What the refinery builds and how strict it is. Every threshold the pipeline uses lives here.
+target:
+  sample_rate: 22050          # release audio is resampled to this rate
+  language: en
+
+crawl:
+  user_agent: "ScrBot/0.1 (+https://github.com/manojrevenkar12-web/speech-corpus-refinery/blob/main/docs/CRAWLER.md)"
+  robots_token: ScrBot        # the product token matched against robots.txt groups (RFC 9309)
+  robots_cache_seconds: 86400 # RFC 9309: crawlers SHOULD NOT use a cached robots.txt for more than 24 hours
+  min_delay_seconds: 1.0      # per host, between requests; a robots.txt Crawl-delay above this wins
+  max_concurrency_per_host: 1
+  timeout_seconds: 30
+  max_bytes: 209715200        # 200 MiB per file
+  max_attempts: 4
+  backoff_seconds: [5, 30, 120]
+  max_redirects: 5
+  recrawl_after_days: 30      # conditional GET (ETag / Last-Modified) after this
+  audio_types: [audio/mpeg, audio/wav, audio/x-wav, audio/wave, audio/flac, audio/x-flac, audio/ogg, audio/opus, audio/mp4, audio/aac]
+
+audio:
+  analysis_rate: 16000        # models and probes run at 16 kHz
+  min_item_seconds: 1.0
+  max_item_seconds: 14400     # 4 hours
+  clip_threshold: 0.98        # |sample| at or above this, three samples in a row, counts as clipped
+  bandwidth_floor_db: -50     # HiFiTTS-2: highest frequency within 50 dB of the spectral peak
+  bandwidth_window_seconds: 30
+
+segment:
+  min_seconds: 1.5
+  max_seconds: 20.0
+  vad_min_silence: 0.3        # seconds of silence that may end a segment
+  vad_threshold: 0.5
+  pad_seconds: 0.1
+
+decide:
+  # item-level
+  min_speech_ratio: 0.5       # share of the item VAD marks as speech
+  speech_tag_min: 0.4         # AudioSet "Speech" probability from the tagger
+  music_tag_max: 0.25         # music under speech ruins TTS targets
+  language_must_match: true
+  # segment-level
+  synthetic_tag_review: 0.65  # AudioSet "Speech synthesizer": flags for review only (it also fires on clean studio speech)
+  min_snr_db: 25.0            # the estimator reads 2-9 dB high on noisy speech (docs/MEASUREMENTS.md)
+  max_clipped_ratio: 0.0005
+  max_alignment_cer: 0.25     # when the source publishes its text: ASR vs matched text
+  min_words: 2                # a segment needs a transcript of at least this many words
+  # bandwidth tiers (labels, as HiFiTTS-2 recommends, plus a floor)
+  tiers:
+    full: 9500                # Hz; usable at 22.05 kHz
+    wide: 7000                # Hz; usable at 16 kHz
+  min_bandwidth_hz: 7000
+
+dedup:
+  fingerprint_rate: 8000
+  min_matches: 20             # landmark hashes that must agree on one time offset
+  min_match_ratio: 0.08       # share of the shorter recording's hashes
+
+speakers:
+  cluster_threshold: 0.55     # cosine similarity for one speaker within a source
+  split: {train: 0.8, dev: 0.1, test: 0.1}
+
+release:
+  shard_seconds: 3600         # audio per WebDataset shard
+  format: flac
+
+cost:
+  pricing: config/pricing.yaml

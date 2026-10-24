@@ -1,0 +1,1405 @@
+# Pinned inputs: every byte the pipeline reads is listed here with its SHA-256.
+# Written by scripts/make_assets.py; `scr fetch` downloads and verifies.
+raw_base: https://raw.githubusercontent.com
+corpora:
+  lj:
+    repo: coqui-ai/TTS
+    commit: dbf1a08a0d4e47fdad6172e433eeb34bc6b13b4e
+    licence: LicenseRef-PublicDomain
+    files:
+    - path: tests/data/ljspeech/wavs/LJ001-0001.wav
+      sha256: 4d2bd83ff0f7fe33491b03193abdf623f1b4cc2d8103972b33638d3607d86dc5
+      bytes: 425830
+    - path: tests/data/ljspeech/wavs/LJ001-0002.wav
+      sha256: 6563390fa42121eeeab15f49fa91fd26afe000022bfdaaa882f06224ad549599
+      bytes: 83814
+    - path: tests/data/ljspeech/wavs/LJ001-0003.wav
+      sha256: ad97822fa512b4897a01557423ffff7cc1fc763c9b9d5d502a5a1bc566f7440b
+      bytes: 426342
+    - path: tests/data/ljspeech/wavs/LJ001-0004.wav
+      sha256: 3c9cce186f26b6690b1d96a6a640c3f1bdb10e1f206738344190fa264955a7af
+      bytes: 226662
+    - path: tests/data/ljspeech/wavs/LJ001-0005.wav
+      sha256: 0d95df8cd780f0ed4f71d74559d42b33cc98ae9e7b398e0eceb17428dfacb9ca
+      bytes: 357734
+    - path: tests/data/ljspeech/wavs/LJ001-0006.wav
+      sha256: 4b866eebe1e7cb6ded4bcb27caa0638b8ade67a6a8a2f7132952b716dc7006db
+      bytes: 250726
+    - path: tests/data/ljspeech/wavs/LJ001-0007.wav
+      sha256: 6e7e94440dd92e2a11f26d64d55e05303b86a9632d7aa65b93bb83ae01c1119c
+      bytes: 370022
+    - path: tests/data/ljspeech/wavs/LJ001-0008.wav
+      sha256: 298f66ac69a0dcc1dd3b03236d74ea18599a2608fa0af22123e0ff58a175ee8f
+      bytes: 78694
+    - path: tests/data/ljspeech/wavs/LJ001-0009.wav
+      sha256: d003373f9c769b17995cfff2a99818e720a56f3376678b27fc6c9c27539c3f75
+      bytes: 333158
+    - path: tests/data/ljspeech/wavs/LJ001-0010.wav
+      sha256: c60d0565bda9ac6076da930bab34d29ea7d1dd8961446b948f73e0a90ccd62de
+      bytes: 388966
+    - path: tests/data/ljspeech/wavs/LJ001-0011.wav
+      sha256: 3f919a050cf54a2aefdbd11c198a680fbbe0c45e46477ad0d6549c883cbc21c2
+      bytes: 199014
+    - path: tests/data/ljspeech/wavs/LJ001-0012.wav
+      sha256: 5312c6a6fd03dc7f176a6d639573e1885090b8e7c9831e44c95e89d73583ebb7
+      bytes: 363366
+    - path: tests/data/ljspeech/wavs/LJ001-0013.wav
+      sha256: 5e54634a3612eea474a0a48bc9788e769d52803ca386504c2c17a647bafb3584
+      bytes: 114022
+    - path: tests/data/ljspeech/wavs/LJ001-0014.wav
+      sha256: daf5ce9ee3b8b7a38ad7c6ad3ca1d89f88dd216be5f366129f44648f60dd8a9d
+      bytes: 438630
+    - path: tests/data/ljspeech/wavs/LJ001-0015.wav
+      sha256: 79551c0062f6f732294570601c7ec5b615f483200b129f455e9fa529e1d9d375
+      bytes: 407398
+    - path: tests/data/ljspeech/wavs/LJ001-0016.wav
+      sha256: eff2c60014a1d9ed5338305367f7ff66bec130d70bf98bf31aafb92159604098
+      bytes: 232294
+    - path: tests/data/ljspeech/wavs/LJ001-0017.wav
+      sha256: d7d2e110a27c13b40990457002c328423834373f72b2feb700a4ca243df08410
+      bytes: 309606
+    - path: tests/data/ljspeech/wavs/LJ001-0018.wav
+      sha256: 06631c14933c24f81cffbfed16ce2ccb3a372abe1d970fe3ce49d4d655e9092b
+      bytes: 330086
+    - path: tests/data/ljspeech/wavs/LJ001-0019.wav
+      sha256: 0fef11ee317d5e5b6b5af61ec8caf0546dbeaf08f0eb79e62da42b24100ce7f7
+      bytes: 282982
+    - path: tests/data/ljspeech/wavs/LJ001-0020.wav
+      sha256: b6e3321c36b264e88341488bcab017a49506c875b025d8b772937ae29296cde7
+      bytes: 206182
+    - path: tests/data/ljspeech/wavs/LJ001-0021.wav
+      sha256: 2db1b5aa687650a22174400d286899c7ac2f12df782c8c0d9ac536e19b0ccec9
+      bytes: 379750
+    - path: tests/data/ljspeech/wavs/LJ001-0022.wav
+      sha256: 762940ab05512624f7b428df08541d60813304792c0ea49f5264ca6ce79a5eb0
+      bytes: 311142
+    - path: tests/data/ljspeech/wavs/LJ001-0023.wav
+      sha256: afc7f9a8c237d85be225436ec3c89213f9f8cc4068bde983f8adcf5d1c572c5b
+      bytes: 372582
+    - path: tests/data/ljspeech/wavs/LJ001-0024.wav
+      sha256: 50705c8bbb46981f05a2307e5896bcea4e1ea4e24ad09676737b362c72458fad
+      bytes: 346470
+    - path: tests/data/ljspeech/wavs/LJ001-0025.wav
+      sha256: 5d09a5ac11395ff138d43c173278811076be5477adfc099a6761bcfe86a47940
+      bytes: 391014
+    - path: tests/data/ljspeech/wavs/LJ001-0026.wav
+      sha256: 86d8757eaa944031d6ea35bd8b59592e700e3150f59312da9bb7a15f592fc284
+      bytes: 268646
+    - path: tests/data/ljspeech/wavs/LJ001-0027.wav
+      sha256: 3241c7da4c8ae86e80aa2e2360ce04ca2faf8de249f031c67ef0870d42aea7b5
+      bytes: 425318
+    - path: tests/data/ljspeech/wavs/LJ001-0028.wav
+      sha256: 58831256095edbcc72346a2db9be39efd39662f442f8115f19da4d55876cfa0e
+      bytes: 261478
+    - path: tests/data/ljspeech/wavs/LJ001-0029.wav
+      sha256: f443da7b612dbb367de17820a3ba6c741d932bb24afc39698ff215d0cd799e24
+      bytes: 234854
+    - path: tests/data/ljspeech/wavs/LJ001-0030.wav
+      sha256: 62f11c8b1a6e728f4505bf32b03cf1d2afdad56cfd9893b6c6410409ec76b285
+      bytes: 304998
+    - path: tests/data/ljspeech/wavs/LJ001-0031.wav
+      sha256: 2f5504050e363e9eba3bf525b7a12f53550061b80b2817f92802155aa5ff5707
+      bytes: 346470
+    - path: tests/data/ljspeech/wavs/LJ001-0032.wav
+      sha256: 3976b39cad68b49b3abe6eb080fe898e663aa7e8f32e4f62d37d47a35b2a0260
+      bytes: 312166
+  ljtext:
+    repo: NVIDIA/tacotron2
+    commit: 185cd24e046cc1304b4f8e564734d2498c6e2e6f
+    licence: LicenseRef-PublicDomain
+    files:
+    - path: filelists/ljs_audio_text_train_filelist.txt
+      sha256: f2fbef628e915bae818034e38a45e398157f1d166e63d521246f9c37fe62197d
+      bytes: 1524164
+    - path: filelists/ljs_audio_text_val_filelist.txt
+      sha256: d36c4e1cf9aaaf72a87da670f1414b63da9783f7b0e7fc36877415bd49619064
+      bytes: 11911
+    - path: filelists/ljs_audio_text_test_filelist.txt
+      sha256: 3e63b103aac891dcf8a8f706f9bad6e583626180e371f049951db9ef67a58dde
+      bytes: 60834
+  fsdd:
+    repo: Jakobovski/free-spoken-digit-dataset
+    commit: 26eb9aaf76e81b692f806f9140c2d2777410d7a1
+    licence: CC-BY-SA-4.0
+    files:
+    - path: recordings/0_george_0.wav
+      sha256: 228ab63fccdf262d2e05817b6ec918b15e7d9e4bfb6bb20183c46ae088405240
+      bytes: 4812
+    - path: recordings/0_george_1.wav
+      sha256: 239d40931baf4e9b482361abb6e021439eca20f2e95f039b1bdddae04ef0b83c
+      bytes: 9498
+    - path: recordings/0_george_2.wav
+      sha256: d08d46275d0594096cb52449884ac9c5cd1dd0e4e48c4e28de1ade1703a2eab0
+      bytes: 10708
+    - path: recordings/0_george_3.wav
+      sha256: d5255e12fcc9ec9be0fa5d2dcca7c15ce7d1d39f0f581e6338d8930c09d6e52d
+      bytes: 10058
+    - path: recordings/0_george_4.wav
+      sha256: 00a23e872eaee1352fa876ceab1191ab6a6f9f0fb4689fc5e0633b695001a3d6
+      bytes: 8690
+    - path: recordings/1_george_0.wav
+      sha256: c652e9243c5cc350063be17ebb3629ae971f2059234aa33cfec3a57ae7668efd
+      bytes: 9140
+    - path: recordings/1_george_1.wav
+      sha256: ff6e88d6ea38bbdfe4ece00e25afddeedc5cda45d2494de802b838ce4c90a542
+      bytes: 8006
+    - path: recordings/1_george_2.wav
+      sha256: fc3c8d077d98a1b5790f66649d5befcbd5c76e3ef677f857d014dfb527661e02
+      bytes: 9188
+    - path: recordings/1_george_3.wav
+      sha256: 802c1b4c8de9a6cddd33bc5ae2780ae64413ead6d0ab726d1206bef44241829d
+      bytes: 8552
+    - path: recordings/1_george_4.wav
+      sha256: f608a7eaa6aed3998182d4a7f2a5443ebf324371e198ed2f10330d49e282d170
+      bytes: 8488
+    - path: recordings/2_george_0.wav
+      sha256: 64e86e8aec57533dfa5b9054ca3f93f7b7da98fb41e2e1da7c9eabfb9c86792a
+      bytes: 5330
+    - path: recordings/2_george_1.wav
+      sha256: 6ce4f75e7a3467a9aec1c0e142a0412e4ada61903dc5f626ea19c0d5bd501641
+      bytes: 9130
+    - path: recordings/2_george_2.wav
+      sha256: 908cbb66d2d404721fa4e02f53c79697d3a037fa1039fb2203ab337331017cbb
+      bytes: 6378
+    - path: recordings/2_george_3.wav
+      sha256: d4f19537dd510f45d8a891ad43ff69d9eeeea32ed15ffc637d3ca7bf0bed5203
+      bytes: 6376
+    - path: recordings/2_george_4.wav
+      sha256: eab8a9d8a98c44d97c8a835bf6bc303d921bab42ce44162783900cdaa0293b56
+      bytes: 6200
+    - path: recordings/3_george_0.wav
+      sha256: ab3ce6f5af0eb27f47f1d405c205fbb35776954b3e5beada8449e218fbf30b81
+      bytes: 8002
+    - path: recordings/3_george_1.wav
+      sha256: c406ea9e28a76b128a27542760a36c05f90f747aeee63225fbf927b0e0b8a537
+      bytes: 8034
+    - path: recordings/3_george_2.wav
+      sha256: 14e9ece9c618efba3350c5647d86395919e924e99cf9ce6c2c70c0354590616a
+      bytes: 7880
+    - path: recordings/3_george_3.wav
+      sha256: 715df900f8f9481613c5b8627351be7102ab4eb89c1ede23c836555f3e04f61b
+      bytes: 8548
+    - path: recordings/3_george_4.wav
+      sha256: ae8ce7634a2a3a20a2307ca208645a4716fd2040eee49aba35b2e078b5e21a6d
+      bytes: 7088
+    - path: recordings/4_george_0.wav
+      sha256: caf634cb0b03955ce98239bb9ae9660445f9021049b3211ad6dc09a1765efca3
+      bytes: 7026
+    - path: recordings/4_george_1.wav
+      sha256: 1be0fe488bc928edc0ed9496fbffac6386ed6831b9f3b5fa796e5ad48b27e02b
+      bytes: 8666
+    - path: recordings/4_george_2.wav
+      sha256: 0d627bde38ae7b5aa81c5a9f0664fd96f9dff94ef9bab382337c1554a482232a
+      bytes: 7828
+    - path: recordings/4_george_3.wav
+      sha256: 6f7134c1e2bea2f01720c4c255cc709f5e31cd8ec878f84d288b47d2fcf01819
+      bytes: 7566
+    - path: recordings/4_george_4.wav
+      sha256: 900a454621a923e0d264a52b3146e92365410e3df313c68f14eafdd6f1db008a
+      bytes: 7002
+    - path: recordings/5_george_0.wav
+      sha256: 573faed14e5b9037ca124a040d87aea6bdb1852d47a106eba099cdd36701f34b
+      bytes: 9004
+    - path: recordings/5_george_1.wav
+      sha256: 92c06a934a3905dba06b9085def638070916896397740ca26f326fc78addfbba
+      bytes: 9266
+    - path: recordings/5_george_2.wav
+      sha256: f188cb3eb678156cb263e69f60515c34025eeb3f4e72bc819fcca65448effef9
+      bytes: 7752
+    - path: recordings/5_george_3.wav
+      sha256: 24ba337bbaf2879609de200a48d915100919460add20c9e1449ea7ffc81944dd
+      bytes: 8050
+    - path: recordings/5_george_4.wav
+      sha256: 7ccf047094cd54c13b4254e6f8ee6bf0f8e2718cca5e98603f2d55915edbc560
+      bytes: 7650
+    - path: recordings/6_george_0.wav
+      sha256: a5afa6e3dad8290335c2883434d51f45d425fe33d545d784c21f1f677712abbb
+      bytes: 8354
+    - path: recordings/6_george_1.wav
+      sha256: 7084ce484c7390bbf565b2f36ae0feea079a4cffec18ddbcc39f5a60fd4624aa
+      bytes: 7536
+    - path: recordings/6_george_2.wav
+      sha256: 9f0515bd68c114e66bb1210fcdd5f78081076ee8d7f67995e763e46fac39b73a
+      bytes: 9054
+    - path: recordings/6_george_3.wav
+      sha256: 433f888566dd21030da6eaa334b627b7923c8a686000650bab484b161486c61e
+      bytes: 9404
+    - path: recordings/6_george_4.wav
+      sha256: 9c170bcb333127b0346d2be87775c047c4fbe4443e9f2e299f6444f58e0aead4
+      bytes: 8882
+    - path: recordings/7_george_0.wav
+      sha256: 645dc7b2bd40ca8bddb2b580de6877ddffaf041a94b72a87ab9274d5345581a0
+      bytes: 10306
+    - path: recordings/7_george_1.wav
+      sha256: 6cc744db751d36e75cef346fb0d963dc1448417dbbd85b2e229daff89189b205
+      bytes: 9482
+    - path: recordings/7_george_2.wav
+      sha256: 71a1f29b88a1dbd01649d87af6565f7efcd3568f538a58e71f59050937c2d94a
+      bytes: 10600
+    - path: recordings/7_george_3.wav
+      sha256: 07a49b4c6332f36e6b3ba576aeea98208a26e8c2bde358c9e66a8c7c3a31507f
+      bytes: 9198
+    - path: recordings/7_george_4.wav
+      sha256: 2f26de10bd002611aef5a8ea812c2d3d26ab1e95d425791c88d9baa52a858950
+      bytes: 9906
+    - path: recordings/8_george_0.wav
+      sha256: ad8f7a9a1212a3a46e64a8e8a81d050043503f57305ba8b8d1f3b45e78a3a7c5
+      bytes: 8488
+    - path: recordings/8_george_1.wav
+      sha256: 98cc01b792b18fe78473cdceb14a82bea1162f3c4740801cdaf33f26caf53fb1
+      bytes: 8266
+    - path: recordings/8_george_2.wav
+      sha256: 5c27b405aec749533f4d89d582d2fd14f7b8b1a57b7f09597ee199c4cdbc3d0d
+      bytes: 8716
+    - path: recordings/8_george_3.wav
+      sha256: fb4ce882f90faa530a0681b94c704b69e108a56a61e211149704ca152ac36446
+      bytes: 8196
+    - path: recordings/8_george_4.wav
+      sha256: ea1e0a7efe7b3137c260a31e47b58ee7500b3051f8079accd2a10afeb0278c0e
+      bytes: 8146
+    - path: recordings/9_george_0.wav
+      sha256: 2a9e54630a64239890f4716445dfa949236841b76e2f880f38cd0c5e28a997e9
+      bytes: 8422
+    - path: recordings/9_george_1.wav
+      sha256: a66489d953f56adf6963a64f410c7a0d4ae76704684abb5165b8b03433b2b55c
+      bytes: 8044
+    - path: recordings/9_george_2.wav
+      sha256: ca35b3a937cc95d2682ad27688f23dec1dc6f6dc88d05fdd0d710fb87cacb46e
+      bytes: 8010
+    - path: recordings/9_george_3.wav
+      sha256: a02da7dbb5c35ef503528c465c14044d2b54d399aaaba6765183f11f3ddb8e8a
+      bytes: 5410
+    - path: recordings/9_george_4.wav
+      sha256: a85f20245d8770227dcc36fdd85d448e3e6f9e2bdaaf94c1375a1f7376c9d863
+      bytes: 7948
+    - path: recordings/0_jackson_0.wav
+      sha256: eea86018ce1730baaf7f5dd6ec88c1f727dd90203521a9115b489310a248ea05
+      bytes: 10340
+    - path: recordings/0_jackson_1.wav
+      sha256: 6df040b19b0a7a7433e6185c10d2df5e71a78fb272be472a98ce670378871b44
+      bytes: 8566
+    - path: recordings/0_jackson_2.wav
+      sha256: 1f8420b07f8c1798817070ea550d3fa7b5964fb3f1ebabf19ed3c64fc62f0248
+      bytes: 8558
+    - path: recordings/0_jackson_3.wav
+      sha256: 4a081dbe58c3716dde3fb8f7033dc8db404d9e6e070cab1f4be74e0b35820b25
+      bytes: 9620
+    - path: recordings/0_jackson_4.wav
+      sha256: 967c3b14efad3501be65f167466f008b4e8abfc219b2bd009c443054bb2a6d3d
+      bytes: 8702
+    - path: recordings/1_jackson_0.wav
+      sha256: b3739400f793620875bb7849bfd8629dc6b2966ed6bda8276aa14178a612f13a
+      bytes: 8320
+    - path: recordings/1_jackson_1.wav
+      sha256: 5a5b281a28fa451318629ea46eea07465543acfaa92d3ec8deac3c4a971a03d3
+      bytes: 8528
+    - path: recordings/1_jackson_2.wav
+      sha256: 951b095b2b0b203a3a81581f1e908e2fb0968d94fccaab088dfa332ebc57d9c6
+      bytes: 7722
+    - path: recordings/1_jackson_3.wav
+      sha256: 2e71fd74999a6f06432fe564f49294694113ca7205996b8417d9e1b83e6df4e8
+      bytes: 8008
+    - path: recordings/1_jackson_4.wav
+      sha256: 64ffa841ea06bd87f94e41b2480c8afacf2577b9dde0b989080dfc01d6ac688c
+      bytes: 8470
+    - path: recordings/2_jackson_0.wav
+      sha256: 214bac0c813b584410e3cb8cace2673d256b3fd735810bd516b2bfd0c2298620
+      bytes: 8024
+    - path: recordings/2_jackson_1.wav
+      sha256: d2422f0c91208802a0daab5ee36ef661fa166cfcfa380791a5e1d866481ee594
+      bytes: 8892
+    - path: recordings/2_jackson_2.wav
+      sha256: b79de6ce388277d60a8f88aaeea268a41f7a9132efee4691a067dcac44822ada
+      bytes: 7080
+    - path: recordings/2_jackson_3.wav
+      sha256: 61434c1ebfda2fe1381edbdabd286ab77de9e84cb071e379a91a17aab087395a
+      bytes: 7978
+    - path: recordings/2_jackson_4.wav
+      sha256: e902bb0a2b3208aff47aab124c259f2bf061191af849fe60811804d4bb3dae57
+      bytes: 7676
+    - path: recordings/3_jackson_0.wav
+      sha256: 5152a17feb7dba43cfabdb4284262004da3038d5c02a6a5282e851b7ad2bb2e2
+      bytes: 7816
+    - path: recordings/3_jackson_1.wav
+      sha256: 963b2bb960f4844804c0f2d019f2b3ff294bd8f803ced8c7ca36f6074ba1ad8e
+      bytes: 7556
+    - path: recordings/3_jackson_2.wav
+      sha256: 9a00ace7758bae9769d5424ac1f357cd2773ce188ce384690504b127547418ea
+      bytes: 8198
+    - path: recordings/3_jackson_3.wav
+      sha256: 1dfd194038b7837c1feaafee606e9616ae75c9b582ede0b6eff04e5372edbab0
+      bytes: 8246
+    - path: recordings/3_jackson_4.wav
+      sha256: 22709c0be88765a804e5acd97f03bd82b2904327b01f2ad0728dcf96a99d0aa9
+      bytes: 7186
+    - path: recordings/4_jackson_0.wav
+      sha256: e0febd48e7cf7cfdca949d0d07769e0fc708fb2e8e7648691fa7e6ed7a5b1ded
+      bytes: 7460
+    - path: recordings/4_jackson_1.wav
+      sha256: e3432e1b1863239d3e310791f117c707ca995915f1e36f433cf0c1ec3a013e9a
+      bytes: 6742
+    - path: recordings/4_jackson_2.wav
+      sha256: fdc2c948f0cbd1461294e88a3c5ded737a57cfb4d72b0ba10620ba66545b797c
+      bytes: 6700
+    - path: recordings/4_jackson_3.wav
+      sha256: c9a0472f76f2f5bf53da7a4c7865f1f7bf3cb10968581303430b6c9dd09df704
+      bytes: 6542
+    - path: recordings/4_jackson_4.wav
+      sha256: 88de2d6fa69ee009f13d30e39a3eb0e65cbc251730615e91fab5f866813fb080
+      bytes: 6960
+    - path: recordings/5_jackson_0.wav
+      sha256: 070af5213084191c4de1156125bb792c28cea2728798043283e3def0dadd55b4
+      bytes: 6832
+    - path: recordings/5_jackson_1.wav
+      sha256: efd4a46bfcadc9f839f67a0c9d33e05c6d545851a690773ce651796edf74176d
+      bytes: 6682
+    - path: recordings/5_jackson_2.wav
+      sha256: 9472c4879a6dcfa29569a8c7d4552b099f099fa23040ef025806b19d66b4e79c
+      bytes: 7314
+    - path: recordings/5_jackson_3.wav
+      sha256: b46788aed764f9b07bc6c21847e504f8ce9f63278138cc799737f44fad67dc70
+      bytes: 6366
+    - path: recordings/5_jackson_4.wav
+      sha256: e0ad1e77b639fafa2dccd07b90e8ab48043154a694e4a23563e40eea753f18c0
+      bytes: 8452
+    - path: recordings/6_jackson_0.wav
+      sha256: fe7705fdfaddc378d72c479664ab8aacd53fa78a99c3d130ad74b1ff40212595
+      bytes: 13290
+    - path: recordings/6_jackson_1.wav
+      sha256: 3e63d1e2c56aa8190a04a854e534dce2f6a02bed0166a3a53830d480d76661f2
+      bytes: 10334
+    - path: recordings/6_jackson_2.wav
+      sha256: dd156ce9bb3184f37a14c4b5a6ca523e1785fcbc6cda5d760cebc27cafed7659
+      bytes: 10172
+    - path: recordings/6_jackson_3.wav
+      sha256: 6ee9f8f6ec64e4369489aad98fd2738d1c27018b14a7d4fe91bf7e161e888456
+      bytes: 13894
+    - path: recordings/6_jackson_4.wav
+      sha256: ab116bbde41fa87d82e3f5a12df560d235a2f54fb335a74703d5de1744bac144
+      bytes: 10114
+    - path: recordings/7_jackson_0.wav
+      sha256: bd4f5fa8db9a8a8d14a88236da314cd38fce2370cc406181b2485e03437d55d3
+      bytes: 6958
+    - path: recordings/7_jackson_1.wav
+      sha256: 762dfcc851874c662ab1b12e68d875733ee32bde15f8516cd491e058511c5ac8
+      bytes: 7622
+    - path: recordings/7_jackson_2.wav
+      sha256: caa4216532464ddbd435e4f42a4617d937779c4a14d10d74bb00aeda4bda89a8
+      bytes: 6198
+    - path: recordings/7_jackson_3.wav
+      sha256: 1135c7246f7081ebd397647f36948e4854ba9bdf4eb4eee2575b8ed63e760783
+      bytes: 6988
+    - path: recordings/7_jackson_4.wav
+      sha256: fe3f6a4d9a213b2a043b54b0ee2170ab019ea403edef27f94d22f614da9f83b1
+      bytes: 6720
+    - path: recordings/8_jackson_0.wav
+      sha256: 25172d71c574ee504094d4b704efa478a253d29ee7da562ce6ec4800ffdb6eaf
+      bytes: 5596
+    - path: recordings/8_jackson_1.wav
+      sha256: 556a54cd75086379d90aee189965e7232b1cec94e4b37a22f711de618f3627d4
+      bytes: 6502
+    - path: recordings/8_jackson_2.wav
+      sha256: b6eb97cd74abd28bfb270b73d824d09ea2a7502638694d04255a71eb864a1384
+      bytes: 6166
+    - path: recordings/8_jackson_3.wav
+      sha256: 3a6bdc6396921840ab2b86f86e5d0d36f816f9af25d3db1051d9f7d1169f7950
+      bytes: 6278
+    - path: recordings/8_jackson_4.wav
+      sha256: e3da7f35776b815ace62651ee29d6025b6929ce8decd0239048980802c08753e
+      bytes: 6540
+    - path: recordings/9_jackson_0.wav
+      sha256: 6b25bbf21f65cf5a6c9713ecf05b5d34641bbcfaac56b9d4d694f65758e12ff0
+      bytes: 9698
+    - path: recordings/9_jackson_1.wav
+      sha256: 86eb4753f8231b049d4209b2a5458a1c8c888ba0283af25fb529309b15b29882
+      bytes: 9090
+    - path: recordings/9_jackson_2.wav
+      sha256: a9688175aa71fdd002c683e3af48a06cc94c331282e6f300f116b702edaa1525
+      bytes: 9308
+    - path: recordings/9_jackson_3.wav
+      sha256: e31bd5b6bae99c8f706029461a89e3fdf71e0625d7d662f73782c20be0f625b5
+      bytes: 8644
+    - path: recordings/9_jackson_4.wav
+      sha256: 484ea4682d507c1f80ebd34a8fd65b5ca5216b26ba99a060d74c6392f00c8a84
+      bytes: 9350
+    - path: recordings/0_lucas_0.wav
+      sha256: 1d942e79c200ae1f84618314f2669d9c154718276b38ccf341630635073f7c06
+      bytes: 10210
+    - path: recordings/0_lucas_1.wav
+      sha256: 9c2bb9ff24714b163c681d82c4ed99339c9408e9a126c04e6a1de63774704b05
+      bytes: 10994
+    - path: recordings/0_lucas_2.wav
+      sha256: 98a9869e199ee41a7bd1435158d6844633f0e1e05565a456c1341fe94feab007
+      bytes: 11784
+    - path: recordings/0_lucas_3.wav
+      sha256: 4fadd8fa097688679d1971a97ee649f40822e3262f2c4c8ddc1f4e09216cdb18
+      bytes: 8954
+    - path: recordings/0_lucas_4.wav
+      sha256: 50b70103863389972001597d1136a8c7eea17fd7d98c7223af6e1880eca1ee90
+      bytes: 8188
+    - path: recordings/1_lucas_0.wav
+      sha256: 3be94e884747e17a3004d7c30c95cc5c9da2bf6fc3a280db5ae72822824a398b
+      bytes: 6088
+    - path: recordings/1_lucas_1.wav
+      sha256: ad1caca4abb84a074da3ab0521ea32dd904909d997acfe4e9f30022241f94db6
+      bytes: 6444
+    - path: recordings/1_lucas_2.wav
+      sha256: b0bba3c7a1bfa0ae577e19c809cc3e740d8733af144a1dc68180ce364206409e
+      bytes: 6568
+    - path: recordings/1_lucas_3.wav
+      sha256: 7a7ca68118ecaa64d0eebfeb0abdb6b27e7490da81951b3cbcc2572712fd66e9
+      bytes: 12856
+    - path: recordings/1_lucas_4.wav
+      sha256: 0efa20cf3834fb8587bf7d32330cd2a7ac945919d5abec7728f4e9954343741b
+      bytes: 6202
+    - path: recordings/2_lucas_0.wav
+      sha256: 1cc45214f58b07f3188a0474060cf04c600123d1bc05c9889f81a24e77edab2f
+      bytes: 6038
+    - path: recordings/2_lucas_1.wav
+      sha256: 2fc0b8646d1fc0f1931a40c8b34a726970798241d95ceb14eef4291902f47af6
+      bytes: 6742
+    - path: recordings/2_lucas_2.wav
+      sha256: b2e590e96a72a7b5815a3dab152024db570ddf127c84269c05a4d5caa1657911
+      bytes: 7002
+    - path: recordings/2_lucas_3.wav
+      sha256: 687c470afbbee002046726a9121d58c769cd02c8498daa2e6ac41ad138b70e29
+      bytes: 6832
+    - path: recordings/2_lucas_4.wav
+      sha256: e50e731cb732f7b7ff4e293f5bc80cbea35834b532d914ac9b1b5c62386aa2b7
+      bytes: 6772
+    - path: recordings/3_lucas_0.wav
+      sha256: 584600a1e1377935ca416db7e788c4f27888561c112c2a9a67f86919059e5417
+      bytes: 9908
+    - path: recordings/3_lucas_1.wav
+      sha256: b380b61e138887b3371b1f27aec7eaa462ac9bd931b7c6a5e01c0815776bbdad
+      bytes: 9770
+    - path: recordings/3_lucas_2.wav
+      sha256: c5c7db2e211073f3c50a932be6003507fbdf315e06759412bcf2f5ab517cc227
+      bytes: 9388
+    - path: recordings/3_lucas_3.wav
+      sha256: 7ad7dbc2974dfab7dce92e81fbe77996f21e54f4b09e1380825209cf95ad7173
+      bytes: 7254
+    - path: recordings/3_lucas_4.wav
+      sha256: 5ea6394f6c4c6b9caa336ef1f065abad4ad552389267d891c82bfd95ba59fc4a
+      bytes: 8618
+    - path: recordings/4_lucas_0.wav
+      sha256: 4adf59a713041d3c672d4cfed07953d53f8d15fa060f17e1a8385cae3a115382
+      bytes: 6810
+    - path: recordings/4_lucas_1.wav
+      sha256: 02bf2849a8d6c632be881a7f08ae61972dc7713b475fe41a524b73f3a6211204
+      bytes: 6620
+    - path: recordings/4_lucas_2.wav
+      sha256: 2adf8b03c13b47f0f8de98e5faf46871a7434a8ab5e349e9f9ff1ff024d385b9
+      bytes: 9934
+    - path: recordings/4_lucas_3.wav
+      sha256: ecb0242addb5c1970057f20a02d92fbde08726bfec15d7750056ab86b60e9309
+      bytes: 7102
+    - path: recordings/4_lucas_4.wav
+      sha256: c61aa499f6769f2e2b9fd4e6e55975366a90f727bd77eef1bbccbe83ebdfefa5
+      bytes: 8910
+    - path: recordings/5_lucas_0.wav
+      sha256: 266bab64975aebcb2f8e734cb8f4721ef362fb506190c35bd7a31c4bd9e418a2
+      bytes: 9648
+    - path: recordings/5_lucas_1.wav
+      sha256: dbf802c200643901bb891473fe356fdbf6473d12c6e8a98333b6a7e082068f1f
+      bytes: 18400
+    - path: recordings/5_lucas_2.wav
+      sha256: 13ed345ae6fe5281f2735c84be364d1dc85c3e7541d7146faa38aee5225a425d
+      bytes: 9318
+    - path: recordings/5_lucas_3.wav
+      sha256: 9c0df59536caa9db1e26439872568ebf1a98d82e52dc8e028d172ad17bd33fb3
+      bytes: 8502
+    - path: recordings/5_lucas_4.wav
+      sha256: 973d6a1a7329d3d89d8b5c63b0a6c1a2d08366c6dfab96b7e85a11e466f22f30
+      bytes: 8178
+    - path: recordings/6_lucas_0.wav
+      sha256: 199e9f44ea8c5ce3556bb8bda78e831dccc383ee1acb4c5bc22531f67d79e968
+      bytes: 7796
+    - path: recordings/6_lucas_1.wav
+      sha256: 72cf6e1d443351eba90f5bd68b044ffbccc058f3cc8b5268020d2317a57b46c6
+      bytes: 10000
+    - path: recordings/6_lucas_2.wav
+      sha256: 52d46dd2593c00827ccaa9c83fdf3e77eacfcd255a47e03da549cdd84ccc1abf
+      bytes: 7740
+    - path: recordings/6_lucas_3.wav
+      sha256: 3cd796975aacf842e8d0f11d2af8e98f70080db1a6f484ab2b461be88d2c358c
+      bytes: 14006
+    - path: recordings/6_lucas_4.wav
+      sha256: ab1edfe249b1c455bb11f2ce7ea7e72f5cfcc820efbe51ddcfb71cb212383568
+      bytes: 7838
+    - path: recordings/7_lucas_0.wav
+      sha256: d3dbe5d28532c1ba3a47b099477a9e0bc9697017b1d1d4458091fe54be014ee1
+      bytes: 10642
+    - path: recordings/7_lucas_1.wav
+      sha256: b0966b0c861a85c10f8db2e328e5e3388808a4790a6f0ee38d8e7d621645da05
+      bytes: 7260
+    - path: recordings/7_lucas_2.wav
+      sha256: c0bb4963a1cd01d68cefad5f6cd75e0b91656f9c8a58e8d37d84ac864d13f9af
+      bytes: 7686
+    - path: recordings/7_lucas_3.wav
+      sha256: 84e2910c4071fbab3489609023d0b323b59e31ef46d5dd41bf9bcc73f594e5ae
+      bytes: 8984
+    - path: recordings/7_lucas_4.wav
+      sha256: 9321dacbbc693049d4c98c9cf753cc4c3620792d6b7800a1871df2f514db2983
+      bytes: 9298
+    - path: recordings/8_lucas_0.wav
+      sha256: 154cfd07257bb8488778969d694b770d6648bdc793761335115ecd2a0239de53
+      bytes: 18330
+    - path: recordings/8_lucas_1.wav
+      sha256: bbef48359b1fd61a945058618c6edc28d4067bae7797387b9df491994ddb4f12
+      bytes: 5470
+    - path: recordings/8_lucas_2.wav
+      sha256: 86f5cd61b08f75409ae641707e6e4d9e6303f81ac2244b885b7207b9ae8d6cc7
+      bytes: 13188
+    - path: recordings/8_lucas_3.wav
+      sha256: cb70a529f68f4770cb759676d004de2dbcc3810fec0667a4795ee446bef4f4b1
+      bytes: 11210
+    - path: recordings/8_lucas_4.wav
+      sha256: 164852fef331f7a528dffe82c2158323c97f037787b275ec7117b5d762519d38
+      bytes: 10906
+    - path: recordings/9_lucas_0.wav
+      sha256: 6508d1d8403fdaceb221968cd0090a422645493bc24a049dda75a04b6387495c
+      bytes: 8218
+    - path: recordings/9_lucas_1.wav
+      sha256: 041cc6ed99d4c7a0f305c06d38876a91f51df819351ab4caf0b4c1c757093b8b
+      bytes: 9012
+    - path: recordings/9_lucas_2.wav
+      sha256: c490aa86483c463fa522ea1bacbe23f33b577469d8798bc3e606ad53629ec169
+      bytes: 7700
+    - path: recordings/9_lucas_3.wav
+      sha256: a0f6796fbb1c840e70156b7b0ffad6840c953ddd20634ef026b772939899671c
+      bytes: 7296
+    - path: recordings/9_lucas_4.wav
+      sha256: 495780535f3e40e13094dec1fb50fac9266f2e905153c97355adaee0de583c2d
+      bytes: 7670
+    - path: recordings/0_nicolas_0.wav
+      sha256: 527b1d27c2b931204b24995f035580dd248b908978a27756b4698ce0aa7e1aa8
+      bytes: 7044
+    - path: recordings/0_nicolas_1.wav
+      sha256: 3d567d30e25cc721277603d4eab78ab4a5b5fdc2d39f919ce8147b6cf8ae4490
+      bytes: 7546
+    - path: recordings/0_nicolas_2.wav
+      sha256: 418816f823f2156a73343d121862fff82fe1a8f382fe84b8aa373a6b8b40e0e0
+      bytes: 5758
+    - path: recordings/0_nicolas_3.wav
+      sha256: 6cfeda6d61b2d1f3e1d3da24cd8b7aef468cb7db34228aef983b20b095006ca0
+      bytes: 8902
+    - path: recordings/0_nicolas_4.wav
+      sha256: d7e8184f8f00736b46bdab0771db0b0ea4bb9661376cf4774d10b794631be23b
+      bytes: 7830
+    - path: recordings/1_nicolas_0.wav
+      sha256: d57a29689b0abf1ab609ab401dd4053dbc18c317a4ed9ebed6a9aa034e9bab0a
+      bytes: 5902
+    - path: recordings/1_nicolas_1.wav
+      sha256: ab699c577558d9b17afbf3714ae7484195ce93d855d9bfb43151ad573689e15a
+      bytes: 4692
+    - path: recordings/1_nicolas_2.wav
+      sha256: 9d6d96e320efc3b931c246f1164963956f944fa74fb744cd5ca573af75229a2f
+      bytes: 4218
+    - path: recordings/1_nicolas_3.wav
+      sha256: ad140b5e38504e509d94b410e4b3c9c4bedcd0528cf6a085c3c8bf1035030318
+      bytes: 4692
+    - path: recordings/1_nicolas_4.wav
+      sha256: bc2d9aae9fe973c3df3d9e13d0a019fd30a996c7f6e4106321cc89bfd079eabf
+      bytes: 4758
+    - path: recordings/2_nicolas_0.wav
+      sha256: e55aea8bd4d83d0ae4de1b5a4b67a613f17aa00406cd726c352a061001308beb
+      bytes: 5756
+    - path: recordings/2_nicolas_1.wav
+      sha256: dc2ed3a0d4350a248e1ea2cdcf6ba32b8173eb583dbaccb0150353bb74bfd3d6
+      bytes: 4814
+    - path: recordings/2_nicolas_2.wav
+      sha256: cb10ee17e0258b92c5a8d992264ee313ece704f0a37fb2eb1222b78be55822f1
+      bytes: 5880
+    - path: recordings/2_nicolas_3.wav
+      sha256: dd4d206c2a0e6ca764fbd36dd0168a4d2eb010c3e8e93c176f83661bb98844c4
+      bytes: 3872
+    - path: recordings/2_nicolas_4.wav
+      sha256: 9179a9c25e6b531040246aaab57e7534b4def7ececc7edcce25ddc2c4bce52fe
+      bytes: 5378
+    - path: recordings/3_nicolas_0.wav
+      sha256: 5da068172b180b74cd8ed019d131679249387b0199cb972992adf18e21f1d82d
+      bytes: 5332
+    - path: recordings/3_nicolas_1.wav
+      sha256: e7cd3cd43f90f802b03308720b4be3d43d77395a6d47f6df850fe6c22b0fbccd
+      bytes: 5274
+    - path: recordings/3_nicolas_2.wav
+      sha256: 244563fdabd216f1a83216f9d1660e943844cf9a585159507d66a4f698cdcc5b
+      bytes: 4178
+    - path: recordings/3_nicolas_3.wav
+      sha256: 070121ea15cef11a8f267b949d21b12ed7816666854786402abaa01a578680e2
+      bytes: 3812
+    - path: recordings/3_nicolas_4.wav
+      sha256: f34509e50e889ea46ab2504cd58d58899c15caf23b6fde2f02b3a2f54007aa27
+      bytes: 5758
+    - path: recordings/4_nicolas_0.wav
+      sha256: dc6ae853b163bebf1774701a4f7e6e27bbace3472ba3628ec2d61b2e6ab1d0c7
+      bytes: 5030
+    - path: recordings/4_nicolas_1.wav
+      sha256: 7bd06ab2ccf69d142dd9410ee3d2416cdd733593cdaa9fce39561a5d8cf15333
+      bytes: 5644
+    - path: recordings/4_nicolas_2.wav
+      sha256: 4d92196625a855ef1d2ee07de1c2a0ab883efd8ca7a88149b225c970bad302f7
+      bytes: 5030
+    - path: recordings/4_nicolas_3.wav
+      sha256: f55631b61569f2bdf937aa4dcb955270a929380cc4c05ea9ff170089e19df386
+      bytes: 5304
+    - path: recordings/4_nicolas_4.wav
+      sha256: 273c381b6eb49731a5435dc3bcf5894a34f8d0d1e10f4a1359c895c56507d02a
+      bytes: 5166
+    - path: recordings/5_nicolas_0.wav
+      sha256: 808a05f646857095e97450f6824440c271c5a17029d24065a7ff27ea7813f61d
+      bytes: 5508
+    - path: recordings/5_nicolas_1.wav
+      sha256: fafeb62089db6d12dff9fdc61fc510095f098b02758318d1720c108015bdc16a
+      bytes: 6172
+    - path: recordings/5_nicolas_2.wav
+      sha256: fc21d9746cb5d77603455df22cf462485653464c2011a3a138e30c4c04ab5b5e
+      bytes: 5042
+    - path: recordings/5_nicolas_3.wav
+      sha256: a4515f9148fdfb3846547ed201172c0c8f12edb44a27619437d2e218c8fe393d
+      bytes: 5840
+    - path: recordings/5_nicolas_4.wav
+      sha256: 741287fc6edfc9b39a8f188da83bd6b453e46d10a1b56311f05fbe4874eed80d
+      bytes: 5640
+    - path: recordings/6_nicolas_0.wav
+      sha256: 48d22b265d86c14e6b4462f51122834bc66e99e3966e95f2279a9d07ffcb9e95
+      bytes: 3488
+    - path: recordings/6_nicolas_1.wav
+      sha256: ea67d991a682569b25ed717475afd47a5e3917cdda231e7b5f072f7ad7b46976
+      bytes: 3744
+    - path: recordings/6_nicolas_2.wav
+      sha256: 1a3ba0e79e289181cb1df5dd1811a56796e70a8ad244297533e47f4dbe16d85b
+      bytes: 4254
+    - path: recordings/6_nicolas_3.wav
+      sha256: d17ef808b1b7468dc46ec9c59f11503d983e941ba9bef570e09ca3797e736e2a
+      bytes: 6294
+    - path: recordings/6_nicolas_4.wav
+      sha256: dff908e672df45e49107a83c41ce8957957d76231d9fdaf4ae6c5a65aa838579
+      bytes: 7570
+    - path: recordings/7_nicolas_0.wav
+      sha256: 615dc2a2ba6e915521151479bbec3724bd1f5e0c839bb57b693c45f897a174a3
+      bytes: 6002
+    - path: recordings/7_nicolas_1.wav
+      sha256: 8df620ef0ecf9ffaf962154d9eed7097811d743a1f50d607a3a91ffac14740dd
+      bytes: 7462
+    - path: recordings/7_nicolas_2.wav
+      sha256: 4b95334af5a5041553c45f9254e670094b4404371e34c60702a9c317f6b1130a
+      bytes: 7182
+    - path: recordings/7_nicolas_3.wav
+      sha256: 43a9487a5c38b89f4bdf4ea98351925c9563bb9ad9823ace5a360b99a9d75d09
+      bytes: 5888
+    - path: recordings/7_nicolas_4.wav
+      sha256: 5ff214a30aee4a90bfa7705399c4a784213906ed6d4ebab7cec95cf3f115d50d
+      bytes: 7182
+    - path: recordings/8_nicolas_0.wav
+      sha256: 8e2af922d9417b55344ab3ff7d14148c77551c877d5a5543103a6dc07625bc12
+      bytes: 3760
+    - path: recordings/8_nicolas_1.wav
+      sha256: 7b549bf7ddc327e75fd056b7af1bf62480a031cec1b6c89a6b0ca08d9c8e6382
+      bytes: 3654
+    - path: recordings/8_nicolas_2.wav
+      sha256: cbc6ea166625b66c5c62e5f1a7427f672d9a1d52b104d53a64e27496da3156ce
+      bytes: 3916
+    - path: recordings/8_nicolas_3.wav
+      sha256: 5d2ac286f63a410ff4435e80a93ba0bbf2ca63e49b471cda71b468c46ad8ae68
+      bytes: 4074
+    - path: recordings/8_nicolas_4.wav
+      sha256: 08176ccf9dc7085586390aeacb93a10af64294659e90789e8627c080eba4f836
+      bytes: 4178
+    - path: recordings/9_nicolas_0.wav
+      sha256: 44e8eb48a33839ac22c10c702963fbb53463858187a721f3addbacfe0e5cf14b
+      bytes: 6714
+    - path: recordings/9_nicolas_1.wav
+      sha256: 27321fdd3105d4ec80a6b9a8e6730d8c0c8ed91149bc14ecdc9c5773a9a86bce
+      bytes: 7926
+    - path: recordings/9_nicolas_2.wav
+      sha256: e772f8b570fe6125877e4818257690117aca98622522f68165f70ac2d1c93985
+      bytes: 7138
+    - path: recordings/9_nicolas_3.wav
+      sha256: 161a814d0276415db63bf71a8af026c48eebac5e72a02689fa7ab0b3f1666839
+      bytes: 7016
+    - path: recordings/9_nicolas_4.wav
+      sha256: 11db5b72710f15b9b3fdd6f69911d88d8eb7061843885148c8e01ed38bfbf86a
+      bytes: 5744
+    - path: recordings/0_theo_0.wav
+      sha256: d5833196a91e5da8703a8afe1f944cbf0d0bae55e5af6a4eb7e92e62070bf280
+      bytes: 6328
+    - path: recordings/0_theo_1.wav
+      sha256: 3dafef6bfb96c18486594a339d9e65f579d1f98531dac9eafe39e8165f87aca9
+      bytes: 5660
+    - path: recordings/0_theo_2.wav
+      sha256: 321f59be72d3df62ea5d1acd9884e56e642778acdae8b238347c7e9faaa3b64d
+      bytes: 5508
+    - path: recordings/0_theo_3.wav
+      sha256: f4aeffe68ef6108b377415baaaf087fa2fbfb9603ca4d2f91036faacda73c05c
+      bytes: 5464
+    - path: recordings/0_theo_4.wav
+      sha256: 41374eca62f0d56467f56bd705e80c7b94eff30fb4cbc7ffad5772d6aefa76c5
+      bytes: 6534
+    - path: recordings/1_theo_0.wav
+      sha256: a856fff7bcb68328a76b269c0d8b1d4269c28ac7e3d6725fe9da5bdd05405b55
+      bytes: 3816
+    - path: recordings/1_theo_1.wav
+      sha256: 067eb9f036e0d05e4967a0e7c910131d92d2493b52cb527bacc001229765ac1f
+      bytes: 3728
+    - path: recordings/1_theo_2.wav
+      sha256: f0c9e5e3749425ec404265accc84a19305bac7bdeea60100402f6a55f47ad289
+      bytes: 3156
+    - path: recordings/1_theo_3.wav
+      sha256: f79b5b1aca602fc1ba563e9e9e9f4be52bc0626b3106c706f844d145cb23d765
+      bytes: 4038
+    - path: recordings/1_theo_4.wav
+      sha256: 45a3553a223d0a2f994b0b34c761824abd6e2db0aa9b7451f1eb53b818bebc87
+      bytes: 3484
+    - path: recordings/2_theo_0.wav
+      sha256: 226a6abb912b3f1039a66f472748fb155cff0da00f3f2a7c091b74f937803a29
+      bytes: 3950
+    - path: recordings/2_theo_1.wav
+      sha256: 62a0ab262652b3dad25a6553950f2d7490c5f7e89468bb7616d457ddffca5f1d
+      bytes: 3682
+    - path: recordings/2_theo_2.wav
+      sha256: 3c332f5be27a34c9604e1d59b8ead49dcb49922a4c005545b16c7d41d0d96733
+      bytes: 8476
+    - path: recordings/2_theo_3.wav
+      sha256: 99aeba325922fd85434573dfa3e121d202fbd87c823f634bcfad65e06bac5875
+      bytes: 3246
+    - path: recordings/2_theo_4.wav
+      sha256: 5a95f465826c9d25a30a05b29e5f9e11708adda7bb6b18c5b631c4e09bda7fdc
+      bytes: 4302
+    - path: recordings/3_theo_0.wav
+      sha256: d58347dea5ba78c84cff98c0cdc8bc133bff7d4ac379ab53f47cdadff566a9b8
+      bytes: 3906
+    - path: recordings/3_theo_1.wav
+      sha256: 0e5645df3753e57d909aa3f2b58c04c9f65416634823a6d43f9abb47b48eb980
+      bytes: 4490
+    - path: recordings/3_theo_2.wav
+      sha256: 1c189c2b8b5a6b72735cbf2be2efc8933a74587cf7a3cf61733765f9cdfd624e
+      bytes: 4380
+    - path: recordings/3_theo_3.wav
+      sha256: 24ea16b57065fb80dfabd1ec7b736562a4506a34a754f50ec478eb2e4f6c5283
+      bytes: 3796
+    - path: recordings/3_theo_4.wav
+      sha256: 78ba9425e4a39ff248e8067cc6d7a5e7b24c62cc4e012f56bf97ba4366fb7ae1
+      bytes: 3634
+    - path: recordings/4_theo_0.wav
+      sha256: 4b96496d35d799b61b8341ac42161907b0a4dac68564310016396d9c6cffebe4
+      bytes: 4424
+    - path: recordings/4_theo_1.wav
+      sha256: 3cca39a735cd2c06ead7607dce81efadc5c32163a4b5e6386143880951d6aaad
+      bytes: 4122
+    - path: recordings/4_theo_2.wav
+      sha256: 5569aaa92cf08c0cc5c07ad837ce23aff291a77372f4936071bb2efee763a009
+      bytes: 3656
+    - path: recordings/4_theo_3.wav
+      sha256: c1f1d9e77651d7f31715f732aabdb0479c73278d6bc7020435445dcf6557390e
+      bytes: 4072
+    - path: recordings/4_theo_4.wav
+      sha256: 13c7e0c19c82adeb688459a2e710b01ade1fd05b00a6d0c0d100dd52fa00f90d
+      bytes: 4696
+    - path: recordings/5_theo_0.wav
+      sha256: a5c0beb43ad7e0236d927481d98b6f6bb1b21fbbd7bc26e7f42fcdf6d5f307d5
+      bytes: 4898
+    - path: recordings/5_theo_1.wav
+      sha256: c70cf66fe7c9f50a440c856432e630f662df83e741acb65f49ebecd777e3eeaf
+      bytes: 4754
+    - path: recordings/5_theo_2.wav
+      sha256: e5c5db060a706a1ecf69a7d2c5b98d4d6fa656b17618f5f2253bfb80f2987b42
+      bytes: 4322
+    - path: recordings/5_theo_3.wav
+      sha256: 6cd3402d3979ba7439627eb2fcbd0ecdc3c49a532b15837f7e02b44caf4f5752
+      bytes: 4482
+    - path: recordings/5_theo_4.wav
+      sha256: 441953a106229c375dfaf465d5be820d652025823b4740bb92246c05875fd542
+      bytes: 4578
+    - path: recordings/6_theo_0.wav
+      sha256: f65b8fe10ffcce1e1c407c1ae1adf33af6980f1f278e481ca13f8d4bfe58a30c
+      bytes: 7900
+    - path: recordings/6_theo_1.wav
+      sha256: 9eb5e686a073a9c9a5ddd1ad2d093d26298e8e1a55254d12cd89488b0450fb08
+      bytes: 7742
+    - path: recordings/6_theo_2.wav
+      sha256: 4e3401b79926e7ac78b2698c9c13ab23f946941b526fe8384d52ff6dc4d889ae
+      bytes: 8002
+    - path: recordings/6_theo_3.wav
+      sha256: 8cf2dd33eabb04f921ac2e09121f14341d4ad732b0db5a3f7941c555dfb94cb4
+      bytes: 7728
+    - path: recordings/6_theo_4.wav
+      sha256: 5369d8babdb221a26e7b5afbce1500812426815dda5b603813f16dd5a218675b
+      bytes: 7648
+    - path: recordings/7_theo_0.wav
+      sha256: 3074f5a5db8a3588bc8616c5888fa25bbac2c71728d14a6b413baf89d779ef70
+      bytes: 6900
+    - path: recordings/7_theo_1.wav
+      sha256: 2dfca73538ec2a6b9f3c90bc3be1d5dd5ce19fb074f0a28768c91857dce2a58e
+      bytes: 5828
+    - path: recordings/7_theo_2.wav
+      sha256: 4a9319c997a0d6a9f9d465c984432e1c858a0aa4f2a33bc14f68626ee12c1ad0
+      bytes: 4084
+    - path: recordings/7_theo_3.wav
+      sha256: 4a1954c0fa6b42b0f925458487860cbb19168059d10a594a12dac0ee9d9fcb4b
+      bytes: 4628
+    - path: recordings/7_theo_4.wav
+      sha256: 3baf71f47769277d7123bc78719fab659de4ab50676e46c77fff538bbb45d67e
+      bytes: 6892
+    - path: recordings/8_theo_0.wav
+      sha256: 24b8f7da347f041d1c5ddfa2e19984f12844b2a05ac6270de5856452092ec21f
+      bytes: 5840
+    - path: recordings/8_theo_1.wav
+      sha256: 08587f2d2bc5b9ca91af4067d6c2f267c5d2dea13ffd9f7b1eb601f7d3bb2bda
+      bytes: 5114
+    - path: recordings/8_theo_2.wav
+      sha256: 543f8803728ebd2377e87be8de87fc69ab3bf2115d9e0be85197e0b0ff6501c0
+      bytes: 5828
+    - path: recordings/8_theo_3.wav
+      sha256: d30c1d582d2bdde0e04ac89f1b68b6d45dc0803aa545a80450adc16d5cedca10
+      bytes: 4684
+    - path: recordings/8_theo_4.wav
+      sha256: 43134b97433b6275faa1ec9ec410d82984ba388118e585a0324556234d2e2405
+      bytes: 5680
+    - path: recordings/9_theo_0.wav
+      sha256: 2a30491b41495dd457c496dc80c7f4066b28a8eb8bc4c57c100f4a7fa2a2e8ef
+      bytes: 6202
+    - path: recordings/9_theo_1.wav
+      sha256: 75cae59cea42e5845395e8395c329fa4643e0f2b6c84d2d24aacccd84a2a8a93
+      bytes: 4696
+    - path: recordings/9_theo_2.wav
+      sha256: 9dfbecca927fc423ed7ac036d3e727d7f9456323e07c59c44151cf2b65089870
+      bytes: 4480
+    - path: recordings/9_theo_3.wav
+      sha256: cd895898bb87b29c34d75cbd637ec8fddeff1c09c5e3469f0853d5b7dfe61454
+      bytes: 7230
+    - path: recordings/9_theo_4.wav
+      sha256: 103d5720cf8102c58a7a76f12fe5db5eeff13fb269924fb462af564f22f504cf
+      bytes: 7114
+    - path: recordings/0_yweweler_0.wav
+      sha256: c2d53137898d6d32ae86e9703676bcaf595080a1f4e2e3efa5ede5a49f54b6a5
+      bytes: 6250
+    - path: recordings/0_yweweler_1.wav
+      sha256: af6a132fd59cad50dbd2c9a156edac88dac349c34f98827c136c5cd93129a9c5
+      bytes: 5332
+    - path: recordings/0_yweweler_2.wav
+      sha256: c067463424b177a2141328e17a1bc5fa965b50a72cc0322dbee4737cfaacd601
+      bytes: 5694
+    - path: recordings/0_yweweler_3.wav
+      sha256: 1a747a1e962eef92f0f227d78c38e304e8ce31070e16e291e363e519c2570ea6
+      bytes: 5776
+    - path: recordings/0_yweweler_4.wav
+      sha256: 62f96971e908c0fa0c2bc71740eea42a7eebd2fd559332911ccc8c8586b2451b
+      bytes: 5106
+    - path: recordings/1_yweweler_0.wav
+      sha256: 625069e417d9f504ab6f67a1be608f28ad35fa46ae0233adf438994d442e228b
+      bytes: 6754
+    - path: recordings/1_yweweler_1.wav
+      sha256: 8779a19c2a5d439627998f5fc57db0fd95be2500cba5c637a7ecaf88fa9aac16
+      bytes: 3614
+    - path: recordings/1_yweweler_2.wav
+      sha256: 546a5fac5003856d40d5f7d12700e52a64216bb23f2f8cd5a7607c5c3e271622
+      bytes: 5406
+    - path: recordings/1_yweweler_3.wav
+      sha256: 3317b91b26a11f3b65ca003bd949dd9d4bc1afb26d6d87a29d671817b9375866
+      bytes: 5006
+    - path: recordings/1_yweweler_4.wav
+      sha256: 62e0717efb4100339629268a502958de6d6488000f9f6528d916329ee54dad5c
+      bytes: 4858
+    - path: recordings/2_yweweler_0.wav
+      sha256: 0d14dff97f0783d0dbbed08cd2b407dad98dda9d25e4ebf84a6bcbdb18c62d60
+      bytes: 4442
+    - path: recordings/2_yweweler_1.wav
+      sha256: 3f62bc025335cb887215510406d3de03decba8014734654b044a1538457e1b8a
+      bytes: 4904
+    - path: recordings/2_yweweler_2.wav
+      sha256: 464fc9f6602fbbda43687c01ccb3edc8b46fc35e4d42841b88314fb7c07bcefe
+      bytes: 3856
+    - path: recordings/2_yweweler_3.wav
+      sha256: b3ef9bfdb6cd7d2156aff19726be56769ceebecab811eee378a3a6b83c903c74
+      bytes: 4526
+    - path: recordings/2_yweweler_4.wav
+      sha256: 9510b7d78c2ef1adbe8fcf39876233ba1d1f2bd4aa0e6f156953cf91de0ca157
+      bytes: 4700
+    - path: recordings/3_yweweler_0.wav
+      sha256: 66455971b9f17337df4e48d10ca2a9fb483605ab42588d7ece2c13b5d652e107
+      bytes: 6314
+    - path: recordings/3_yweweler_1.wav
+      sha256: 2a47fc283011862ed6df60b0ce155c713ebfa639fd857e7f6cfa7f5cfe683b3b
+      bytes: 5066
+    - path: recordings/3_yweweler_2.wav
+      sha256: 9e9304d51e2fc07e84293483f251336d6f7ee80064fcef4f87f1a537ec776662
+      bytes: 4054
+    - path: recordings/3_yweweler_3.wav
+      sha256: 1a96c144f6e01886953e2935e3559cef3c9a292bf1f318830b4502a8acfefba9
+      bytes: 6388
+    - path: recordings/3_yweweler_4.wav
+      sha256: b12b5e96c1c519aafc62c13948a0315d901b7cece4adea27e25d6675acac1c83
+      bytes: 6416
+    - path: recordings/4_yweweler_0.wav
+      sha256: bb9eaa256fdcf0e5e07b4c0367a021896655398d33fda6da91b44a97fcbb27c7
+      bytes: 6602
+    - path: recordings/4_yweweler_1.wav
+      sha256: 4bf751e079153ca5108dfc68c1ab74ff475a7cd3a11929370e8aff16c2d45109
+      bytes: 6320
+    - path: recordings/4_yweweler_2.wav
+      sha256: 4329bd281a8c75f2f7b3b48ab26d131de4b1137b39aa1a2a6a73436876ac2f34
+      bytes: 5400
+    - path: recordings/4_yweweler_3.wav
+      sha256: 101ca1151fc99bd6815e66dca485444c7a90832434dff82256a13232c173af1f
+      bytes: 4384
+    - path: recordings/4_yweweler_4.wav
+      sha256: fcd326b50b4d26eb09d87491f1f5cc6d4500f5eb2407b4681263b4cc72ed013c
+      bytes: 5638
+    - path: recordings/5_yweweler_0.wav
+      sha256: 8850c7830e4a4427c1c53c6f4dad91debc90ec08f9ac104621d66e684a7cae76
+      bytes: 4894
+    - path: recordings/5_yweweler_1.wav
+      sha256: 5a18e46d445447169aa456a8577ad627be6dd12cd3d3788da7b8dde094cc9d94
+      bytes: 6738
+    - path: recordings/5_yweweler_2.wav
+      sha256: 70999e729076a542e084b1f9b753ce88907e632029d373e122d11a17c48cc0ae
+      bytes: 6272
+    - path: recordings/5_yweweler_3.wav
+      sha256: 0508ac7bea35a189194bd4edd45f727be1667116535efeeecebecebb92c1a7cb
+      bytes: 6698
+    - path: recordings/5_yweweler_4.wav
+      sha256: 0ab511a804114a052e395aa92a15d4cd8b3e99e584a98403b095da54a98af91c
+      bytes: 8060
+    - path: recordings/6_yweweler_0.wav
+      sha256: 69f807440b59477df6645a02f0758e9e4f141846aa161a71a7fa4da024e94950
+      bytes: 5350
+    - path: recordings/6_yweweler_1.wav
+      sha256: f12a98590c716270613d497957c3d92a490b9f84a638787b2badf1af1a339a4c
+      bytes: 2546
+    - path: recordings/6_yweweler_2.wav
+      sha256: 6e069e174afa308f7fe594229ce58f1337bfe6ea3273b466ccdc5c2009cbb68e
+      bytes: 3704
+    - path: recordings/6_yweweler_3.wav
+      sha256: 99d5e361bdcb1f5ebdc93b440269784730edee7911110f868cc540ac7a1952ae
+      bytes: 2340
+    - path: recordings/6_yweweler_4.wav
+      sha256: 88c73680a7ed3746df3d87785599461d80ea7b13e472947ffd4cf34d531764c9
+      bytes: 2944
+    - path: recordings/7_yweweler_0.wav
+      sha256: 1ade92413c587002f728dd262068ace084088a62a216c0003d300c0d3913ade6
+      bytes: 7026
+    - path: recordings/7_yweweler_1.wav
+      sha256: b8cf02e1dc6b3b639fe8bbcf439f5d12d269d02222320af22fdd013e8bc527d6
+      bytes: 6306
+    - path: recordings/7_yweweler_2.wav
+      sha256: 6a47def01ccb2ed8cdaa8d54544601da3109db89e780a40551750668fdc513eb
+      bytes: 6790
+    - path: recordings/7_yweweler_3.wav
+      sha256: c37bf8a3ed13454e3c33d5b9ba61e27c6205dac903409d117f230a834d3a5770
+      bytes: 6838
+    - path: recordings/7_yweweler_4.wav
+      sha256: a623bd85d0022262c51d6b3551e7f910309955915ac2e9c4d5802eb8910e21e5
+      bytes: 5812
+    - path: recordings/8_yweweler_0.wav
+      sha256: ef1973bb1d3111d6b251aee38ea7afe93a987fff84b2861729648f90acfa47b3
+      bytes: 5108
+    - path: recordings/8_yweweler_1.wav
+      sha256: 80e9f4e922055cf7d34a1ae4b83d7607b1e5d7370c39d6d57199fb1fff3e4f2d
+      bytes: 5712
+    - path: recordings/8_yweweler_2.wav
+      sha256: 05e104c8ede1404986a1d6e0aca09b0dc40dab89ae4471aac9533a3d2e63a1b4
+      bytes: 4382
+    - path: recordings/8_yweweler_3.wav
+      sha256: 4bc9b2728282f3979ee827b95b720122a3e794912d6d10713d195122c74ec806
+      bytes: 5238
+    - path: recordings/8_yweweler_4.wav
+      sha256: 06a853d132358c41a3aba507ab569384d6f386a0fdb2a1e75cc6cec5cc8fec65
+      bytes: 5260
+    - path: recordings/9_yweweler_0.wav
+      sha256: 3a5c85a22f6646a4fd5f51b486bb647c86dbb17b13339fd8a22ed1b307749bca
+      bytes: 5798
+    - path: recordings/9_yweweler_1.wav
+      sha256: 2cd64a770143d60ebb669f2634df7d272572f5b7a48b844130c4a114d669902e
+      bytes: 6246
+    - path: recordings/9_yweweler_2.wav
+      sha256: 01f7482c3a8ee6451979bcb4fadcd45a0fd0ff95b12bdffef5a004185180baab
+      bytes: 6408
+    - path: recordings/9_yweweler_3.wav
+      sha256: 63906367a58e50ecdf739d43c9b31176fb00d40bad6059348a389df648a3e860
+      bytes: 8894
+    - path: recordings/9_yweweler_4.wav
+      sha256: 7cfb39af858b6c7cfe61109bf55d82ecb3948fc3c6220e782c152cf1d851987f
+      bytes: 6764
+  valentini:
+    repo: facebookresearch/denoiser
+    commit: 8afd7c166699bb3c8b2d95b6dd706f71e1075df0
+    licence: CC-BY-4.0
+    files:
+    - path: dataset/debug/clean/p287_001.wav
+      sha256: 41ed2c8c8ca2e31edda5aa987530c7087ec50ee42f2c8c3318600ef61f1a0838
+      bytes: 62778
+    - path: dataset/debug/clean/p287_002.wav
+      sha256: 0f7110ab41ee613df8ed5dcd44a031754c1d0d04ce1e5d92bd9ef68b712b83ac
+      bytes: 104216
+    - path: dataset/debug/clean/p287_003.wav
+      sha256: cc0e09b21dd1160078fb2f53f75b1862f869a5ecb6dca1fb2e861a6060c7b352
+      bytes: 231474
+    - path: dataset/debug/clean/p287_004.wav
+      sha256: 0edb5668afed189894d7e6e47d0d615b5bbcddf118d551fc73aa61bc692d142a
+      bytes: 155606
+    - path: dataset/debug/clean/p287_005.wav
+      sha256: db831ffcc4759dccc0fd4d3d5096a9be5d7da553e16b63341f577f42a0bea83a
+      bytes: 207836
+    - path: dataset/debug/clean/p287_006.wav
+      sha256: 82320e81d8238865e216fe5c91ee8dabf413062bdccb5afdcfcbd0802be5a19d
+      bytes: 162586
+    - path: dataset/debug/noisy/p287_001.wav
+      sha256: 76d5125141e3a7a17d5982a10e0e748128049af60628236fe8cb38f0a67de729
+      bytes: 62778
+    - path: dataset/debug/noisy/p287_002.wav
+      sha256: 4b4da148e54b7dfe9d739e388d56122f141763204bc3c4c2917087a3a617baae
+      bytes: 104216
+    - path: dataset/debug/noisy/p287_003.wav
+      sha256: 4e72a4878aecfd6e8cc7a7996034fa323a2737d738b0cd5940063f596ad6b8c0
+      bytes: 231474
+    - path: dataset/debug/noisy/p287_004.wav
+      sha256: afecf6312419f065e93dbc65a910e4116eb3237eec4da8d355f4634fcc9fef3e
+      bytes: 155606
+    - path: dataset/debug/noisy/p287_005.wav
+      sha256: 3adf814d4516f6c6fc24867b301a27633c0ae662bef07ffb9e537af36c39fcf1
+      bytes: 207836
+    - path: dataset/debug/noisy/p287_006.wav
+      sha256: 1eab20927973cb23fa99efa9577bd4064cdbf02da45160271a7aa2b9149c2883
+      bytes: 162586
+  esc50:
+    repo: karolpiczak/ESC-50
+    commit: 33c8ce9eb2cf0b1c2f8bcf322eb349b6be34dbb6
+    licence: CC-BY-NC-3.0
+    files:
+    - path: meta/esc50.csv
+      sha256: ca660da60191a97de289983a05821c9382d852a38a2ba8428980816b68cf6246
+      bytes: 93742
+    - path: LICENSE
+      sha256: f6aec3a3283a2efdcbb1feff334adad7ab17c097bdec0cbb4eebdb9e16886074
+      bytes: 284523
+    - path: audio/1-100032-A-0.wav
+      sha256: f40a849a2375c8c63312a73dd2dd6c74007301fcc21b4be2ece29a642831e3d8
+      bytes: 441044
+    - path: audio/1-100038-A-14.wav
+      sha256: 2faa39d8e59e8f292dfbdbe72bd8a00294f9535714b3c19b39904c2c17e14675
+      bytes: 441044
+    - path: audio/1-100210-A-36.wav
+      sha256: f97e97b0fe0afce323d858503b6fa3ffd6c8cb1162c43cf3b24461300fb9abf6
+      bytes: 441044
+    - path: audio/1-100210-B-36.wav
+      sha256: acfdccbb58647655b9b63ab5574c178783b969f56e05933f115ae4dd1878a524
+      bytes: 441044
+    - path: audio/1-101296-A-19.wav
+      sha256: b0323e17979ff3d840ce3f9b7f13bf800a69a48f62632162b964efc9bfe4ef10
+      bytes: 441044
+    - path: audio/1-101296-B-19.wav
+      sha256: bdad401df959569dc44ad26fff3ff097de5ac98cde763eb37a557a4ab441440f
+      bytes: 441044
+    - path: audio/1-101336-A-30.wav
+      sha256: e738266e395e378102f74e0920b05ff5937543788420d5b2a6b8d3df8bdb3910
+      bytes: 441044
+    - path: audio/1-101404-A-34.wav
+      sha256: a5e9ca3a735d31404f93194af687d2eca85e4a940ccda0675755b410342e8474
+      bytes: 441044
+    - path: audio/1-103298-A-9.wav
+      sha256: e75bd5e27e7d68b15bf17bc348d8cf4ab338e9089dc1a1564f2c434ce22db27c
+      bytes: 441044
+    - path: audio/1-103995-A-30.wav
+      sha256: 1c1d3e65b7a58658766180d2faeeb9bdd1fe7405119bf100d9cd2f671a6e2b11
+      bytes: 441044
+    - path: audio/1-104089-A-22.wav
+      sha256: 2b6ec14aafc6ed98c833c5c7e56780d283f3ceaea0d4c3c142b2f49fcc2fd215
+      bytes: 441044
+    - path: audio/1-104089-B-22.wav
+      sha256: 61adeef196a98fc7b2c22104cd160bded3ce89b7e9867814b22e40a08e993291
+      bytes: 441044
+    - path: audio/1-110389-A-0.wav
+      sha256: 4a18f3f834eb184b9f02595ac74c7de37ef8048a3da92f58f27018fec580b36a
+      bytes: 441044
+    - path: audio/1-115545-A-48.wav
+      sha256: 3ac50abf1e7c9b3086585d7d786c2f6b7b4b884108ceb4c4f643f8e3fa4caaab
+      bytes: 441044
+    - path: audio/1-115545-B-48.wav
+      sha256: 5f0f6888b96325412665b9265ffecfc6337f07d9e71bf98205304f9e28fd34a2
+      bytes: 441044
+    - path: audio/1-116765-A-41.wav
+      sha256: 1199ff6d4f5040bf20f06a441276bcd6448b1e1de4f098ce3e47d856ee97ce33
+      bytes: 441044
+    - path: audio/1-11687-A-47.wav
+      sha256: e622a52d904f2ec8f39c78e6f2487b84a14a927d1f9852e67a4c3c8e5dcf9419
+      bytes: 441044
+    - path: audio/1-118206-A-31.wav
+      sha256: 4461fa26f119749f99a4762be421d0d64e774960be7eef9780812d48580e48fb
+      bytes: 441044
+    - path: audio/1-118559-A-17.wav
+      sha256: 556d465ef6d44075c1c6f881202f001e088c20415e600be9a83714aa5d86ea07
+      bytes: 441044
+    - path: audio/1-119125-A-45.wav
+      sha256: d78fe04767546d49b741d9d7df6173152e06dcb4224d70f350c3cb73768f265d
+      bytes: 441044
+    - path: audio/1-121951-A-8.wav
+      sha256: 03ed7b103e873f07713de2d9a17fd298eb19c204eaf54a9bfa955423c95a1a14
+      bytes: 441044
+    - path: audio/1-12653-A-15.wav
+      sha256: 9e8ec2f92df6dc2f9673f4c701ac327dc5455e6cfa8e108e0f5443aeaa535a65
+      bytes: 441044
+    - path: audio/1-12654-A-15.wav
+      sha256: d2dd3a33d3187b9b643a345e768c4286a12a36fc23a3a2c2aaa525d1ce6e8658
+      bytes: 441044
+    - path: audio/1-13571-A-46.wav
+      sha256: 92baf64d0e246d513e7a94e3778459558dcc222ec7cd30b12c58092a3d903142
+      bytes: 441044
+    - path: audio/1-13572-A-46.wav
+      sha256: fdbfa0391e7433b24a268a0f716afd057ca7f75c79fe0245f5072869baf19018
+      bytes: 441044
+    - path: audio/1-13613-A-37.wav
+      sha256: 2e28b25e14611723cdcc0becfa36468a8d0329a0c141e4f1d894bd6bb5773f34
+      bytes: 441044
+    - path: audio/1-137-A-32.wav
+      sha256: d68e4716f74f073be8f78f5fe8e45daf7c09b0ec0575b21f57989d803536abb3
+      bytes: 441044
+    - path: audio/1-137296-A-16.wav
+      sha256: 73e2dd5e66dda29f76a54b53c3c8e33441d105fc35c1d231bfbd8f7a18442969
+      bytes: 441044
+    - path: audio/1-14262-A-37.wav
+      sha256: 220c3d127df2f0d8979a2edde5318aaaa3aed19d8c5d3b4a40d529f979bba453
+      bytes: 441044
+    - path: audio/1-155858-A-25.wav
+      sha256: cb90f52c7fe7d0d994941b2e6de555cb36e898fb49b52cc31f08401ac464e7c6
+      bytes: 441044
+    - path: audio/1-155858-B-25.wav
+      sha256: 234358f787b98c5903fcf56f7fc4c97fda2b4f0ad5311bd35f9c6c6c9a4b2277
+      bytes: 441044
+    - path: audio/1-15689-A-4.wav
+      sha256: bdb124b7004b02ab8299f7d7389d15b5eb53e12002cff379d49dcdec4d8b1372
+      bytes: 441044
+    - path: audio/1-15689-B-4.wav
+      sha256: db7a1d190931f1101d533661852e3cdebaa2b89c4b743385b201391be7de003d
+      bytes: 441044
+    - path: audio/1-16568-A-3.wav
+      sha256: 5fe40ae706ec97d016fd1d74407cde66bbfa033ffa4ebc26546c0dac341ffc8f
+      bytes: 441044
+    - path: audio/1-17092-A-27.wav
+      sha256: e33131d7061ffa8e8fa234083dfd5c95b7da7d233f4d5ffaf2c34758f936964e
+      bytes: 441044
+    - path: audio/1-17092-B-27.wav
+      sha256: cfdcb4cb00c9af6e3f5613993d0c2c2babe1c0ebe442f8aa97017c092fad17f1
+      bytes: 441044
+    - path: audio/1-17124-A-43.wav
+      sha256: 9d5e01e07a386ee36c2e73f40817d132a54d91c936eccc01414280abca5a4209
+      bytes: 441044
+    - path: audio/1-17150-A-12.wav
+      sha256: 3d278bc2034dfb83881491a8eec97de6f1239f0a5b8a7c02be46b5aab0a51609
+      bytes: 441044
+    - path: audio/1-172649-A-40.wav
+      sha256: 23ad50d792907e1caa894e6e31bb623938ae0417606b830b433da11ca2ecb2f4
+      bytes: 441044
+    - path: audio/1-172649-B-40.wav
+      sha256: ca32a4cd05246a83b4ede5ecd48d05de0fd026169002f786f28de7eaa3693630
+      bytes: 441044
+    - path: audio/1-17295-A-29.wav
+      sha256: e601deb1b2033c14d36562eb79bb2dbda60fd8f337d8c5d0d810ea65f2ef7c2f
+      bytes: 441044
+    - path: audio/1-17367-A-10.wav
+      sha256: d732acd2e0c7c40405968010f49f250740c86998fc416eff2ed5330fc8c89dea
+      bytes: 441044
+    - path: audio/1-17565-A-12.wav
+      sha256: bf16e25363a2d5824c07e96dc05defcb87e1d9dcd47bfd241a9d25e01b411209
+      bytes: 441044
+    - path: audio/1-17585-A-7.wav
+      sha256: beb564e150ce6aab27740bb44445cc710695979362b43edea09c90552723b9ce
+      bytes: 441044
+    - path: audio/1-1791-A-26.wav
+      sha256: dc6cd665f3d20eed6089d9593a2b776104d8671c57ce6c48e6be030c75a53643
+      bytes: 441044
+    - path: audio/1-18074-A-6.wav
+      sha256: 26c99da1d62a3e93371e13ff1b5e29003e40e2bfdc9334f46672c1de232be243
+      bytes: 441044
+    - path: audio/1-18074-B-6.wav
+      sha256: 68c54aaccb36a91281ca689aaa8d4d888e7a53c571f4c00995a9f69b5ba1d333
+      bytes: 441044
+    - path: audio/1-18527-A-44.wav
+      sha256: 83eb3e6065246fd87d1acbbe414aa5bfb7c2081a57c188713cdc017819ffc38f
+      bytes: 441044
+    - path: audio/1-18527-B-44.wav
+      sha256: 40f0ab8a2fa68cbdf814f10fc8b2c26916b3dc54c1b0e719d4697ba58c0bdb81
+      bytes: 441044
+    - path: audio/1-18631-A-23.wav
+      sha256: cdbd39617f2955d86ec18a4032ecd9090369c23f3d8c6d650f62e9e1ee19ea6a
+      bytes: 441044
+    - path: audio/1-18655-A-31.wav
+      sha256: fe84ff9cb5831e21fb8cbcaa56f6e3a477daad8ffe93999e490d442bc0150e45
+      bytes: 441044
+    - path: audio/1-187207-A-20.wav
+      sha256: ddf5bf45f73bc73d1838bf0cb6af530584f324aef513112ee15c210e83ecbd6b
+      bytes: 441044
+    - path: audio/1-18810-A-49.wav
+      sha256: f3597d925f71cc6a85f03cd08edeed6657b5433d70c229484d8f6cc0236e9df8
+      bytes: 441044
+    - path: audio/1-19026-A-43.wav
+      sha256: 67bb2fe5cf138930eb6a6a84bedeb7284093076738cd47ef73cc8b3b8393ff40
+      bytes: 441044
+    - path: audio/1-19111-A-24.wav
+      sha256: ab2afe6d0ee0de5edc1f0107448077919c6ac94dcf59243497e6fcb333685438
+      bytes: 441044
+    - path: audio/1-19118-A-24.wav
+      sha256: 4fb6197f72791e50c465de8f1f715a7a3f93f7afab62dfa130f28d500303d8d9
+      bytes: 441044
+    - path: audio/1-19501-A-7.wav
+      sha256: d10dfa62d347aa2b72dc8c6e1c1d76125f59c37d08596f2b62e91e82502acb78
+      bytes: 441044
+    - path: audio/1-196660-A-8.wav
+      sha256: 8fd98d50c5ff6ffeea6785d306dca53e01ea2e914488115bf32da4fb11d4a53b
+      bytes: 441044
+    - path: audio/1-19898-A-41.wav
+      sha256: 02afa3102978b5fb16f9c6237d90231abb74318873309600f01caf4776746944
+      bytes: 441044
+    - path: audio/1-20133-A-39.wav
+      sha256: db6946133c37fbd4513fe932dbb71e0b077bf7d240beaed339eb6c88e48c903b
+      bytes: 441044
+    - path: audio/1-202111-A-3.wav
+      sha256: d033c6572aaaa4ac451327ba5fbf3cdcada06c681f05d8188043b39f1346be98
+      bytes: 441044
+    - path: audio/1-20545-A-28.wav
+      sha256: 417d56b2057b5e2b4e73eeffbef13a333e788fce95e9622ddad47e1867886c27
+      bytes: 441044
+    - path: audio/1-20736-A-18.wav
+      sha256: 1c32cacfad33e87fdfc37b9ddbc047161827b86a72d6d0e9fcbef61bff804572
+      bytes: 441044
+    - path: audio/1-208757-A-2.wav
+      sha256: 866245ac085d99d72406fb80dd09535b7b62c7cafc26972a73dd4bdb8db79ebc
+      bytes: 441044
+    - path: audio/1-208757-B-2.wav
+      sha256: 2d041c169d58f25bc769a057bc201bdcf8c289ef16b3b93388c248407f6a5d1a
+      bytes: 441044
+    - path: audio/1-211527-A-20.wav
+      sha256: 3cbcd59a0db21f0ed8c252c74ea1bc193117d2c13ed99821885c46c564010b3e
+      bytes: 441044
+    - path: audio/1-21189-A-10.wav
+      sha256: 5f15ab2d8f6ef9932909b1b75c8ac254cbea46c93b4b2f0f3542abdf09b9abc0
+      bytes: 441044
+    - path: audio/1-21896-A-35.wav
+      sha256: 1b4210c50a01cabab07065a112463fad4f82de60385ef9aaf6316afe7d4b976c
+      bytes: 441044
+    - path: audio/1-21934-A-38.wav
+      sha256: 8d26e40e0e382b0d2d7f6dafcb132cfe703ee3f7f32780e878fdb5a1aaffcc28
+      bytes: 441044
+    - path: audio/1-21935-A-38.wav
+      sha256: 4d7ad80cf2733e2d9260061afbbdb0bd3d64cfcbc3df5c8a0258639716a7329d
+      bytes: 441044
+    - path: audio/1-23706-A-49.wav
+      sha256: 578e665791e50b49fd105745ee79e3974b5fe323c7712aad4cd8bce67e21bf76
+      bytes: 441044
+    - path: audio/1-23996-A-35.wav
+      sha256: cbfd9239fcd7e10a936e6836bbcc8c5f391f89b6a1e12dfe159df717e2898657
+      bytes: 441044
+    - path: audio/1-24796-A-47.wav
+      sha256: 68937dd7e09efa68aa4afe588e933fd77fd60558c337c241f072e2cd99b5fe03
+      bytes: 441044
+    - path: audio/1-26143-A-21.wav
+      sha256: 8e32762c8c48e5414dbecc2979833748cb838ba476bac75d2a512262ef842eb0
+      bytes: 441044
+    - path: audio/1-26806-A-1.wav
+      sha256: 9021db2a8218814e1f90957a179589c7f3167fd1f235f58019890064e23ee5be
+      bytes: 441044
+    - path: audio/1-27403-A-28.wav
+      sha256: e62c4f2f7500f59d40754fcdb7c953f5f2237a597a9f5be0de0343e859f4856b
+      bytes: 441044
+    - path: audio/1-27724-A-1.wav
+      sha256: 3bb615f722d94caa848f64bf4da365fde52dc93a732b0d017d38fe9e1474649f
+      bytes: 441044
+    - path: audio/1-28005-A-18.wav
+      sha256: 691ee5a062f2ef54b1ef77fd235a6800b847a7b256b7f08b18fc240e99916d0d
+      bytes: 441044
+    - path: audio/1-28135-A-11.wav
+      sha256: 4d04b84d490c4d9ab28a52c4c96d1b14c2f8b132fc4be38166197ae814920742
+      bytes: 441044
+    - path: audio/1-28135-B-11.wav
+      sha256: 806548ec876df9f91ced5503f76794a42dca6b8790324f87464de5ed780189cb
+      bytes: 441044
+    - path: audio/1-29532-A-16.wav
+      sha256: f7161457776ff69adbb903e870a3ecf532228a033de6896f25af2f4ce77c5f68
+      bytes: 441044
+    - path: audio/1-29680-A-21.wav
+      sha256: 4c1cdb30db5fd43eb62c17c051efaf7dde38938c0449e6bfcfb998dba92cc443
+      bytes: 441044
+    - path: audio/1-30039-A-26.wav
+      sha256: dcb1b2c6686b090bf63775eb79a64d96c243987e6ae66cbb96a4a66610b37809
+      bytes: 441044
+    - path: audio/1-30709-A-23.wav
+      sha256: 8b546dc3be7448c10a7fe8c5b0b48b556e860827e28d559c3a8ec19961e3cce3
+      bytes: 441044
+    - path: audio/1-31482-A-42.wav
+      sha256: e4c640a001c2abe808389c90b90ba7084fb1922d58235e3ec95c18c4afb4ef5c
+      bytes: 441044
+    - path: audio/1-31482-B-42.wav
+      sha256: 2446a3eb69758de0ddde8962ab8966790a19960c71ab649cff52aae3d5d93a54
+      bytes: 441044
+    - path: audio/1-32579-A-29.wav
+      sha256: 09aadaee91c6b1d80037cc2772e3504346af133331d18357c68b9d0ae2d96f76
+      bytes: 441044
+    - path: audio/1-34094-A-5.wav
+      sha256: ceddf296bcdda3996d35d3f4c292c338050bcb4c5a05a96ca22a69d33e33e4de
+      bytes: 441044
+    - path: audio/1-34094-B-5.wav
+      sha256: 43814c96e62a5c2fbf14b84828cc929e381e53c0add7c1e8211d212e1da97734
+      bytes: 441044
+    - path: audio/1-34495-A-14.wav
+      sha256: 3641b914303dca50d01c2ab5aceaaf918ce977028f4ee752c22beb64d09eeec3
+      bytes: 441044
+    - path: audio/1-39835-A-9.wav
+      sha256: 403db280f38092be1ff41cf1e412750f01b5fe0df042125373b6f1cd340cc767
+      bytes: 441044
+    - path: audio/1-41615-A-34.wav
+      sha256: 2d31544f7e5ba3eb21f20e115d7bf8dc1ad23508806625ed628436c8a77852ca
+      bytes: 441044
+    - path: audio/1-50625-A-17.wav
+      sha256: 267bc4a3836dfc673e404bd12d8655a1e00f01e07078cb9d404d2b82cbd3aa07
+      bytes: 441044
+    - path: audio/1-51805-A-33.wav
+      sha256: 4cb5f7267a35b54ee111306445dd3cb1ee73dc4993c3d31ddb81ca9728fdc873
+      bytes: 441044
+    - path: audio/1-51805-B-33.wav
+      sha256: b38f246af1e037ac5abb6e3f68164bd95a2d98c8c93383b01fe811a8085d0be0
+      bytes: 441044
+    - path: audio/1-53501-A-32.wav
+      sha256: 7edf3a6b856987de4fc2da27906d70abb00c40fba3352275eec840917daf2e50
+      bytes: 441044
+    - path: audio/1-54065-A-45.wav
+      sha256: db5b6aaa683dcc52b4868e3ad6799a1d2093228326283605aae671c0942fe9b1
+      bytes: 441044
+    - path: audio/1-57316-A-13.wav
+      sha256: 2df85254c1ba9c2bcb8517c8d2b36caeaf60ab6197e2e3b7285680720ecd638c
+      bytes: 441044
+    - path: audio/1-57318-A-13.wav
+      sha256: 0e02985a93837d58cfaaf3da12e49bb0438bcd007afc22b46a8bb05002bcb849
+      bytes: 441044
+    - path: audio/1-84536-A-39.wav
+      sha256: 79efba4c0c54acadc88783e83b428fc9c430db94515b25339a6b5598e2ade0c0
+      bytes: 441044
+  whisper:
+    repo: openai/whisper
+    commit: 86098128c0b4f24f0e2aa2994de830614b474227
+    licence: LicenseRef-PublicDomain
+    files:
+    - path: tests/jfk.flac
+      sha256: 63a4b1e4c1dc655ac70961ffbf518acd249df237e5a0152faae9a4a836949715
+      bytes: 1152693
+models:
+  silero_vad:
+    url: https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/silero_vad.onnx
+    sha256: 9e2449e1087496d8d4caba907f23e0bd3f78d91fa552479bb9c23ac09cbb1fd6
+    bytes: 643854
+  whisper_tiny:
+    url: https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-whisper-tiny.tar.bz2
+    sha256: c46116994e539aa165266d96b325252728429c12535eb9d8b6a2b10f129e66b1
+    bytes: 116204861
+  ced_mini:
+    url: https://github.com/k2-fsa/sherpa-onnx/releases/download/audio-tagging-models/sherpa-onnx-ced-mini-audio-tagging-2024-04-19.tar.bz2
+    sha256: bec8bfa0af2c20ec3a9e7c6dd6c92d0fb6e96d6b25370ebe7a48e7283a60a02c
+    bytes: 47658399
+  wespeaker:
+    url: https://github.com/k2-fsa/sherpa-onnx/releases/download/speaker-recongition-models/wespeaker_en_voxceleb_resnet34.onnx
+    sha256: 5ef208a9da1453335308a6b6f4e6dfbd7e183a38b604de0a57664f45d257fe94
+    bytes: 26534365
+  piper_lessac:
+    url: https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/vits-piper-en_US-lessac-medium.tar.bz2
+    sha256: 9e3febfacf0abf4270172d2958bcec246032b7e88efc2720840cc80c93de334e
+    bytes: 67230653

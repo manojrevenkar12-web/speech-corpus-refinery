@@ -1,0 +1,184 @@
+{
+ "files": 110,
+ "decisions_correct": 109,
+ "reasons_correct": 101,
+ "by_expected": {
+  "keep": {
+   "n": 4,
+   "decision_ok": 3,
+   "reason_ok": 3
+  },
+  "reject:bandwidth": {
+   "n": 10,
+   "decision_ok": 10,
+   "reason_ok": 6
+  },
+  "reject:blocked_domain": {
+   "n": 3,
+   "decision_ok": 3,
+   "reason_ok": 3
+  },
+  "reject:clipping": {
+   "n": 1,
+   "decision_ok": 1,
+   "reason_ok": 1
+  },
+  "reject:corrupt": {
+   "n": 1,
+   "decision_ok": 1,
+   "reason_ok": 1
+  },
+  "reject:duplicate": {
+   "n": 2,
+   "decision_ok": 2,
+   "reason_ok": 2
+  },
+  "reject:fetch": {
+   "n": 1,
+   "decision_ok": 1,
+   "reason_ok": 1
+  },
+  "reject:licence": {
+   "n": 8,
+   "decision_ok": 8,
+   "reason_ok": 8
+  },
+  "reject:music": {
+   "n": 1,
+   "decision_ok": 1,
+   "reason_ok": 1
+  },
+  "reject:noise": {
+   "n": 1,
+   "decision_ok": 1,
+   "reason_ok": 1
+  },
+  "reject:not_speech": {
+   "n": 47,
+   "decision_ok": 47,
+   "reason_ok": 44
+  },
+  "reject:protected": {
+   "n": 1,
+   "decision_ok": 1,
+   "reason_ok": 1
+  },
+  "reject:robots": {
+   "n": 2,
+   "decision_ok": 2,
+   "reason_ok": 2
+  },
+  "reject:synthetic": {
+   "n": 24,
+   "decision_ok": 24,
+   "reason_ok": 23
+  },
+  "reject:tdm": {
+   "n": 4,
+   "decision_ok": 4,
+   "reason_ok": 4
+  }
+ },
+ "kept": {
+  "expected": 4,
+  "got": 3
+ },
+ "compliance": {
+  "requests": 337,
+  "requests_to_blocked_domains": 0,
+  "requests_disallowed_by_robots": 0,
+  "requests_to_tdm_reserved_paths_in_tdmrep_json": 0,
+  "reserved_files_stored": 0,
+  "user_agents": [
+   "ScrBot/0.1 (+https://github.com/manojrevenkar12-web/speech-corpus-refinery/blob/main/docs/CRAWLER.md)"
+  ]
+ },
+ "synthetic": {
+  "declared": 12,
+  "declared_rejected": 12,
+  "undeclared": 12,
+  "undeclared_held_for_review": 11,
+  "undeclared_kept": 0,
+  "real_speech_held": 1
+ },
+ "transcripts": {
+  "published": {
+   "clips": 16,
+   "mean_cer": 0.0159,
+   "max_cer": 0.0991
+  },
+  "asr": {
+   "clips": 3,
+   "mean_cer": 0.1371,
+   "max_cer": 0.2555
+  },
+  "coverage_of_true_speech": 0.973
+ },
+ "wrong": [
+  {
+   "url": "http://archive.example/download/p287-read-speech/p287_clean.flac",
+   "expected": "keep",
+   "got": "held:synthetic_suspected",
+   "decision_ok": false,
+   "reason_ok": false
+  }
+ ],
+ "reason_mismatches": [
+  {
+   "url": "http://archive.example/download/voice-messages-lucas/lucas.wav",
+   "expected": "reject:bandwidth",
+   "got": "rejected:not_speech",
+   "decision_ok": true,
+   "reason_ok": false
+  },
+  {
+   "url": "http://archive.example/download/field-1-100032-A-0-dog/1-100032-A-0.flac",
+   "expected": "reject:not_speech",
+   "got": "rejected:duplicate",
+   "decision_ok": true,
+   "reason_ok": false
+  },
+  {
+   "url": "http://archive.example/download/field-1-101296-A-19-thunderstorm/1-101296-A-19.flac",
+   "expected": "reject:not_speech",
+   "got": "rejected:duplicate",
+   "decision_ok": true,
+   "reason_ok": false
+  },
+  {
+   "url": "http://archive.example/download/field-1-30039-A-26-laughing/1-30039-A-26.flac",
+   "expected": "reject:not_speech",
+   "got": "rejected:noise",
+   "decision_ok": true,
+   "reason_ok": false
+  },
+  {
+   "url": "http://podcasts.example/media/aind-007.mp3",
+   "expected": "reject:synthetic",
+   "got": "rejected:noise",
+   "decision_ok": true,
+   "reason_ok": false
+  },
+  {
+   "url": "http://reserved.example/open/take4.flac",
+   "expected": "reject:bandwidth",
+   "got": "rejected:duplicate",
+   "decision_ok": true,
+   "reason_ok": false
+  },
+  {
+   "url": "http://reserved.example/open/take5.flac",
+   "expected": "reject:bandwidth",
+   "got": "rejected:not_speech",
+   "decision_ok": true,
+   "reason_ok": false
+  },
+  {
+   "url": "http://private.example/recordings/public/r0.flac",
+   "expected": "reject:bandwidth",
+   "got": "rejected:not_speech",
+   "decision_ok": true,
+   "reason_ok": false
+  }
+ ]
+}

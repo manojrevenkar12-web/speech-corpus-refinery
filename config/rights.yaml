@@ -1,0 +1,24 @@
+# What may be used to train a commercial TTS model, and what the crawler must respect.
+# Licences are SPDX identifiers (LicenseRef-* for those SPDX does not list).
+allowed_licences:
+  LicenseRef-PublicDomain: {attribution: false}
+  CC0-1.0: {attribution: false}
+  CC-PDM-1.0: {attribution: false}
+  CC-BY-3.0: {attribution: true}
+  CC-BY-4.0: {attribution: true}
+  CC-BY-SA-3.0: {attribution: true, share_alike: true}
+  CC-BY-SA-4.0: {attribution: true, share_alike: true}
+# anything else (NC, ND, all rights reserved, unknown) is not used
+
+allow_synthetic: false        # speech produced by a TTS model is never used to train one
+
+# Domains excluded whatever they claim (GPAI Code of Practice: piracy-focused domains are not crawled).
+blocked_domains:
+  - pirate.example
+
+# Machine-readable reservations honoured before any download.
+respect:
+  robots_txt: true            # RFC 9309
+  tdmrep: true                # W3C TDMRep: /.well-known/tdmrep.json, tdm-reservation header, <meta>
+
+contact: "dataset-rights@speech-corpus-refinery.example"

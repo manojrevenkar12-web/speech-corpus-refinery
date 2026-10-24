@@ -1,0 +1,160 @@
+[
+ {
+  "source": "probe:audiobooks",
+  "sampled_files": 3,
+  "kept": 2,
+  "held": 0,
+  "rejected_by_reason": {
+   "protected": 1
+  },
+  "licences": {
+   "LicenseRef-PublicDomain": 3
+  },
+  "audio_urls": {
+   "done": 3
+  },
+  "not_fetched": {},
+  "yield": 0.599,
+  "usd_per_kept_hour": 0.0183,
+  "verdict": "ingest: 2 of 3 sampled files usable, about $0.02 per usable hour"
+ },
+ {
+  "source": "probe:archive",
+  "sampled_files": 4,
+  "kept": 0,
+  "held": 1,
+  "rejected_by_reason": {
+   "bandwidth": 1,
+   "synthetic_suspected": 1,
+   "duplicate": 2
+  },
+  "licences": {
+   "CC-PDM-1.0": 2,
+   "CC-BY-4.0": 2
+  },
+  "audio_urls": {
+   "done": 4
+  },
+  "not_fetched": {},
+  "yield": 0.0,
+  "usd_per_kept_hour": null,
+  "verdict": "review first: most of the sample is held as possibly synthetic"
+ },
+ {
+  "source": "probe:podcasts",
+  "sampled_files": 4,
+  "kept": 1,
+  "held": 0,
+  "rejected_by_reason": {
+   "music": 1,
+   "duplicate": 1,
+   "clipping": 1
+  },
+  "licences": {
+   "CC-BY-4.0": 4
+  },
+  "audio_urls": {
+   "done": 4
+  },
+  "not_fetched": {},
+  "yield": 0.222,
+  "usd_per_kept_hour": 0.0302,
+  "verdict": "ingest: 1 of 4 sampled files usable, about $0.03 per usable hour"
+ },
+ {
+  "source": "probe:voices",
+  "sampled_files": 4,
+  "kept": 0,
+  "held": 0,
+  "rejected_by_reason": {
+   "synthetic": 4
+  },
+  "licences": {
+   "CC0-1.0": 4
+  },
+  "audio_urls": {
+   "done": 4
+  },
+  "not_fetched": {},
+  "yield": 0.0,
+  "usd_per_kept_hour": null,
+  "verdict": "skip: nothing usable in the sample (mostly synthetic)"
+ },
+ {
+  "source": "probe:reserved",
+  "sampled_files": 2,
+  "kept": 0,
+  "held": 0,
+  "rejected_by_reason": {
+   "not_speech": 2
+  },
+  "licences": {
+   "CC-BY-4.0": 2
+  },
+  "audio_urls": {
+   "done": 2
+  },
+  "not_fetched": {
+   "tdm": 4
+  },
+  "yield": 0.0,
+  "usd_per_kept_hour": null,
+  "verdict": "skip: nothing usable in the sample (mostly not_speech)"
+ },
+ {
+  "source": "probe:private",
+  "sampled_files": 1,
+  "kept": 0,
+  "held": 0,
+  "rejected_by_reason": {
+   "not_speech": 1
+  },
+  "licences": {
+   "CC-BY-SA-4.0": 1
+  },
+  "audio_urls": {
+   "done": 1,
+   "skipped:robots": 2
+  },
+  "not_fetched": {
+   "robots": 2
+  },
+  "yield": 0.0,
+  "usd_per_kept_hour": null,
+  "verdict": "skip: nothing usable in the sample (mostly not_speech)"
+ },
+ {
+  "source": "probe:pirate",
+  "sampled_files": 0,
+  "kept": 0,
+  "held": 0,
+  "rejected_by_reason": {},
+  "licences": {},
+  "audio_urls": {},
+  "not_fetched": {
+   "blocked_domain": 1
+  },
+  "yield": 0.0,
+  "usd_per_kept_hour": null,
+  "verdict": "skip: the site opts out (blocked_domain)"
+ },
+ {
+  "source": "probe:flaky",
+  "sampled_files": 4,
+  "kept": 0,
+  "held": 0,
+  "rejected_by_reason": {
+   "not_speech": 4
+  },
+  "licences": {
+   "CC0-1.0": 4
+  },
+  "audio_urls": {
+   "done": 4
+  },
+  "not_fetched": {},
+  "yield": 0.0,
+  "usd_per_kept_hour": null,
+  "verdict": "skip: nothing usable in the sample (mostly not_speech)"
+ }
+]
