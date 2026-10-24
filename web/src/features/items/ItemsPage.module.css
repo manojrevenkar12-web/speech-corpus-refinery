@@ -1,0 +1,133 @@
+.page {
+  display: grid;
+  grid-template-columns: var(--rail) minmax(0, 1fr);
+  gap: var(--space-6);
+  padding: var(--space-6) var(--space-5) var(--space-8);
+}
+
+.listCol {
+  display: grid;
+  align-content: start;
+  gap: var(--space-3);
+}
+
+.h1 {
+  font-size: var(--text-xl);
+  font-stretch: var(--stretch-wide);
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-3);
+  align-items: end;
+}
+
+.filters label {
+  display: grid;
+  gap: var(--space-0);
+  font-size: var(--text-xs);
+  color: var(--ink-muted);
+}
+
+.filters select {
+  padding: var(--space-1) var(--space-2);
+  border: var(--hairline) solid var(--rule-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  font-size: var(--text-sm);
+  color: var(--ink);
+}
+
+.clear {
+  padding: var(--space-1) var(--space-2);
+  border: var(--hairline) solid var(--rights);
+  border-radius: var(--radius-sm);
+  background: var(--rights-soft);
+  color: var(--rights);
+  font-size: var(--text-xs);
+  cursor: pointer;
+}
+
+.count {
+  font-size: var(--text-sm);
+  color: var(--ink-muted);
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: var(--list-max);
+  overflow-y: auto;
+  border-top: var(--hairline) solid var(--rule);
+}
+
+.row {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-0);
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: 0;
+  border-bottom: var(--hairline) solid var(--rule);
+  border-left: var(--rule-weight) solid transparent;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.row:hover {
+  background: var(--surface-sunk);
+}
+
+.row[aria-current="true"] {
+  border-left-color: var(--rights);
+  background: var(--surface);
+}
+
+.file {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  overflow-wrap: anywhere;
+}
+
+.meta {
+  font-size: var(--text-xs);
+  color: var(--ink-faint);
+}
+
+.pager {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.pager button {
+  padding: var(--space-1) var(--space-3);
+  border: var(--hairline) solid var(--rule-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  font-size: var(--text-sm);
+  cursor: pointer;
+}
+
+.pager button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.detail {
+  min-width: 0;
+  padding: var(--space-5);
+  background: var(--surface);
+  border: var(--hairline) solid var(--rule);
+  border-radius: var(--radius-md);
+  align-self: start;
+}
+
+@media (max-width: 60rem) {
+  .page {
+    grid-template-columns: minmax(0, 1fr);
+    padding: var(--space-5) var(--space-4) var(--space-7);
+  }
+}

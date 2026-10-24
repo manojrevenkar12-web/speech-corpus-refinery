@@ -58,20 +58,20 @@ def make_app(root: Path) -> web.Application:
             await asyncio.sleep(float(f["delay_first"]))
 
         # API shapes
-        if host == "audiobooks.example" and path.rstrip("/") == "/api/feed/audiobooks":
+        if path.rstrip("/") == "/api/feed/audiobooks" and (base / "api/feed/audiobooks/index.json").exists():
             doc = json.loads((base / "api/feed/audiobooks/index.json").read_text())
             off, lim = int(request.query.get("offset", 0)), int(request.query.get("limit", 50))
             return web.json_response(
                 {"books": doc["books"][off : off + lim]} if doc["books"][off : off + lim] else {"error": "No audiobooks found"}
             )
-        if host == "archive.example" and path == "/advancedsearch.php":
+        if path == "/advancedsearch.php" and (base / "advancedsearch.json").exists():
             doc = json.loads((base / "advancedsearch.json").read_text())
             rows, page = int(request.query.get("rows", 50)), int(request.query.get("page", 1))
             docs = doc["response"]["docs"]
             return web.json_response(
                 {"response": {"numFound": len(docs), "start": (page - 1) * rows, "docs": docs[(page - 1) * rows : page * rows]}}
             )
-        if host == "archive.example" and path.startswith("/metadata/"):
+        if path.startswith("/metadata/") and (base / "advancedsearch.json").exists():
             p = base / "metadata" / f"{path.split('/')[2]}.json"
             return web.json_response(json.loads(p.read_text())) if p.exists() else web.json_response({})
 

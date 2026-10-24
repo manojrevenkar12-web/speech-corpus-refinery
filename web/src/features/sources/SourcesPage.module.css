@@ -1,0 +1,140 @@
+.page {
+  display: grid;
+  gap: var(--space-5);
+  max-width: var(--page-max);
+  padding: var(--space-6) var(--space-5) var(--space-8);
+}
+
+.header {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.h1 {
+  font-size: var(--text-xl);
+  font-stretch: var(--stretch-wide);
+}
+
+.lede {
+  color: var(--ink-muted);
+  max-width: var(--measure);
+}
+
+.scroll {
+  overflow-x: auto;
+  background: var(--surface);
+  border: var(--hairline) solid var(--rule);
+  border-radius: var(--radius-md);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+.table th,
+.table td {
+  padding: var(--space-3);
+  border-bottom: var(--hairline) solid var(--rule);
+  text-align: left;
+  vertical-align: top;
+}
+
+.table thead th {
+  background: var(--surface-sunk);
+  color: var(--ink-muted);
+  font-weight: var(--weight-medium);
+}
+
+.table tbody th {
+  display: grid;
+  gap: var(--space-1);
+  font-weight: var(--weight-semibold);
+}
+
+.num {
+  text-align: right !important;
+  white-space: nowrap;
+}
+
+.verdict {
+  display: block;
+  max-width: var(--verdict-measure);
+}
+
+.verdict[data-tone="kept"] {
+  color: var(--kept);
+}
+
+.verdict[data-tone="held"] {
+  color: var(--held);
+}
+
+.verdict[data-tone="rejected"] {
+  color: var(--rejected);
+}
+
+.verdict[data-tone="none"] {
+  color: var(--ink-faint);
+}
+
+.bars {
+  min-width: var(--bar-min);
+}
+
+.bar {
+  display: flex;
+  gap: var(--hairline);
+  height: var(--space-3);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--surface-sunk);
+}
+
+.bar span {
+  flex-basis: 0;
+  background: var(--rejected);
+}
+
+.bar [data-family="kept"] {
+  background: var(--kept);
+}
+
+.bar [data-family="held"] {
+  background: var(--held);
+}
+
+.bar [data-family="rights"],
+.bar [data-family="licence"] {
+  background: var(--rights);
+}
+
+.bar [data-family="provenance"] {
+  background: var(--spec-2);
+}
+
+.bar [data-family="content"] {
+  background: var(--spec-3);
+}
+
+.bar [data-family="quality"] {
+  background: var(--spec-4);
+}
+
+.bar [data-family="fetch"] {
+  background: var(--rule-strong);
+}
+
+.count {
+  display: block;
+  margin-top: var(--space-1);
+  font-size: var(--text-xs);
+  color: var(--ink-faint);
+}
+
+@media (max-width: 40rem) {
+  .page {
+    padding: var(--space-5) var(--space-4) var(--space-7);
+  }
+}

@@ -1,9 +1,9 @@
 {
  "timings_seconds": {
-  "world": 0.0,
-  "discovery": 56.2,
-  "crawl": 8.0,
-  "process": 45.3,
+  "world": 47.1,
+  "discovery": 180.1,
+  "crawl": 126.2,
+  "process": 54.6,
   "release": 4.3
  },
  "crawl": {
@@ -15,7 +15,7 @@
   },
   "failed": 1,
   "retried": 0,
-  "bytes": 41015938
+  "bytes": 40659286
  },
  "analysed": 100,
  "release": {
@@ -48,7 +48,7 @@
  },
  "decisions_correct": "109/110",
  "compliance": {
-  "requests": 337,
+  "requests": 336,
   "requests_to_blocked_domains": 0,
   "requests_disallowed_by_robots": 0,
   "requests_to_tdm_reserved_paths_in_tdmrep_json": 0,
@@ -57,5 +57,5 @@
    "ScrBot/0.1 (+https://github.com/manojrevenkar12-web/speech-corpus-refinery/blob/main/docs/CRAWLER.md)"
   ]
  },
- "usd_per_kept_hour": 0.0583
+ "usd_per_kept_hour": 0.0655
 }

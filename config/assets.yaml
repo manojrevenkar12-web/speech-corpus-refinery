@@ -1403,3 +1403,7 @@ models:
     url: https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/vits-piper-en_US-lessac-medium.tar.bz2
     sha256: 9e3febfacf0abf4270172d2958bcec246032b7e88efc2720840cc80c93de334e
     bytes: 67230653
+  piper_amy:
+    url: https://github.com/k2-fsa/sherpa-onnx/releases/download/tts-models/vits-piper-en_US-amy-low.tar.bz2
+    sha256: c70f5284a09a7fd4ed203b39b2ff51cac1432b422b852eb647b481dade3cf639
+    bytes: 67095344

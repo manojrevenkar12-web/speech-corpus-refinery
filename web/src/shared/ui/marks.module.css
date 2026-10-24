@@ -1,0 +1,72 @@
+.reason {
+  display: inline-block;
+  padding: var(--space-0) var(--space-2);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-body);
+  white-space: nowrap;
+  background: var(--rejected-soft);
+  color: var(--rejected);
+}
+
+.reason[data-family="kept"] {
+  background: var(--kept-soft);
+  color: var(--kept);
+}
+
+.reason[data-family="held"] {
+  background: var(--held-soft);
+  color: var(--held);
+}
+
+.reason[data-family="rights"],
+.reason[data-family="licence"] {
+  background: var(--rights-soft);
+  color: var(--rights);
+}
+
+.reason[data-family="fetch"] {
+  background: var(--surface-sunk);
+  color: var(--ink-muted);
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--ink-muted);
+  overflow-wrap: anywhere;
+}
+
+.stat {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.statValue {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-semibold);
+  font-stretch: var(--stretch-wide);
+  letter-spacing: var(--tracking-display);
+}
+
+.stat[data-tone="kept"] .statValue {
+  color: var(--kept);
+}
+
+.stat[data-tone="rejected"] .statValue {
+  color: var(--rejected);
+}
+
+.stat[data-tone="held"] .statValue {
+  color: var(--held);
+}
+
+.stat[data-tone="rights"] .statValue {
+  color: var(--rights);
+}
+
+.statLabel {
+  font-size: var(--text-sm);
+  color: var(--ink-muted);
+}

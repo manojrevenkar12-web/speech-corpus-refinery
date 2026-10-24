@@ -1,0 +1,127 @@
+.figure {
+  margin: 0;
+  display: grid;
+  gap: var(--space-4);
+}
+
+.tape {
+  display: flex;
+  gap: var(--hairline);
+  height: var(--tape-height);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--surface-sunk);
+}
+
+.part {
+  flex-basis: 0;
+  min-width: var(--rule-weight);
+  transform-origin: left center;
+  background: var(--rejected);
+}
+
+[data-family="kept"].part {
+  background: var(--kept);
+}
+
+[data-family="held"].part {
+  background: var(--held);
+}
+
+[data-family="rights"].part,
+[data-family="licence"].part {
+  background: var(--rights);
+}
+
+[data-family="provenance"].part {
+  background: var(--spec-2);
+}
+
+[data-family="content"].part {
+  background: var(--spec-3);
+}
+
+[data-family="quality"].part {
+  background: var(--spec-4);
+}
+
+[data-family="fetch"].part {
+  background: var(--rule-strong);
+}
+
+.legend {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--legend-col), 1fr));
+  gap: var(--space-2) var(--space-5);
+  font-size: var(--text-sm);
+}
+
+.list li {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.swatch {
+  width: var(--dot);
+  height: var(--dot);
+  border-radius: 50%;
+  background: var(--rejected);
+}
+
+[data-family="kept"] > .swatch {
+  background: var(--kept);
+}
+
+[data-family="held"] > .swatch {
+  background: var(--held);
+}
+
+[data-family="rights"] > .swatch,
+[data-family="licence"] > .swatch {
+  background: var(--rights);
+}
+
+[data-family="provenance"] > .swatch {
+  background: var(--spec-2);
+}
+
+[data-family="content"] > .swatch {
+  background: var(--spec-3);
+}
+
+[data-family="quality"] > .swatch {
+  background: var(--spec-4);
+}
+
+[data-family="fetch"] > .swatch {
+  background: var(--rule-strong);
+}
+
+.label {
+  color: var(--ink);
+}
+
+.hours {
+  font-weight: var(--weight-medium);
+}
+
+.files {
+  color: var(--ink-faint);
+  font-size: var(--text-xs);
+}
+
+.untimed {
+  font-size: var(--text-sm);
+  color: var(--ink-muted);
+  max-width: var(--measure);
+}

@@ -63,6 +63,23 @@ class Segment:
     reason: str | None = None
 
 
+def _music_in_pauses(x: np.ndarray, spans: list[models.Span], a_cfg: dict[str, Any]) -> float | None:
+    """A music bed hides under speech but is exposed in the pauses. Join the pauses (away from
+    speech edges), bring them to a speaking level, and ask the tagger. None when the pauses are
+    too short or digitally silent."""
+    rate, pad = 16000, 0.05
+    bounds = [0.0, *[v for s in spans for v in (s.start, s.end)], len(x) / rate]
+    gaps = [(bounds[i] + pad, bounds[i + 1] - pad) for i in range(0, len(bounds) - 1, 2)]
+    parts = [x[int(a * rate) : int(b * rate)] for a, b in gaps if b - a >= 0.15]
+    if not parts:
+        return None
+    y = np.concatenate(parts)[: rate * 30]
+    if len(y) < int(0.4 * rate) or probes.dbfs(y) < float(a_cfg.get("pause_floor_dbfs", -65)):
+        return None
+    y = y * (10 ** (-20 / 20) / (np.sqrt(np.mean(np.square(y))) + 1e-12))
+    return models.tags(np.clip(y, -1, 1).astype(np.float32))["music"]
+
+
 def blob_path(store: Store, sha: str, tmpdir: Path) -> Path:
     if isinstance(store, LocalStore):
         return store.get_file(sha, tmpdir / sha)
@@ -206,10 +223,15 @@ def analyse(item_id: int, store: Store, url: str | None = None) -> dict[str, Any
 
         # 4. fingerprint: the protected evaluation set, then duplicates (one dedup at a time)
         with costs.stage("fingerprint", seconds):
-            x8 = dec.resample(path, int(dd["fingerprint_rate"]))
-            marks = fp.landmarks(x8, int(dd["fingerprint_rate"]))
-            quality = (round(bw, -3), round(snr_item.db / 5.0), int(path.stat().st_size) / max(seconds, 1e-9))
-            dup = _dedup(item_id, marks, quality, dd, url)
+            fr = int(dd["fingerprint_rate"])
+            pk = fp.peaks(dec.resample(path, fr), fr)
+            marks = fp.hashes(pk)
+            variants: list[tuple[float, list[tuple[int, int]]]] = []
+            if seconds <= float(dd["speed_search_max_seconds"]):
+                # a copy played at speed s lines up once its peaks are stretched back by s
+                variants = [(s, fp.hashes(fp.at_speed(pk, s))) for s in speed_factors(float(dd["speed_max"]), float(dd["speed_step"]))]
+            quality = quality_key(bw, snr_item.db, int(path.stat().st_size) / max(seconds, 1e-9))
+            dup = _dedup(item_id, marks, variants, quality, dd, url)
         if dup.get("takedown"):
             return finish("rejected", "takedown", dup, base | {"match": dup})
         if dup.get("protected"):
@@ -231,7 +253,11 @@ def analyse(item_id: int, store: Store, url: str | None = None) -> dict[str, Any
             return finish("rejected", "not_speech", detail, base)
         if bw < float(d["min_bandwidth_hz"]):
             return finish("rejected", "bandwidth", detail | {"why": f"content stops at {bw:.0f} Hz in a {au.native_rate} Hz file"}, base)
-        if tags["music"] > float(d["music_tag_max"]):
+        with costs.stage("tags", 0.0):
+            pause_music = _music_in_pauses(x, spans, a_cfg)
+        if pause_music is not None:
+            detail["pause_music"] = round(pause_music, 3)
+        if tags["music"] > float(d["music_tag_max"]) or (pause_music is not None and pause_music > float(d["pause_music_max"])):
             return finish("rejected", "music", detail, base)
         with costs.stage("language", min(speech_s, 30.0)):
             voiced = np.concatenate([x[int(s.start * 16000) : int(s.end * 16000)] for s in spans]) if spans else x
@@ -299,69 +325,101 @@ def analyse(item_id: int, store: Store, url: str | None = None) -> dict[str, Any
         return finish("kept", None, detail, base, segs)
 
 
-def _dedup(
-    item_id: int, marks: list[tuple[int, int]], quality: tuple[float, float, float], dd: dict[str, Any], url: str | None
-) -> dict[str, Any]:
-    """Match against the protected set and every earlier item; keep the better copy.
+def speed_factors(max_change: float, step: float) -> list[float]:
+    """Stretch factors that undo a speed change of up to `max_change`, nearest first, both ways."""
+    out: list[float] = []
+    n = round(max_change / step)
+    for k in range(1, n + 1):
+        f = 1 + k * step
+        out += [f, 1 / f]
+    return out
 
-    Serialised with an advisory lock, so two workers handling two copies of one recording at the
-    same moment cannot both decide they are the first. The better copy (wider bandwidth, then
-    higher SNR in 5 dB steps, then more bytes per second) is kept wherever it was found first;
-    an earlier, worse copy is withdrawn."""
+
+def quality_key(bandwidth_hz: float, snr_db: float, bytes_per_second: float) -> tuple[float, float, float]:
+    """Which of two copies is better: the higher bandwidth tier (full, wide, below), then SNR in
+    5 dB steps, then bitrate. Tiers rather than raw hertz, because broadband noise widens the
+    measured bandwidth of a worse copy."""
+    tiers = config.settings()["decide"]["tiers"]
+    tier = 2.0 if bandwidth_hz >= float(tiers["full"]) else 1.0 if bandwidth_hz >= float(tiers["wide"]) else 0.0
+    return (tier, float(round(snr_db / 5.0)), float(bytes_per_second))
+
+
+def _match(c: Any, queries: list[tuple[float, list[tuple[int, int]]]], dd: dict[str, Any]) -> tuple[list[tuple[float, fp.Match]], dict[int, dict[str, Any]]]:
+    """Hits for the plain fingerprint and every speed variant, from one index lookup; for each
+    indexed recording, the speed at which it matched best."""
+    hashes = sorted({h for _, marks in queries for h, _ in marks})
+    if not hashes:
+        return [], {}
+    rows = c.execute("SELECT h, fp_id, t FROM fp_hashes WHERE h = ANY(%s)", (hashes,)).fetchall()
+    fids = list({r["fp_id"] for r in rows})
+    if not fids:
+        return [], {}
+    meta = {
+        r["id"]: r
+        for r in c.execute(
+            """SELECT f.id, f.item_id, f.protected, f.blocked_by, f.label, f.n, f.quality, i.state, i.reason
+               FROM fp_items f LEFT JOIN items i ON i.id = f.item_id WHERE f.id = ANY(%s)""",
+            (fids,),
+        )
+    }
+    by_hash: dict[int, list[tuple[int, int]]] = {}
+    for r in rows:
+        by_hash.setdefault(r["h"], []).append((r["fp_id"], r["t"]))
+    sizes = {k: v["n"] for k, v in meta.items()}
+    best: dict[int, tuple[float, fp.Match]] = {}
+    for speed, marks in queries:
+        cands = [(h, fid, t) for h in {h for h, _ in marks} for fid, t in by_hash.get(h, ())]
+        for m in fp.best_matches(marks, cands, sizes):
+            need = float(dd["min_match_ratio"]) if speed == 1.0 else float(dd["speed_min_match_ratio"])
+            if m.votes >= int(dd["min_matches"]) and m.ratio >= need and (m.other not in best or m.votes > best[m.other][1].votes):
+                best[m.other] = (speed, m)
+    return sorted(best.values(), key=lambda sm: -sm[1].votes), meta
+
+
+def _dedup(
+    item_id: int,
+    marks: list[tuple[int, int]],
+    variants: list[tuple[float, list[tuple[int, int]]]],
+    quality: tuple[float, float, float],
+    dd: dict[str, Any],
+    url: str | None,
+) -> dict[str, Any]:
+    """Match against the protected set, takedowns and every earlier item; keep the better copy.
+
+    `variants` are the same audio at other playback speeds, tried when the plain fingerprint
+    finds nothing (landmark hashes do not survive a speed change). Serialised with an advisory
+    lock, so two workers handling two copies at the same moment cannot both decide they are the
+    first; quality is stored with the fingerprint, so a copy still being processed elsewhere can
+    be compared. An earlier, worse copy that is still usable is withdrawn."""
     out: dict[str, Any] = {}
     with db.tx(url) as c:
         c.execute("SELECT pg_advisory_xact_lock(7331)")
-        hashes = sorted({h for h, _ in marks})
-        rows = (
-            c.execute(
-                "SELECT h.h, h.fp_id, h.t FROM fp_hashes h WHERE h.h = ANY(%s)",
-                (hashes,),
-            ).fetchall()
-            if hashes
-            else []
-        )
-        fids = {r["fp_id"] for r in rows}
-        meta = (
-            {
-                r["id"]: r
-                for r in c.execute("SELECT id, item_id, protected, blocked_by, label, n FROM fp_items WHERE id = ANY(%s)", (list(fids),))
-            }
-            if fids
-            else {}
-        )
-        matches = fp.best_matches(marks, [(r["h"], r["fp_id"], r["t"]) for r in rows], {k: v["n"] for k, v in meta.items()})
-        hits = [m for m in matches if m.votes >= int(dd["min_matches"]) and m.ratio >= float(dd["min_match_ratio"])]
+        scored, meta = _match(c, [(1.0, marks), *variants], dd)
+        hits = [m for _, m in scored]
+        speed_of = {m.other: sp for sp, m in scored}
+
+        def found(m: fp.Match) -> dict[str, Any]:
+            return {"speed": round(speed_of[m.other], 4)} if speed_of[m.other] != 1.0 else {}
+
         blocked = [m for m in hits if meta[m.other]["blocked_by"]]
         if blocked:
-            return {"takedown": True, "takedown_id": meta[blocked[0].other]["blocked_by"], "votes": blocked[0].votes}
+            return {"takedown": True, "takedown_id": meta[blocked[0].other]["blocked_by"], "votes": blocked[0].votes, **found(blocked[0])}
         prot = [m for m in hits if meta[m.other]["protected"]]
         if prot:
             out = {
                 "protected": True,
-                "matches": [
-                    {"label": meta[m.other]["label"], "votes": m.votes, "ratio": round(m.ratio, 3), "offset_s": round(m.offset_seconds, 2)}
-                    for m in prot
-                ],
+                "matches": [{"label": meta[m.other]["label"], "votes": m.votes, "ratio": round(m.ratio, 3), "offset_s": round(m.offset_seconds, 2), **found(m)} for m in prot],
             }
         else:
             for m in hits:
-                other = meta[m.other]["item_id"]
-                if other is None or other == item_id:
+                o = meta[m.other]
+                other = o["item_id"]
+                if other is None or other == item_id or o["quality"] is None:
                     continue
-                o = c.execute(
-                    "SELECT i.id, i.state, a.bandwidth_hz, a.snr_db, a.seconds, b.bytes FROM items i JOIN analyses a ON a.item_id = i.id JOIN blobs b ON b.sha256 = i.sha256 WHERE i.id = %s",
-                    (other,),
-                ).fetchone()
-                if o is None:
-                    continue
-                mine = quality
-                theirs = (
-                    round(o["bandwidth_hz"] or 0, -3),
-                    round((o["snr_db"] or 0) / 5.0),
-                    (o["bytes"] or 0) / max(o["seconds"] or 1e-9, 1e-9),
-                )
-                if theirs >= mine:
-                    out = {"duplicate_of": other, "votes": m.votes, "ratio": round(m.ratio, 3), "offset_s": round(m.offset_seconds, 2)}
+                if o["state"] == "withdrawn" or (o["state"] == "rejected" and o["reason"] != "duplicate"):
+                    continue  # an unusable copy does not stop this one
+                if tuple(o["quality"]) >= quality:
+                    out = {"duplicate_of": other, "votes": m.votes, "ratio": round(m.ratio, 3), "offset_s": round(m.offset_seconds, 2), **found(m)}
                     break
                 # this copy is better: the earlier one becomes the duplicate
                 c.execute(
@@ -369,10 +427,9 @@ def _dedup(
                     (json.dumps({"duplicate_of": item_id, "replaced_by_better_copy": True}), other),
                 )
                 c.execute("UPDATE segments SET state = 'withdrawn', reason = 'duplicate' WHERE item_id = %s", (other,))
-                c.execute("UPDATE analyses SET canonical_of = %s WHERE item_id = %s", (item_id, other))
         if not out.get("protected"):
             c.execute("DELETE FROM fp_items WHERE item_id = %s", (item_id,))
-            r = c.execute("INSERT INTO fp_items (item_id, n) VALUES (%s, %s) RETURNING id", (item_id, len(marks))).fetchone()
+            r = c.execute("INSERT INTO fp_items (item_id, n, quality) VALUES (%s, %s, %s) RETURNING id", (item_id, len(marks), list(quality))).fetchone()
             assert r is not None
             with c.cursor().copy("COPY fp_hashes (h, fp_id, t) FROM STDIN") as cp:
                 for h, t in marks:

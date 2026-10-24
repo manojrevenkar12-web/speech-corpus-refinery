@@ -1,0 +1,61 @@
+.figure {
+  margin: 0;
+  display: grid;
+  gap: var(--space-1);
+}
+
+.frame {
+  position: relative;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--spec-0);
+}
+
+.canvas {
+  display: block;
+  width: 100%;
+  height: var(--spec-height);
+  image-rendering: pixelated;
+}
+
+.fallback {
+  height: var(--spec-height);
+  padding: var(--space-4);
+  color: var(--spec-5);
+}
+
+.lanes {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: var(--space-5);
+}
+
+.seg {
+  position: absolute;
+  top: 0;
+  bottom: var(--space-1);
+  padding: 0;
+  border: 0;
+  border-top: var(--rule-weight) solid var(--kept);
+  background: color-mix(in srgb, var(--kept) 35%, transparent);
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+
+.seg[data-state="rejected"],
+.seg[data-state="withdrawn"] {
+  border-top-color: var(--rejected);
+  background: color-mix(in srgb, var(--rejected) 35%, transparent);
+}
+
+.seg:hover,
+.seg[data-playing] {
+  background: color-mix(in srgb, var(--spec-5) 55%, transparent);
+}
+
+.axis {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--text-xs);
+  color: var(--ink-faint);
+}

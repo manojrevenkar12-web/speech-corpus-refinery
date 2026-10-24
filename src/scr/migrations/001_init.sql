@@ -102,6 +102,7 @@ CREATE TABLE fp_items (
   protected boolean NOT NULL DEFAULT false,
   blocked_by int,                  -- a takedown: copies of this recording are never ingested again
   label text NOT NULL DEFAULT '',
+  quality real[],                  -- (bandwidth tier, SNR in 5 dB steps, bytes per second): which copy is better
   n int NOT NULL
 );
 CREATE TABLE fp_hashes (h int NOT NULL, fp_id bigint NOT NULL REFERENCES fp_items(id) ON DELETE CASCADE, t int NOT NULL);

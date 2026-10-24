@@ -1,0 +1,130 @@
+.page {
+  display: grid;
+  gap: var(--space-5);
+  max-width: var(--page-max);
+  padding: var(--space-6) var(--space-5) var(--space-8);
+}
+
+.header {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.h1 {
+  font-size: var(--text-xl);
+  font-stretch: var(--stretch-wide);
+}
+
+.h2 {
+  font-size: var(--text-lg);
+  margin-bottom: var(--space-2);
+}
+
+.muted {
+  color: var(--ink-muted);
+  font-size: var(--text-sm);
+  max-width: var(--measure);
+}
+
+.form {
+  display: grid;
+  gap: var(--space-3);
+  max-width: var(--measure);
+  padding: var(--space-5);
+  background: var(--surface);
+  border: var(--hairline) solid var(--rule);
+  border-radius: var(--radius-md);
+}
+
+.kinds {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: var(--text-sm);
+}
+
+.kinds legend {
+  padding: 0;
+  margin-bottom: var(--space-1);
+  color: var(--ink-muted);
+}
+
+.kinds label {
+  display: inline-flex;
+  gap: var(--space-1);
+  align-items: center;
+}
+
+.field {
+  display: grid;
+  gap: var(--space-1);
+  font-size: var(--text-sm);
+  color: var(--ink-muted);
+}
+
+.field input,
+.field textarea {
+  padding: var(--space-2) var(--space-3);
+  border: var(--hairline) solid var(--rule-strong);
+  border-radius: var(--radius-sm);
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.secondary,
+.danger {
+  justify-self: start;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-sm);
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+}
+
+.secondary {
+  border: var(--hairline) solid var(--ink);
+  background: var(--surface);
+}
+
+.danger {
+  border: 0;
+  background: var(--danger);
+  color: var(--surface);
+}
+
+.danger:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.impact {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border-left: var(--rule-weight) solid var(--danger);
+  background: var(--danger-soft);
+  font-size: var(--text-sm);
+}
+
+.done {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-3);
+}
+
+.done li {
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface);
+  border-left: var(--rule-weight) solid var(--rights);
+  font-size: var(--text-sm);
+}
+
+@media (max-width: 40rem) {
+  .page {
+    padding: var(--space-5) var(--space-4) var(--space-7);
+  }
+}

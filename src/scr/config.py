@@ -41,7 +41,10 @@ def settings() -> dict[str, Any]:
 
 
 def rights() -> dict[str, Any]:
-    return load("rights")
+    """config/rights.yaml; SCR_EXTRA_BLOCKED_DOMAINS (comma-separated) adds to the blocklist (held-out worlds)."""
+    base = load("rights")
+    extra = [d for d in os.environ.get("SCR_EXTRA_BLOCKED_DOMAINS", "").split(",") if d]
+    return {**base, "blocked_domains": [*base.get("blocked_domains", []), *extra]} if extra else base
 
 
 def pricing() -> dict[str, Any]:

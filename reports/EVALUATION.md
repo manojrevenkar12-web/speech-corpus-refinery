@@ -1,6 +1,6 @@
 # Evaluation on the test world
 
-109 of 110 files got the right decision (keep or not); 101 also got the right kind of reason. 3 kept, 4 should be.
+109 of 110 files got the right decision (keep or not); 103 also got the right kind of reason. 3 kept, 4 should be.
 
 | Expected | Files | Right decision | Right reason |
 |---|---:|---:|---:|
@@ -13,16 +13,16 @@
 | reject:fetch | 1 | 1 | 1 |
 | reject:licence | 8 | 8 | 8 |
 | reject:music | 1 | 1 | 1 |
-| reject:noise | 1 | 1 | 1 |
-| reject:not_speech | 47 | 47 | 44 |
+| reject:noise | 1 | 1 | 0 |
+| reject:not_speech | 47 | 47 | 46 |
 | reject:protected | 1 | 1 | 1 |
 | reject:robots | 2 | 2 | 2 |
-| reject:synthetic | 24 | 24 | 23 |
+| reject:synthetic | 24 | 24 | 24 |
 | reject:tdm | 4 | 4 | 4 |
 
 ## Rights, from the server's own request log
 
-- Requests: 337; user agents seen: `ScrBot/0.1 (+https://github.com/manojrevenkar12-web/speech-corpus-refinery/blob/main/docs/CRAWLER.md)`
+- Requests: 336; user agents seen: `ScrBot/0.1 (+https://github.com/manojrevenkar12-web/speech-corpus-refinery/blob/main/docs/CRAWLER.md)`
 - Requests to a blocked domain: 0
 - Requests to paths robots.txt disallows: 0
 - Requests to paths reserved in tdmrep.json: 0
@@ -31,7 +31,7 @@
 ## Synthetic speech
 
 - Declared (IPTC trainedAlgorithmicMedia in schema.org): 12 of 12 rejected
-- Undeclared: 11 of 12 held for review, 0 kept
+- Undeclared: 12 of 12 held for review, 0 rejected for another reason, 0 kept
 - Real speech held by mistake: 1
 
 ## Transcripts of kept segments, against the true text
@@ -53,11 +53,9 @@ Kept segments cover 97% of the true speech in kept files.
 
 | File | Expected | Got |
 |---|---|---|
+| http://archive.example/download/p287-read-speech-cafe/p287_noisy.flac | reject:noise | rejected:duplicate |
 | http://archive.example/download/voice-messages-lucas/lucas.wav | reject:bandwidth | rejected:not_speech |
-| http://archive.example/download/field-1-100032-A-0-dog/1-100032-A-0.flac | reject:not_speech | rejected:duplicate |
-| http://archive.example/download/field-1-101296-A-19-thunderstorm/1-101296-A-19.flac | reject:not_speech | rejected:duplicate |
 | http://archive.example/download/field-1-30039-A-26-laughing/1-30039-A-26.flac | reject:not_speech | rejected:noise |
-| http://podcasts.example/media/aind-007.mp3 | reject:synthetic | rejected:noise |
-| http://reserved.example/open/take4.flac | reject:bandwidth | rejected:duplicate |
+| http://reserved.example/open/take4.flac | reject:bandwidth | rejected:not_speech |
 | http://reserved.example/open/take5.flac | reject:bandwidth | rejected:not_speech |
 | http://private.example/recordings/public/r0.flac | reject:bandwidth | rejected:not_speech |

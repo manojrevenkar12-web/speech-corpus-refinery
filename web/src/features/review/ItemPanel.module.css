@@ -1,0 +1,125 @@
+.panel {
+  display: grid;
+  gap: var(--space-5);
+  min-width: 0;
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: var(--space-4);
+}
+
+.title {
+  font-size: var(--text-xl);
+  font-stretch: var(--stretch-narrow);
+  overflow-wrap: anywhere;
+}
+
+.where {
+  color: var(--ink-muted);
+  font-size: var(--text-sm);
+}
+
+.measures {
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+  font-size: var(--text-sm);
+}
+
+.measures > div {
+  display: grid;
+  grid-template-columns: var(--label-col) 1fr;
+  gap: var(--space-3);
+}
+
+.measures dt {
+  color: var(--ink-muted);
+}
+
+.measures dd {
+  margin: 0;
+  max-width: var(--measure);
+}
+
+.spec {
+  display: grid;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.scroll {
+  overflow-x: auto;
+}
+
+.segs {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+.segs th,
+.segs td {
+  padding: var(--space-2);
+  border-bottom: var(--hairline) solid var(--rule);
+  text-align: left;
+  vertical-align: top;
+}
+
+.segs th {
+  color: var(--ink-muted);
+  font-weight: var(--weight-medium);
+}
+
+.segs tr[data-state="rejected"] td,
+.segs tr[data-state="withdrawn"] td {
+  color: var(--ink-muted);
+}
+
+.time,
+.num {
+  white-space: nowrap;
+}
+
+.asr {
+  margin-top: var(--space-1);
+  color: var(--ink-faint);
+  font-size: var(--text-xs);
+}
+
+.play {
+  padding: var(--space-1) var(--space-3);
+  border: var(--hairline) solid var(--rule-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  cursor: pointer;
+  font-size: var(--text-xs);
+}
+
+.play[aria-pressed="true"] {
+  background: var(--ink);
+  color: var(--surface);
+}
+
+.muted {
+  color: var(--ink-muted);
+  font-size: var(--text-sm);
+}
+
+.error {
+  color: var(--danger);
+  font-size: var(--text-sm);
+}
+
+@media (max-width: 40rem) {
+  .measures > div {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .head {
+    flex-direction: column;
+  }
+}

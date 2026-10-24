@@ -170,23 +170,25 @@ def embedding(x: np.ndarray) -> np.ndarray:
     return e / (np.linalg.norm(e) + 1e-9)
 
 
+VOICES = {"lessac": ("piper_lessac", "en_US-lessac-medium.onnx"), "amy": ("piper_amy", "en_US-amy-low.onnx")}
+
+
 @cache
-def _tts() -> object:
+def _tts(voice: str) -> Any:
     so = _so()
-    d = assets.model_dir("piper_lessac")
+    name, onnx = VOICES[voice]
+    d = assets.model_dir(name)
     return so.OfflineTts(
         so.OfflineTtsConfig(
             model=so.OfflineTtsModelConfig(
-                vits=so.OfflineTtsVitsModelConfig(
-                    model=str(d / "en_US-lessac-medium.onnx"), tokens=str(d / "tokens.txt"), data_dir=str(d / "espeak-ng-data")
-                ),
+                vits=so.OfflineTtsVitsModelConfig(model=str(d / onnx), tokens=str(d / "tokens.txt"), data_dir=str(d / "espeak-ng-data")),
                 num_threads=THREADS,
             )
         )
     )
 
 
-def synthesize(text: str, speed: float = 1.0) -> tuple[np.ndarray, int]:
-    """Piper TTS: used only to build the synthetic site of the test world (never released)."""
-    a = _tts().generate(text, sid=0, speed=speed)  # type: ignore[attr-defined]
+def synthesize(text: str, speed: float = 1.0, voice: str = "lessac") -> tuple[np.ndarray, int]:
+    """Piper TTS: used only to build synthetic sites of the test worlds (never released)."""
+    a = _tts(voice).generate(text, sid=0, speed=speed)
     return np.asarray(a.samples, dtype=np.float32), int(a.sample_rate)

@@ -1,0 +1,109 @@
+.page {
+  display: grid;
+  gap: var(--space-5);
+  max-width: var(--page-max);
+  padding: var(--space-6) var(--space-5) var(--space-8);
+}
+
+.header {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.h1 {
+  font-size: var(--text-xl);
+  font-stretch: var(--stretch-wide);
+}
+
+.muted {
+  color: var(--ink-muted);
+  font-size: var(--text-sm);
+  max-width: var(--measure);
+}
+
+.list {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.card {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  background: var(--surface);
+  border: var(--hairline) solid var(--rule);
+  border-radius: var(--radius-md);
+}
+
+.cardHead {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.name {
+  font-size: var(--text-2xl);
+  font-stretch: var(--stretch-wide);
+  letter-spacing: var(--tracking-display);
+}
+
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-6);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(var(--card-min), 1fr));
+  gap: var(--space-4);
+}
+
+.breakdown ul {
+  list-style: none;
+  margin: var(--space-2) 0 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-1);
+  font-size: var(--text-sm);
+}
+
+.breakdown li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--bar-min) auto;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.h3 {
+  font-size: var(--text-sm);
+  color: var(--ink-muted);
+  font-weight: var(--weight-medium);
+}
+
+.key {
+  overflow-wrap: anywhere;
+}
+
+.track {
+  height: var(--space-2);
+  border-radius: var(--radius-sm);
+  background: var(--surface-sunk);
+  overflow: hidden;
+}
+
+.track span {
+  display: block;
+  height: 100%;
+  background: var(--kept);
+}
+
+.val {
+  white-space: nowrap;
+  color: var(--ink-muted);
+}
+
+@media (max-width: 40rem) {
+  .page {
+    padding: var(--space-5) var(--space-4) var(--space-7);
+  }
+}

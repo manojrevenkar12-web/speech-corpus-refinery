@@ -1,0 +1,156 @@
+{
+ "files": 50,
+ "decisions_correct": 45,
+ "reasons_correct": 44,
+ "by_expected": {
+  "keep": {
+   "n": 17,
+   "decision_ok": 16,
+   "reason_ok": 16
+  },
+  "reject:bandwidth": {
+   "n": 3,
+   "decision_ok": 2,
+   "reason_ok": 2
+  },
+  "reject:blocked_domain": {
+   "n": 3,
+   "decision_ok": 3,
+   "reason_ok": 3
+  },
+  "reject:clipping": {
+   "n": 1,
+   "decision_ok": 1,
+   "reason_ok": 1
+  },
+  "reject:duplicate": {
+   "n": 3,
+   "decision_ok": 3,
+   "reason_ok": 3
+  },
+  "reject:licence": {
+   "n": 2,
+   "decision_ok": 2,
+   "reason_ok": 2
+  },
+  "reject:music": {
+   "n": 2,
+   "decision_ok": 1,
+   "reason_ok": 1
+  },
+  "reject:noise": {
+   "n": 1,
+   "decision_ok": 1,
+   "reason_ok": 1
+  },
+  "reject:not_speech": {
+   "n": 4,
+   "decision_ok": 4,
+   "reason_ok": 4
+  },
+  "reject:protected": {
+   "n": 5,
+   "decision_ok": 5,
+   "reason_ok": 5
+  },
+  "reject:robots": {
+   "n": 2,
+   "decision_ok": 2,
+   "reason_ok": 2
+  },
+  "reject:synthetic": {
+   "n": 4,
+   "decision_ok": 2,
+   "reason_ok": 1
+  },
+  "reject:tdm": {
+   "n": 3,
+   "decision_ok": 3,
+   "reason_ok": 3
+  }
+ },
+ "kept": {
+  "expected": 17,
+  "got": 20
+ },
+ "compliance": {
+  "requests": 95,
+  "requests_to_blocked_domains": 0,
+  "requests_disallowed_by_robots": 0,
+  "requests_to_tdm_reserved_paths_in_tdmrep_json": 0,
+  "reserved_files_stored": 0,
+  "user_agents": [
+   "ScrBot/0.1 (+https://github.com/manojrevenkar12-web/speech-corpus-refinery/blob/main/docs/CRAWLER.md)"
+  ]
+ },
+ "synthetic": {
+  "declared": 1,
+  "declared_rejected": 1,
+  "undeclared": 3,
+  "undeclared_held_for_review": 0,
+  "undeclared_rejected_for_another_reason": 1,
+  "undeclared_kept": 2,
+  "real_speech_held": 1
+ },
+ "transcripts": {
+  "published": {
+   "clips": 2,
+   "mean_cer": 0.013,
+   "max_cer": 0.026
+  },
+  "asr": {
+   "clips": 13,
+   "mean_cer": 0.1345,
+   "max_cer": 0.3882
+  },
+  "coverage_of_true_speech": 0.939
+ },
+ "wrong": [
+  {
+   "url": "http://newsdesk.example/episodes/104.mp3",
+   "expected": "reject:music",
+   "got": "kept",
+   "decision_ok": false,
+   "reason_ok": false
+  },
+  {
+   "url": "http://newsdesk.example/episodes/105.mp3",
+   "expected": "reject:synthetic",
+   "got": "kept",
+   "decision_ok": false,
+   "reason_ok": false
+  },
+  {
+   "url": "http://talkback.example/shows/reading.wav",
+   "expected": "keep",
+   "got": "held:synthetic_suspected",
+   "decision_ok": false,
+   "reason_ok": false
+  },
+  {
+   "url": "http://campus-radio.example/readings/ugly-letters.flac",
+   "expected": "reject:bandwidth",
+   "got": "kept",
+   "decision_ok": false,
+   "reason_ok": false
+  },
+  {
+   "url": "http://stacks.example/download/stacks-river-lecture/stacks-river-lecture.mp3",
+   "expected": "reject:synthetic",
+   "got": "kept",
+   "decision_ok": false,
+   "reason_ok": false
+  }
+ ],
+ "reason_mismatches": [
+  {
+   "url": "http://audiobooks.example/audio/lv-tts-chapter.mp3",
+   "expected": "reject:synthetic",
+   "got": "rejected:misaligned",
+   "decision_ok": true,
+   "reason_ok": false
+  }
+ ],
+ "set": "set1",
+ "status": "regression"
+}

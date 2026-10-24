@@ -53,11 +53,21 @@ def _sha(p: Path) -> str:
     return h.hexdigest()
 
 
-def _download(client: httpx.Client, url: str, dest: Path, sha256: str) -> None:
+def _download(client: httpx.Client, url: str, dest: Path, sha256: str, attempts: int = 3) -> None:
     if not url.startswith("https://"):
         raise AssetError(f"refusing non-https asset URL: {url}")
     if dest.exists() and _sha(dest) == sha256:
         return
+    for n in range(attempts):
+        try:
+            _download_once(client, url, dest, sha256)
+            return
+        except (AssetError, httpx.HTTPError):
+            if n == attempts - 1:
+                raise
+
+
+def _download_once(client: httpx.Client, url: str, dest: Path, sha256: str) -> None:
     dest.parent.mkdir(parents=True, exist_ok=True)
     tmp = dest.with_suffix(dest.suffix + ".part")
     with client.stream("GET", url) as r:
@@ -82,6 +92,9 @@ def fetch(models: bool = True, corpora: bool = True) -> int:
                 n += 1
         if models:
             for name, m in manifest()["models"].items():
+                if (config.MODELS_DIR / name).exists():
+                    n += 1
+                    continue
                 dest = config.MODELS_DIR / "downloads" / Path(m["url"]).name
                 _download(client, m["url"], dest, m["sha256"])
                 _unpack(name, dest)

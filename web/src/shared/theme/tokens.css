@@ -1,0 +1,122 @@
+/* Design tokens. The palette is taken from the spectrogram colormap (indigo, magenta, amber),
+   with teal for kept audio. Components use tokens only. */
+
+:root {
+  /* colour */
+  --paper: #f6f6f9;
+  --surface: #ffffff;
+  --surface-sunk: #ececf2;
+  --ink: #191a2e;
+  --ink-muted: #5b5d78;
+  --ink-faint: #868aa3;
+  --rule: #dcdce6;
+  --rule-strong: #a3a5bb;
+  --kept: #0b7f73;
+  --kept-soft: #dcf1ee;
+  --rejected: #a92f6f;
+  --rejected-soft: #f6e1ec;
+  --held: #a8620a;
+  --held-soft: #fbecd8;
+  --rights: #4338a8;
+  --rights-soft: #e6e4f8;
+  --danger: #b3261e;
+  --danger-soft: #fbe7e5;
+  --focus: #4338a8;
+  --spec-0: #0d0829;
+  --spec-1: #3b0f6f;
+  --spec-2: #8c2981;
+  --spec-3: #de4968;
+  --spec-4: #fe9f6d;
+  --spec-5: #fcfdbf;
+  --scrim: rgb(25 26 46 / 0.32);
+
+  /* type */
+  --font-sans: "Archivo Variable", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --stretch-normal: 100%;
+  --stretch-wide: 118%;
+  --stretch-narrow: 88%;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.563rem;
+  --text-2xl: 2.441rem;
+  --text-3xl: 3.815rem;
+  --leading-tight: 1.1;
+  --leading-body: 1.5;
+  --weight-regular: 400;
+  --weight-medium: 520;
+  --weight-semibold: 620;
+  --weight-bold: 720;
+  --tracking-display: -0.02em;
+
+  /* space */
+  --space-0: 0.125rem;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+
+  /* shape and layout */
+  --radius-sm: 3px;
+  --radius-md: 8px;
+  --hairline: 1px;
+  --rule-weight: 2px;
+  --dot: 0.55rem;
+  --tape-height: 3.25rem;
+  --spec-height: 15rem;
+  --measure: 66ch;
+  --page-max: 80rem;
+  --header: 3.5rem;
+  --rail: 21rem;
+  --list-max: 70vh;
+  --label-col: 9rem;
+  --skeleton-short: 55%;
+  --card-min: 18rem;
+  --legend-col: 17rem;
+  --bar-min: 12rem;
+  --verdict-measure: 28ch;
+
+  /* motion */
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --dur-fast: 120ms;
+  --dur-base: 240ms;
+  --dur-shimmer: 1.4s;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #12121f;
+    --surface: #1b1b2c;
+    --surface-sunk: #0d0d17;
+    --ink: #ececf6;
+    --ink-muted: #a9abc6;
+    --ink-faint: #7d80a0;
+    --rule: #2d2e45;
+    --rule-strong: #4f5172;
+    --kept: #4fd1bf;
+    --kept-soft: #143630;
+    --rejected: #f07ab5;
+    --rejected-soft: #3a1529;
+    --held: #f2b25c;
+    --held-soft: #3a2810;
+    --rights: #a99ff5;
+    --rights-soft: #262147;
+    --danger: #ff8a80;
+    --danger-soft: #3b1714;
+    --focus: #a99ff5;
+    --scrim: rgb(0 0 0 / 0.55);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 0ms;
+    --dur-base: 0ms;
+  }
+}

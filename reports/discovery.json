@@ -15,7 +15,7 @@
   },
   "not_fetched": {},
   "yield": 0.599,
-  "usd_per_kept_hour": 0.0183,
+  "usd_per_kept_hour": 0.0198,
   "verdict": "ingest: 2 of 3 sampled files usable, about $0.02 per usable hour"
  },
  {
@@ -58,8 +58,8 @@
   },
   "not_fetched": {},
   "yield": 0.222,
-  "usd_per_kept_hour": 0.0302,
-  "verdict": "ingest: 1 of 4 sampled files usable, about $0.03 per usable hour"
+  "usd_per_kept_hour": 0.0364,
+  "verdict": "ingest: 1 of 4 sampled files usable, about $0.04 per usable hour"
  },
  {
   "source": "probe:voices",

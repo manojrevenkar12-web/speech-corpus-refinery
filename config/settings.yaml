@@ -24,6 +24,7 @@ audio:
   clip_threshold: 0.98        # |sample| at or above this, three samples in a row, counts as clipped
   bandwidth_floor_db: -50     # HiFiTTS-2: highest frequency within 50 dB of the spectral peak
   bandwidth_window_seconds: 30
+  pause_floor_dbfs: -65       # pauses quieter than this are silence, not a bed
 
 segment:
   min_seconds: 1.5
@@ -37,6 +38,7 @@ decide:
   min_speech_ratio: 0.5       # share of the item VAD marks as speech
   speech_tag_min: 0.4         # AudioSet "Speech" probability from the tagger
   music_tag_max: 0.25         # music under speech ruins TTS targets
+  pause_music_max: 0.5        # the same tagger on the pauses alone, where a quiet bed is exposed
   language_must_match: true
   # segment-level
   synthetic_tag_review: 0.65  # AudioSet "Speech synthesizer": flags for review only (it also fires on clean studio speech)
@@ -54,6 +56,10 @@ dedup:
   fingerprint_rate: 8000
   min_matches: 20             # landmark hashes that must agree on one time offset
   min_match_ratio: 0.08       # share of the shorter recording's hashes
+  speed_max: 0.10             # re-uploads played up to 10% faster or slower still match
+  speed_step: 0.005           # searched in 0.5% steps (matches fall off within 1%), both ways: a copy may arrive before its original
+  speed_min_match_ratio: 0.04 # rescaled peaks match less well than the real thing; unrelated audio scores near 0
+  speed_search_max_seconds: 1800
 
 speakers:
   cluster_threshold: 0.55     # cosine similarity for one speaker within a source

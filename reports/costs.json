@@ -7,17 +7,16 @@
    "audio_hours": 0.1634,
    "kept_hours": 0.0,
    "yield": 0.0,
-   "cpu_seconds": 14.4,
-   "usd": 0.000937,
+   "cpu_seconds": 22.7,
+   "usd": 0.00112,
    "usd_per_kept_hour": null,
    "decisions": {
     "rejected:licence": 7,
-    "rejected:not_speech": 41,
-    "rejected:bandwidth": 6,
     "rejected:noise": 1,
     "held:synthetic_suspected": 1,
-    "rejected:music": 1,
-    "rejected:duplicate": 3
+    "rejected:not_speech": 43,
+    "rejected:bandwidth": 6,
+    "rejected:duplicate": 2
    }
   },
   "audiobooks": {
@@ -25,9 +24,9 @@
    "audio_hours": 0.0496,
    "kept_hours": 0.0297,
    "yield": 0.599,
-   "cpu_seconds": 22.9,
-   "usd": 0.000558,
-   "usd_per_kept_hour": 0.0188,
+   "cpu_seconds": 25.9,
+   "usd": 0.000624,
+   "usd_per_kept_hour": 0.021,
    "decisions": {
     "kept": 2,
     "rejected:protected": 1
@@ -38,8 +37,8 @@
    "audio_hours": 0.0056,
    "kept_hours": 0.0,
    "yield": 0.0,
-   "cpu_seconds": 0.3,
-   "usd": 1.6e-05,
+   "cpu_seconds": 0.6,
+   "usd": 2.2e-05,
    "usd_per_kept_hour": null,
    "decisions": {
     "rejected:corrupt": 1,
@@ -58,19 +57,18 @@
   },
   "podcasts": {
    "items": 17,
-   "audio_hours": 0.0466,
+   "audio_hours": 0.0426,
    "kept_hours": 0.0062,
-   "yield": 0.133,
-   "cpu_seconds": 21.6,
-   "usd": 0.000538,
-   "usd_per_kept_hour": 0.0866,
+   "yield": 0.146,
+   "cpu_seconds": 22.1,
+   "usd": 0.000544,
+   "usd_per_kept_hour": 0.0876,
    "decisions": {
-    "rejected:noise": 1,
-    "held:synthetic_suspected": 11,
     "rejected:licence": 1,
+    "held:synthetic_suspected": 12,
+    "rejected:music": 1,
     "kept": 1,
     "rejected:duplicate": 1,
-    "rejected:music": 1,
     "rejected:clipping": 1
    }
   },
@@ -79,8 +77,8 @@
    "audio_hours": 0.0018,
    "kept_hours": 0.0,
    "yield": 0.0,
-   "cpu_seconds": 0.2,
-   "usd": 8e-06,
+   "cpu_seconds": 0.1,
+   "usd": 6e-06,
    "usd_per_kept_hour": null,
    "decisions": {
     "rejected:not_speech": 1
@@ -91,12 +89,11 @@
    "audio_hours": 0.0051,
    "kept_hours": 0.0,
    "yield": 0.0,
-   "cpu_seconds": 0.3,
-   "usd": 1.2e-05,
+   "cpu_seconds": 0.4,
+   "usd": 1.4e-05,
    "usd_per_kept_hour": null,
    "decisions": {
-    "rejected:duplicate": 1,
-    "rejected:not_speech": 1
+    "rejected:not_speech": 2
    }
   },
   "voices": {
@@ -105,7 +102,7 @@
    "kept_hours": 0.0,
    "yield": 0.0,
    "cpu_seconds": 0.0,
-   "usd": 2.3e-05,
+   "usd": 2.1e-05,
    "usd_per_kept_hour": null,
    "decisions": {
     "rejected:synthetic": 12
@@ -113,23 +110,23 @@
   }
  },
  "stages": {
-  "tags": 4.45,
-  "asr": 28.23,
-  "language": 8.26,
+  "tags": 4.69,
+  "asr": 26.57,
+  "language": 8.0,
   "policy": 0.0,
-  "fingerprint": 1.99,
-  "bandwidth": 1.94,
-  "vad": 6.3,
-  "decode": 0.66,
-  "speaker": 7.92
+  "fingerprint": 16.09,
+  "bandwidth": 1.96,
+  "vad": 6.4,
+  "decode": 0.65,
+  "speaker": 7.51
  },
  "total": {
-  "audio_hours": 0.272,
+  "audio_hours": 0.268,
   "kept_hours": 0.0359,
-  "cpu_seconds": 59.8,
-  "usd": 0.002093,
-  "usd_per_kept_hour": 0.0583,
-  "realtime_factor": 0.061,
-  "vcpus_for_1000_hours_per_day": 2.5
+  "cpu_seconds": 71.9,
+  "usd": 0.002352,
+  "usd_per_kept_hour": 0.0655,
+  "realtime_factor": 0.0745,
+  "vcpus_for_1000_hours_per_day": 3.1
  }
 }

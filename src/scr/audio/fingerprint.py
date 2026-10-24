@@ -19,8 +19,8 @@ DT_MAX = 63
 PEAKS_PER_SECOND = 30
 
 
-def landmarks(x: np.ndarray, rate: int = 8000) -> list[tuple[int, int]]:
-    """(hash, anchor frame) pairs. `x` must be at `rate` (8 kHz keeps phone-band content)."""
+def peaks(x: np.ndarray, rate: int = 8000) -> list[tuple[int, int]]:
+    """The strongest spectrogram peaks as (frame, bin), at most PEAKS_PER_SECOND per second."""
     if len(x) < N_FFT * 4:
         return []
     _, _, z = stft(x, fs=rate, nperseg=N_FFT, noverlap=N_FFT - HOP, boundary=None)
@@ -30,15 +30,18 @@ def landmarks(x: np.ndarray, rate: int = 8000) -> list[tuple[int, int]]:
     fi, ti = np.nonzero(local & (s > floor))
     if not len(ti):
         return []
-    # keep the strongest peaks per second of audio
     frames_per_s = rate / HOP
     budget = max(1, int(PEAKS_PER_SECOND * s.shape[1] / frames_per_s))
     order = np.argsort(s[fi, ti])[::-1][:budget]
-    peaks = sorted(zip(ti[order].tolist(), fi[order].tolist(), strict=True))
+    return sorted(zip(ti[order].tolist(), fi[order].tolist(), strict=True))
+
+
+def hashes(pk: list[tuple[int, int]]) -> list[tuple[int, int]]:
+    """Pair each peak with the next few in a target zone: (f1, f2, dt) hashes with the anchor frame."""
     out: list[tuple[int, int]] = []
-    for i, (t1, f1) in enumerate(peaks):
+    for i, (t1, f1) in enumerate(pk):
         n = 0
-        for t2, f2 in peaks[i + 1 :]:
+        for t2, f2 in pk[i + 1 :]:
             dt = t2 - t1
             if dt == 0:
                 continue
@@ -46,12 +49,24 @@ def landmarks(x: np.ndarray, rate: int = 8000) -> list[tuple[int, int]]:
                 break
             if abs(f2 - f1) > 64:
                 continue
-            h = (f1 << 15) | (f2 << 6) | dt
-            out.append((h, t1))
+            out.append(((f1 << 15) | (f2 << 6) | dt, t1))
             n += 1
             if n >= FAN_OUT:
                 break
     return out
+
+
+def landmarks(x: np.ndarray, rate: int = 8000) -> list[tuple[int, int]]:
+    """(hash, anchor frame) pairs. `x` must be at `rate` (8 kHz keeps phone-band content)."""
+    return hashes(peaks(x, rate))
+
+
+def at_speed(pk: list[tuple[int, int]], s: float, max_bin: int = N_FFT // 2 - 1) -> list[tuple[int, int]]:
+    """Peaks as they would sit if the audio were played at 1/s of its speed: times stretch by s,
+    frequencies divide by s. Hashing these finds a copy that was sped up by s without decoding
+    or resampling anything again."""
+    out = sorted({(int(round(t * s)), int(round((f + 1) / s)) - 1) for t, f in pk})
+    return [(t, f) for t, f in out if 0 <= f <= max_bin]
 
 
 @dataclass

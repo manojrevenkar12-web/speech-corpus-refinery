@@ -104,14 +104,15 @@ def evaluate(world: Path, log: list[dict[str, Any]], url: str | None = None) -> 
     }
 
     # synthetic speech
-    declared = [r for r, t in zip(rows, truth, strict=True) if t["synthetic"] and "voices.example" in t["url"]]
-    undeclared = [r for r, t in zip(rows, truth, strict=True) if t["synthetic"] and "voices.example" not in t["url"]]
+    declared = [r for r, t in zip(rows, truth, strict=True) if t["synthetic"] and t.get("declared")]
+    undeclared = [r for r, t in zip(rows, truth, strict=True) if t["synthetic"] and not t.get("declared") and not t["blocked_by"]]
     real_held = [r for r, t in zip(rows, truth, strict=True) if not t["synthetic"] and r["got"].startswith("held:")]
     synthetic = {
         "declared": len(declared),
         "declared_rejected": sum(1 for r in declared if r["got"] == "rejected:synthetic"),
         "undeclared": len(undeclared),
         "undeclared_held_for_review": sum(1 for r in undeclared if r["got"].startswith("held:")),
+        "undeclared_rejected_for_another_reason": sum(1 for r in undeclared if r["got"].startswith("rejected:")),
         "undeclared_kept": sum(1 for r in undeclared if r["got"] == "kept"),
         "real_speech_held": len(real_held),
     }
@@ -179,7 +180,7 @@ def markdown(ev: dict[str, Any], title: str = "Evaluation on the test world") ->
         "## Synthetic speech",
         "",
         f"- Declared (IPTC trainedAlgorithmicMedia in schema.org): {s['declared_rejected']} of {s['declared']} rejected",
-        f"- Undeclared: {s['undeclared_held_for_review']} of {s['undeclared']} held for review, {s['undeclared_kept']} kept",
+        f"- Undeclared: {s['undeclared_held_for_review']} of {s['undeclared']} held for review, {s.get('undeclared_rejected_for_another_reason', 0)} rejected for another reason, {s['undeclared_kept']} kept",
         f"- Real speech held by mistake: {s['real_speech_held']}",
         "",
         "## Transcripts of kept segments, against the true text",

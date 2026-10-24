@@ -16,6 +16,7 @@ import io
 import json
 import re
 import shutil
+from collections.abc import Sequence
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any
@@ -35,6 +36,9 @@ CC = {
     "CC-BY-NC-3.0": "https://creativecommons.org/licenses/by-nc/3.0/",
     "CC-BY-NC-4.0": "https://creativecommons.org/licenses/by-nc/4.0/",
     "CC-PDM-1.0": "https://creativecommons.org/publicdomain/mark/1.0/",
+    "CC-BY-SA-3.0": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "CC-BY-ND-4.0": "https://creativecommons.org/licenses/by-nd/4.0/",
+    "CC-BY-NC-SA-4.0": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
 }
 SYNTHETIC_IPTC = "http://cv.iptc.org/newscodes/digitalsourcetype/trainedAlgorithmicMedia"
 
@@ -45,6 +49,7 @@ class Truth:
     licence: str  # what is true, not what the page claims
     speech: bool
     synthetic: bool = False
+    declared: bool = False  # the source declares it AI-generated
     duplicate_of: str = ""  # a URL whose recording this repeats
     protected: bool = False  # contains our evaluation recordings
     defects: list[str] = field(default_factory=list)  # bandwidth, music, clipping, noise, corrupt
@@ -324,7 +329,7 @@ def build(root: Path | None = None, synthetic_clips: int = 24) -> Path:
     pages = []
     for n, (x, rate, text) in enumerate(synth[half:]):
         u = w.audio("voices.example", f"/clips/v{n:03d}.mp3", x, rate, "mp3", out_rate=44100, bitrate="128k")
-        w.add(Truth(u, "CC0-1.0", True, synthetic=True))
+        w.add(Truth(u, "CC0-1.0", True, synthetic=True, declared=True))
         rel = f"/clips/v{n:03d}.html"
         w.write("voices.example", rel, _audio_page(f"Voice sample {n}", u, CC["CC0-1.0"], synthetic=True, text=text))
         pages.append(f"http://voices.example{rel}")
@@ -426,7 +431,8 @@ def _clips(ids: list[str], texts: dict[str, str], audio: dict[str, np.ndarray], 
 def _synthetic(texts: dict[str, str], n: int) -> list[tuple[np.ndarray, int, str]]:
     from ..audio import models
 
-    picked = [t for k, t in sorted(texts.items()) if k.startswith("LJ050") and 60 < len(t) < 160][:n]
+    # narration from the printing-history chapter (LJ001), sentences beyond the 32 whose recordings we use
+    picked = [t for k, t in sorted(texts.items()) if k.startswith("LJ001-") and int(k[6:]) > 40 and 60 < len(t) < 160][:n]
     out = []
     for t in picked:
         x, rate = models.synthesize(t)
@@ -463,11 +469,14 @@ def _audio_page(title: str, audio_url: str, licence_url: str, synthetic: bool = 
     )
 
 
-def _rss(name: str, licence: str, episodes: list[tuple[str, str]]) -> str:
-    items = "".join(
-        f'<item><title>{escape(t)}</title><guid>{escape(u)}</guid><enclosure url="{escape(u)}" type="audio/mpeg" length="0"/></item>'
-        for t, u in episodes
-    )
+def _rss(name: str, licence: str, episodes: Sequence[tuple[str, ...]]) -> str:
+    def item(e: tuple[str, ...]) -> str:
+        t, u = e[0], e[1]
+        own = e[2] if len(e) > 2 else ""
+        lic = f'<podcast:license url="{CC.get(own, "")}">{own.lower()}</podcast:license>' if own else ""
+        return f'<item><title>{escape(t)}</title><guid>{escape(u)}</guid>{lic}<enclosure url="{escape(u)}" type="audio/mpeg" length="0"/></item>'
+
+    items = "".join(item(e) for e in episodes)
     return (
         '<?xml version="1.0" encoding="UTF-8"?>'
         '<rss version="2.0" xmlns:podcast="https://podcastindex.org/namespace/1.0">'
