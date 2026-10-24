@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 import { useSources } from "../../shared/api/queries";
 import type { Source } from "../../shared/api/types";
-import { duration, pct, usd } from "../../shared/lib/format";
+import { count, duration, pct, usd } from "../../shared/lib/format";
 import { reasonOf } from "../../shared/lib/reasons";
 import { Mono } from "../../shared/ui/marks";
 import { EmptyState, QueryView } from "../../shared/ui/states";
@@ -77,7 +77,7 @@ export function SourcesPage() {
                     <td className={styles.num}>{usd(s.usd_per_kept_hour)}</td>
                     <td className={styles.bars}>
                       <Decisions s={s} />
-                      <span className={styles.count}>{s.items} files</span>
+                      <span className={styles.count}>{count(s.items, "file")}</span>
                     </td>
                   </tr>
                 ))}

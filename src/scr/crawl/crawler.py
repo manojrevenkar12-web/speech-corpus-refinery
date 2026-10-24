@@ -106,7 +106,7 @@ class Crawler:
         if (
             state == "queued"
             and c.execute(
-                """SELECT 1 FROM do_not_crawl WHERE (kind = 'url' AND %s LIKE pattern || '%%')
+                """SELECT 1 FROM do_not_crawl WHERE (kind = 'url' AND starts_with(%s, pattern))
                OR (kind = 'domain' AND (%s = pattern OR %s LIKE '%%.' || pattern)) LIMIT 1""",
                 (url, hostname, hostname),
             ).fetchone()

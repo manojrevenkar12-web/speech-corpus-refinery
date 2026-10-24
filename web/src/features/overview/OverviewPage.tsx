@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 import { useOverview } from "../../shared/api/queries";
-import { duration, usd } from "../../shared/lib/format";
+import { count, duration, usd } from "../../shared/lib/format";
 import { reasonOf } from "../../shared/lib/reasons";
 import { Stat } from "../../shared/ui/marks";
 import { EmptyState, QueryView } from "../../shared/ui/states";
@@ -26,7 +26,7 @@ export function OverviewPage() {
                 <span className={styles.big}>{duration(o.kept_hours)}</span> usable speech from {duration(o.audio_hours)} analysed
               </h1>
               <p className={styles.sub}>
-                {o.files} files decided, {usd(o.cost.usd_per_kept_hour)} per usable hour at Cloud Run prices.
+                {count(o.files, "file")} decided, {usd(o.cost.usd_per_kept_hour)} per usable hour at Cloud Run prices.
                 {o.held > 0 && (
                   <>
                     {" "}

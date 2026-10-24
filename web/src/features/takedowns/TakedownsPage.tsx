@@ -3,7 +3,7 @@ import { type FormEvent, useState } from "react";
 import { api } from "../../shared/api/client";
 import { useExecuteTakedown, useTakedowns } from "../../shared/api/queries";
 import type { TakedownImpact } from "../../shared/api/types";
-import { duration } from "../../shared/lib/format";
+import { count, duration } from "../../shared/lib/format";
 import { EmptyState, ErrorState, QueryView } from "../../shared/ui/states";
 import styles from "./TakedownsPage.module.css";
 
@@ -58,7 +58,7 @@ function Request() {
       {impact && (
         <div className={styles.impact} role="status">
           <p>
-            Withdraws {impact.items} files and {impact.segments} segments ({duration(impact.kept_hours)} of kept speech), deletes their stored audio and blocks re-ingestion.
+            Withdraws {count(impact.items, "file")} and {count(impact.segments, "segment")} ({duration(impact.kept_hours)} of kept speech), deletes their stored audio and blocks re-ingestion.
           </p>
           <p>{impact.releases.length ? `Contained in releases ${impact.releases.join(", ")}: whoever trained on them must be told.` : "No release contains them yet."}</p>
           <button type="button" className={styles.danger} disabled={exec.isPending || impact.items + impact.segments === 0} onClick={() => exec.mutate(body, { onSuccess: () => (setImpact(null), setValue(""), setReason("")) })}>
@@ -96,7 +96,7 @@ export function TakedownsPage() {
                   <p className={styles.muted}>{t.reason}</p>
                   {t.affected && (
                     <p className={styles.muted}>
-                      Withdrew {t.affected.items} files and {t.affected.segments} segments, deleted {t.affected.blobs_deleted} stored files
+                      Withdrew {count(t.affected.items, "file")} and {count(t.affected.segments, "segment")}, deleted {count(t.affected.blobs_deleted, "stored file")}
                       {t.affected.releases.length ? `; was in ${t.affected.releases.join(", ")}` : ""}.
                     </p>
                   )}

@@ -20,8 +20,12 @@ from ..audio import decode as dec
 from . import build as wb
 
 RIGHTS_REASONS = {"robots", "tdm", "blocked_domain", "fetch"}
-LICENCE_URL = {**wb.CC, "CC-BY-SA-3.0": "https://creativecommons.org/licenses/by-sa/3.0/", "CC-BY-ND-4.0": "https://creativecommons.org/licenses/by-nd/4.0/",
-               "CC-BY-NC-SA-4.0": "https://creativecommons.org/licenses/by-nc-sa/4.0/"}
+LICENCE_URL = {
+    **wb.CC,
+    "CC-BY-SA-3.0": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "CC-BY-ND-4.0": "https://creativecommons.org/licenses/by-nd/4.0/",
+    "CC-BY-NC-SA-4.0": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+}
 RATE = 44100
 
 
@@ -98,7 +102,7 @@ def _resample(x: np.ndarray, rate: int) -> np.ndarray:
 
 def transform(x: np.ndarray, steps: list[dict[str, Any]], mats: Materials) -> np.ndarray:
     for st in steps or []:
-        (op, arg), = st.items()
+        ((op, arg),) = st.items()
         if op == "gain_db":
             x = x * 10 ** (float(arg) / 20)
         elif op == "clip_gain_db":
@@ -129,7 +133,9 @@ def transform(x: np.ndarray, steps: list[dict[str, Any]], mats: Materials) -> np
         else:
             raise SpecError(f"unknown transform {op}")
     peak = float(np.max(np.abs(x))) if len(x) else 0.0
-    return (x / peak * 0.99).astype(np.float32) if peak > 1.0 and not any("clip_gain_db" in s for s in steps or []) else x.astype(np.float32)
+    return (
+        (x / peak * 0.99).astype(np.float32) if peak > 1.0 and not any("clip_gain_db" in s for s in steps or []) else x.astype(np.float32)
+    )
 
 
 def render(spec_path: Path, out: Path) -> Path:
@@ -209,21 +215,43 @@ def _site_pages(w: wb.World, site: dict[str, Any], entries: list[tuple[dict[str,
                 rel = f"/pages/{it['id']}.html"
                 clip_ids = it["material"].get("clips", [])
                 transcript = " ".join(wb.lj_texts().get(c, "") for c in clip_ids) if it.get("transcript") == "published" else ""
-                w.write(host, rel, wb._audio_page(it.get("title", it["id"]), url, lic_url, synthetic=bool(it.get("declared_synthetic")), tdm_meta=bool(it.get("meta_tdm_reserved")), text=transcript))
+                w.write(
+                    host,
+                    rel,
+                    wb._audio_page(
+                        it.get("title", it["id"]),
+                        url,
+                        lic_url,
+                        synthetic=bool(it.get("declared_synthetic")),
+                        tdm_meta=bool(it.get("meta_tdm_reserved")),
+                        text=transcript,
+                    ),
+                )
                 links.append(f"http://{host}{rel}")
             else:
                 links.append(url)
         w.write(host, "/index.html", wb._page(site.get("title", host), links, site_lic_url))
         seeds.append({"source": host.split(".")[0], "kind": "html_index", "url": f"http://{host}/index.html"})
     elif kind == "rss":
-        w.write(host, "/feed.xml", wb._rss(site.get("title", host), site.get("licence", ""), [(it.get("title", it["id"]), url, it.get("licence", "")) for it, url in entries]))
+        w.write(
+            host,
+            "/feed.xml",
+            wb._rss(
+                site.get("title", host),
+                site.get("licence", ""),
+                [(it.get("title", it["id"]), url, it.get("licence", "")) for it, url in entries],
+            ),
+        )
         w.write(host, "/index.html", wb._page(site.get("title", host), [f"http://{host}/feed.xml"], ""))
         seeds.append({"source": host.split(".")[0], "kind": "html_index", "url": f"http://{host}/index.html"})
     elif kind == "archive":
         docs = []
         for it, url in entries:
             ident, name = url.split("/download/", 1)[1].split("/", 1) if "/download/" in url else (it["id"], url.rsplit("/", 1)[1])
-            meta = {"metadata": {"identifier": ident, "mediatype": "audio", "licenseurl": LICENCE_URL.get(it.get("licence", ""), "")}, "files": [{"name": name, "format": "VBR MP3" if name.endswith(".mp3") else "Flac" if name.endswith(".flac") else "WAVE"}]}
+            meta = {
+                "metadata": {"identifier": ident, "mediatype": "audio", "licenseurl": LICENCE_URL.get(it.get("licence", ""), "")},
+                "files": [{"name": name, "format": "VBR MP3" if name.endswith(".mp3") else "Flac" if name.endswith(".flac") else "WAVE"}],
+            }
             w.write(host, f"/metadata/{ident}.json", json.dumps(meta))
             docs.append({"identifier": ident})
         w.write(host, "/advancedsearch.json", json.dumps({"response": {"docs": docs}}))
@@ -231,9 +259,28 @@ def _site_pages(w: wb.World, site: dict[str, Any], entries: list[tuple[dict[str,
     elif kind == "librivox":
         text = "\n\n".join(" ".join(wb.lj_texts().get(c, "") for c in it["material"].get("clips", [])) for it, _ in entries)
         w.write(host, "/texts/book.txt", text)
-        secs = [{"id": str(i), "section_number": str(i + 1), "title": it.get("title", it["id"]), "listen_url": url, "language": "English", "playtime": "0", "readers": [{"reader_id": "1", "display_name": "A volunteer"}]} for i, (it, url) in enumerate(entries)]
-        book = {"id": "1", "title": site.get("title", host), "url_text_source": f"http://{host}/texts/book.txt", "language": "English", "sections": secs}
+        secs = [
+            {
+                "id": str(i),
+                "section_number": str(i + 1),
+                "title": it.get("title", it["id"]),
+                "listen_url": url,
+                "language": "English",
+                "playtime": "0",
+                "readers": [{"reader_id": "1", "display_name": "A volunteer"}],
+            }
+            for i, (it, url) in enumerate(entries)
+        ]
+        book = {
+            "id": "1",
+            "title": site.get("title", host),
+            "url_text_source": f"http://{host}/texts/book.txt",
+            "language": "English",
+            "sections": secs,
+        }
         w.write(host, "/api/feed/audiobooks/index.json", json.dumps({"books": [book]}))
-        seeds.append({"source": host.split(".")[0], "kind": "librivox", "url": f"http://{host}/api/feed/audiobooks/?format=json&extended=1"})
+        seeds.append(
+            {"source": host.split(".")[0], "kind": "librivox", "url": f"http://{host}/api/feed/audiobooks/?format=json&extended=1"}
+        )
     else:
         raise SpecError(f"{host}: unknown site type {kind}")

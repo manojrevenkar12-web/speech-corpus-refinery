@@ -1,0 +1,667 @@
+# Held-out world set3. Written blind from docs/POLICY.md, heldout/WRITING_SETS.md and
+# heldout/MATERIALS.md only. Themes: allotment gardening, branch-line railways, a cooking and
+# weather podcast, tram timetables, a volunteer read-aloud circle, a town library tape archive.
+
+sites:
+  # ---------------------------------------------------------------------------------------------
+  - host: allotment-radio.example
+    type: html
+    title: Allotment Radio
+    licence: CC-BY-4.0
+    robots: |
+      User-agent: *
+      Disallow: /
+
+      User-agent: ScrBot
+      Disallow: /members/
+      Allow: /members/open/
+      Disallow: /*.wav$
+    tdmrep:
+      - {location: "/shows/winter/*", tdm-reservation: 1}
+      - {location: "/shows/spring/*", tdm-reservation: 0}
+    items:
+      - id: a-seed
+        path: /shows/spring/seed-potatoes.flac
+        material: {clips: [LJ001-0001], gap: 0.5}
+        format: {codec: flac, rate: 44100}
+        transcript: published
+        expected: keep
+        why: >-
+          Clean full-band narration. No licence on the audio itself; the only licence is the
+          site-wide rel=license (CC BY 4.0), which the policy accepts. TDMRep has a rule for
+          /shows/spring/* with tdm-reservation 0, which reserves nothing. The `User-agent: *
+          Disallow: /` group does not apply because the ScrBot group replaces it. Best copy of
+          this recording (beats c-reupload-k1 on bandwidth tier; g-mirror is never fetched).
+
+      - id: a-prune
+        path: /shows/winter/pruning-roses.mp3
+        material: {clips: [LJ001-0009], gap: 0.5}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        expected: reject:tdm
+        why: >-
+          tdmrep.json reserves /shows/winter/*, so the request is never made. Audio reuses a
+          clip on purpose: it is never downloaded.
+
+      - id: a-members-locked
+        path: /members/compost-q-and-a.mp3
+        material: {clips: [LJ001-0010], gap: 0.5}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        expected: reject:robots
+        why: >-
+          The ScrBot group disallows /members/ and nothing longer allows this path. Never
+          downloaded, so it reuses a clip.
+
+      - id: a-members-open
+        path: /members/open/leaf-mould.mp3
+        material: {clips: [LJ001-0003], gap: 0.5}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        page: false
+        expected: keep
+        why: >-
+          Longest match wins: `Allow: /members/open/` is longer than `Disallow: /members/`. No
+          page of its own, so the licence is stated only at site level (rel=license CC BY 4.0).
+          Clean full-band speech. Beats its excerpt c-excerpt on bandwidth tier.
+
+      - id: a-wav
+        path: /shows/summer/watering-cans.wav
+        material: {clips: [LJ001-0011], gap: 0.5}
+        format: {codec: wav, rate: 22050}
+        expected: reject:robots
+        why: >-
+          `Disallow: /*.wav$` in the ScrBot group matches this path (RFC 9309 wildcard and
+          end anchor). Never downloaded, so it reuses a clip.
+
+      - id: a-meta
+        path: /shows/autumn/apple-storage.mp3
+        material: {clips: [LJ001-0012], gap: 0.5}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        meta_tdm_reserved: true
+        expected: reject:tdm
+        why: >-
+          Reservation only in the page meta tag. No tdmrep.json rule covers /shows/autumn/ and
+          there is no header. Under the policy the page is not used, so audio linked only from
+          it is never discovered. Never downloaded, so it reuses a clip.
+
+      - id: a-hot
+        path: /shows/summer/hedge-trimming.ogg
+        material: {clips: [LJ001-0015], gap: 0.5}
+        transforms:
+          - {gain_db: -8}
+          - {clip_gain_db: 4}
+        format: {codec: ogg, rate: 44100, bitrate: 128k}
+        expected: keep
+        why: >-
+          A "hot" master that never reaches full scale: -8 dB then +4 dB before the hard clip,
+          so the net is -4 dB and nothing flat-tops. This checks the clipping test does not fire
+          on loud lossy audio that is not clipped. The ND remaster a-nd is unusable, so it does
+          not count as a better copy.
+
+      - id: a-nd
+        path: /shows/summer/hedge-trimming-remaster.flac
+        material: {copy_of: a-hot}
+        transforms:
+          - {gain_db: 2}
+        format: {codec: flac, rate: 44100}
+        licence: CC-BY-ND-4.0
+        expected: reject:licence
+        why: >-
+          The schema.org licence on the audio (CC BY-ND) overrides the site's CC BY, and ND is
+          not usable. A deliberate re-upload of a-hot in a higher-bitrate format; an unusable
+          copy does not count, so a-hot stays kept.
+
+      - id: a-clip-severe
+        path: /shows/summer/strimmer-safety.flac
+        material: {clips: [LJ001-0025], gap: 0.5}
+        transforms:
+          - {clip_gain_db: 20}
+        format: {codec: flac, rate: 44100}
+        expected: reject:clipping
+        why: "Severe clipping (+20 dB into the limiter) in lossless FLAC; every segment is heavily flat-topped."
+
+      - id: a-synth-declared
+        path: /shows/spring/planting-guide.mp3
+        material: {synthetic: "Plant the seed potatoes once the soil has warmed, about a hand's width deep, and water them in on a dry morning.", voice: amy}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        declared_synthetic: true
+        expected: reject:synthetic
+        why: "The page declares the audio trainedAlgorithmicMedia. A /shows/spring/ path with tdm-reservation 0 does not change that."
+
+      - id: a-silence
+        path: /shows/autumn/bulb-planting-intro.mp3
+        material: {clips: [LJ001-0002], gap: 0.5}
+        transforms:
+          - {silence_suffix: 5.0}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        expected: reject:not_speech
+        why: >-
+          1.9 s of speech followed by 5 s of dead air, so about 28% of the file is speech. The
+          policy needs at least half. The speech itself is clean.
+
+      - id: a-protected
+        path: /talks/history-of-type.mp3
+        material: {clips: [LJ001-0021, LJ001-0022], gap: 0.6}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        expected: reject:protected
+        why: "LJ001-0021 and LJ001-0022 are evaluation recordings. Fetchable, licensed and clean, but they must never enter training."
+
+  # ---------------------------------------------------------------------------------------------
+  - host: branchline-voices.example
+    type: html
+    title: Branch Line Voices
+    tdmrep:
+      - {location: "/stations/*.flac", tdm-reservation: 1}
+    reserve_header_prefixes: ["/partners/"]
+    items:
+      - id: b-quiet-wav
+        path: /stations/ledbury-platform.wav
+        material: {clips: [LJ001-0011], gap: 0.5}
+        transforms:
+          - {gain_db: -24}
+        format: {codec: wav, rate: 22050}
+        licence: CC-BY-SA-3.0
+        expected: keep
+        why: >-
+          A clean recording that is simply quiet (-24 dB, no noise added), so its signal-to-noise
+          ratio is unchanged. Licence is in schema.org on the audio (CC BY-SA 3.0). The tdmrep
+          rule only covers .flac under /stations/, not .wav. The flac copy of this recording
+          (b-flac-reserved) is never fetched.
+
+      - id: b-flac-reserved
+        path: /stations/ledbury-platform-hq.flac
+        material: {copy_of: b-quiet-wav}
+        transforms:
+          - {gain_db: 10}
+        format: {codec: flac, rate: 44100}
+        licence: CC-BY-SA-3.0
+        expected: reject:tdm
+        why: >-
+          tdmrep.json reserves /stations/*.flac (wildcard on the extension), so the request is
+          never made. A deliberate higher-quality copy of b-quiet-wav that must not be fetched.
+
+      - id: b-lowpass-wide
+        path: /stations/signal-box.mp3
+        material: {clips: [LJ001-0012], gap: 0.5}
+        transforms:
+          - {lowpass_hz: 7400}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        licence: CC-BY-4.0
+        expected: keep
+        why: >-
+          Content reaches about 7.4 kHz: just above the 7 kHz floor, so it is labelled `wide`
+          and kept. The 44.1 kHz storage adds nothing. No other usable copy exists (b-nolicence
+          is unusable).
+
+      - id: b-partner-header
+        path: /partners/timetable-talk.mp3
+        material: {clips: [LJ001-0014], gap: 0.5}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        licence: CC-BY-4.0
+        expected: reject:tdm
+        why: >-
+          Reservation only in the response header (tdm-reservation: 1 under /partners/); no
+          tdmrep.json rule and no meta tag. The body is not read or kept, so it reuses a clip.
+
+      - id: b-nolicence
+        path: /stations/goods-yard.mp3
+        material: {copy_of: b-lowpass-wide}
+        transforms:
+          - {gain_db: 3}
+        format: {codec: mp3, rate: 44100, bitrate: 192k}
+        expected: reject:licence
+        why: >-
+          The page has no schema.org licence and the site has no rel=license, so no licence is
+          stated. A deliberate re-upload of b-lowpass-wide at a higher bitrate; as an unusable
+          copy it does not displace the kept one.
+
+      - id: b-nc-flac
+        path: /lines/viaduct-walk.flac
+        material: {clips: [LJ001-0005], gap: 0.5}
+        format: {codec: flac, rate: 44100}
+        licence: CC-BY-NC-SA-3.0
+        expected: reject:licence
+        why: >-
+          NC licence on the audio. This is the best-quality copy of the recording, but it is
+          unusable, so the CC BY ogg re-publication d-override is the one kept.
+
+      - id: b-declared-real
+        path: /lines/tunnel-history.mp3
+        material: {clips: [LJ001-0008], gap: 0.5}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        licence: CC-BY-4.0
+        declared_synthetic: true
+        expected: reject:synthetic
+        why: >-
+          The page declares the audio AI-generated although it is a human reading. The policy
+          rejects whatever the source declares, so the declaration decides.
+
+      - id: b-music-quiet
+        path: /lines/steam-gala-preview.mp3
+        material: {clips: [LJ001-0030], gap: 0.5}
+        transforms:
+          - {music_bed: {level_db: -28}}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        licence: CC-BY-4.0
+        expected: reject:music
+        why: "A very quiet music bed (-28 dB under the speech). The policy fails any bed, however quiet."
+
+      - id: b-birds
+        path: /lines/dawn-chorus-at-the-halt.ogg
+        material: {esc: 1-100038-A-14}
+        format: {codec: ogg, rate: 44100, bitrate: 96k}
+        licence: CC-BY-3.0
+        expected: reject:not_speech
+        why: "Birdsong only, with a usable licence. Not speech."
+
+      - id: b-val-noisy-rain
+        path: /lines/carriage-reading.mp3
+        material: {valentini: clean}
+        transforms:
+          - {mix_noise: {esc: 1-21189-A-10, snr_db: 32}}
+        format: {codec: mp3, rate: 16000, bitrate: 128k}
+        licence: CC-BY-4.0
+        expected: reject:duplicate
+        why: >-
+          The Valentini clean sentences with light rain at 32 dB. Usable on its own, but the same
+          recording is kept cleaner as e-val-clean. Both are `wide` (16 kHz source, and this file
+          is stored at 16 kHz so the rain cannot add highs), so the higher signal-to-noise ratio
+          decides, before bitrate (128k here against 64k there). The better copy is listed later
+          in the file on purpose.
+
+      - id: b-noise-ticks
+        path: /lines/clock-room.flac
+        material: {clips: [LJ001-0016], gap: 0.5}
+        transforms:
+          - {mix_noise: {esc: 1-21934-A-38, snr_db: 31}}
+        format: {codec: flac, rate: 44100}
+        licence: CC-BY-3.0
+        expected: keep
+        why: "Clock ticking under the speech at 31 dB, comfortably above 25 dB. CC BY 3.0 on the audio."
+
+      - id: b-protected-quiet
+        path: /lines/printing-lecture.wav
+        material: {clips: [LJ001-0017, LJ001-0023], gap: 0.4}
+        transforms:
+          - {gain_db: -10}
+        format: {codec: wav, rate: 16000}
+        licence: CC-BY-4.0
+        expected: reject:protected
+        why: "Two evaluation recordings, re-encoded quieter at 16 kHz. Protected in any copy or re-encoding."
+
+  # ---------------------------------------------------------------------------------------------
+  - host: kitchen-almanac.example
+    type: rss
+    title: The Kitchen Almanac (cooking and weather)
+    licence: CC-BY-SA-4.0
+    robots: |
+      User-agent: ScrBot
+      Disallow: /episodes/drafts/
+      Allow: /episodes/drafts/published-
+    reserve_header_prefixes: ["/episodes/members/"]
+    items:
+      - id: c-feed-licence
+        path: /episodes/ep101-sourdough-starter.mp3
+        material: {clips: [LJ001-0004], gap: 0.5}
+        transforms:
+          - {gain_db: -20}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        expected: keep
+        why: >-
+          Licence only at feed level (podcast:license CC BY-SA 4.0). A clean but quiet recording
+          (-20 dB, no noise) in a lossy format. The archive copy e-nolicence-copy is unusable.
+
+      - id: c-reupload-k1
+        path: /episodes/ep102-potatoes-repeat.mp3
+        material: {copy_of: a-seed}
+        transforms:
+          - {gain_db: -6}
+          - {silence_prefix: 1.5}
+        format: {codec: mp3, rate: 16000, bitrate: 64k}
+        expected: reject:duplicate
+        why: >-
+          A re-upload of a-seed on another site: quieter, longer (extra leading silence),
+          converted to MP3 and stored at 16 kHz, so `wide`. a-seed is `full` and wins on
+          bandwidth tier.
+
+      - id: c-tier-orig
+        path: /episodes/ep103-rye-bread.mp3
+        material: {clips: [LJ001-0014], gap: 0.5}
+        format: {codec: mp3, rate: 44100, bitrate: 96k}
+        expected: keep
+        why: >-
+          Full-band MP3 at 96k. Its faster FLAC re-upload d-tier-copy has a higher bitrate but
+          only reaches 9 kHz (`wide`), and tier is compared before bitrate, so this copy is kept.
+
+      - id: c-music
+        path: /episodes/ep104-winter-soup.mp3
+        material: {clips: [LJ001-0029], gap: 0.5}
+        transforms:
+          - {music_bed: {level_db: -18}}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        expected: reject:music
+        why: "A podcast music bed at -18 dB under the whole episode."
+
+      - id: c-clip-mp3
+        path: /episodes/ep105-whisking-egg-whites.mp3
+        material: {clips: [LJ001-0026], gap: 0.5}
+        transforms:
+          - {clip_gain_db: 9}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        expected: reject:clipping
+        why: >-
+          Moderate clipping (+9 dB into the limiter) that was then encoded to MP3. The codec
+          smears the flat tops, but the recording is clipped and the policy does not exempt
+          lossy files.
+
+      - id: c-synth
+        path: /episodes/ep106-weekend-forecast.mp3
+        material: {synthetic: "Tomorrow will start cloudy with light rain, clearing by the afternoon, with highs of fourteen degrees and a gentle westerly breeze.", voice: lessac}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        expected: reject:synthetic
+        why: "An undeclared TTS forecast (an RSS feed cannot carry the declaration). It sounds synthetic, so it is held for review, and held files are not released."
+
+      - id: c-members
+        path: /episodes/members/ep108-bonus-bread-tips.mp3
+        material: {clips: [LJ001-0015], gap: 0.5}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        expected: reject:tdm
+        why: "The response header tdm-reservation: 1 under /episodes/members/ (the header is the only place). The body is not kept, so it reuses a clip."
+
+      - id: c-draft
+        path: /episodes/drafts/ep109-marmalade.mp3
+        material: {clips: [LJ001-0026], gap: 0.5}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        expected: reject:robots
+        why: "`Disallow: /episodes/drafts/` for ScrBot. Never downloaded, so it reuses a clip."
+
+      - id: c-draft-published
+        path: /episodes/drafts/published-ep110-scones.ogg
+        material: {clips: [LJ001-0018], gap: 0.5}
+        transforms:
+          - {excerpt: {start: 1.0, end: 5.5}}
+        format: {codec: ogg, rate: 44100, bitrate: 96k}
+        expected: reject:protected
+        why: >-
+          `Allow: /episodes/drafts/published-` is longer than the Disallow, so the file is
+          fetched. It is a 4.5 s excerpt of evaluation recording LJ001-0018, which is protected
+          in any excerpt.
+
+      - id: c-noise-235
+        path: /episodes/ep111-airfield-picnic.mp3
+        material: {clips: [LJ001-0032], gap: 0.5}
+        transforms:
+          - {mix_noise: {esc: 1-172649-A-40, snr_db: 23.5}}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        expected: reject:noise
+        why: "Steady helicopter noise at 23.5 dB: just below the 25 dB segment threshold, in a lossy format."
+
+      - id: c-excerpt
+        path: /episodes/ep112-leaf-mould-clip.mp3
+        material: {copy_of: a-members-open}
+        transforms:
+          - {excerpt: {start: 2.0, end: 8.0}}
+        format: {codec: mp3, rate: 16000, bitrate: 64k}
+        expected: reject:duplicate
+        why: >-
+          A 6 s excerpt of a-members-open, re-posted at 16 kHz. The policy names excerpts only
+          for protected recordings. Its duplicate list (bitrate, loudness, silence, site, speed)
+          does not mention them. A careful data lead would not train on the same audio twice,
+          so I expect duplicate. Even ranked as a copy it loses: `wide` against `full`.
+
+  # ---------------------------------------------------------------------------------------------
+  - host: tramline-notes.example
+    type: rss
+    title: Tramline Notes (timetables and depots)
+    licence: CC-BY-NC-4.0
+    robots: |
+      User-agent: *
+      Disallow: /audio/
+
+      User-agent: scrbot
+      Disallow: /audio/archive/
+      Allow: /audio/archive/
+    items:
+      - id: d-jfk
+        path: /audio/ep1-famous-speeches.mp3
+        material: {jfk: true}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        expected: reject:licence
+        why: >-
+          No item licence, so the feed's podcast:license (CC BY-NC) applies. The underlying
+          speech is public domain, but the policy uses what the source states for the file.
+
+      - id: d-override
+        path: /audio/archive/ep2-tram-depot-tour.ogg
+        material: {copy_of: b-nc-flac}
+        format: {codec: ogg, rate: 44100, bitrate: 96k}
+        licence: CC-BY-4.0
+        expected: keep
+        why: >-
+          Two edge cases in one item. Robots: the lowercase `scrbot` group still matches
+          (user-agent matching is case-insensitive) and replaces `*`. In that group Allow and
+          Disallow for /audio/archive/ are the same length, and Allow wins ties. Licence: the
+          item's own CC BY 4.0 overrides the feed's NC. A re-publication of b-nc-flac; that
+          FLAC is unusable (NC), so this lower-bitrate OGG is the copy kept.
+
+      - id: d-tier-copy
+        path: /audio/ep3-rye-bread-repeat.flac
+        material: {copy_of: c-tier-orig}
+        transforms:
+          - {speed: 1.07}
+          - {lowpass_hz: 9000}
+        format: {codec: flac, rate: 44100}
+        licence: CC-BY-4.0
+        expected: reject:duplicate
+        why: >-
+          A 7% faster re-upload (inside the 10% the policy names), low-passed at 9 kHz after the
+          speed change, so it is `wide`, just under the 9.5 kHz `full` line. Lossless and a
+          higher bitrate than c-tier-orig, but tier comes first and c-tier-orig is `full`.
+
+      - id: d-clip-ogg
+        path: /audio/ep4-ticket-machines.ogg
+        material: {clips: [LJ001-0027], gap: 0.5}
+        transforms:
+          - {clip_gain_db: 12}
+        format: {codec: ogg, rate: 44100, bitrate: 128k}
+        licence: CC-BY-4.0
+        expected: reject:clipping
+        why: "Heavy clipping (+12 dB into the limiter) encoded to Ogg Vorbis. Clipped regardless of the lossy re-encode."
+
+      - id: d-engine-21
+        path: /audio/ep8-depot-yard.mp3
+        material: {clips: [LJ001-0013], gap: 0.5}
+        transforms:
+          - {mix_noise: {esc: 1-18527-A-44, snr_db: 21}}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        licence: CC-BY-4.0
+        expected: reject:noise
+        why: "An idling engine at 21 dB, below 25 dB. Item licence CC BY overrides the NC feed."
+
+  # ---------------------------------------------------------------------------------------------
+  - host: readaloud-circle.example
+    type: librivox
+    title: Read-Aloud Circle
+    items:
+      - id: f-chapter1
+        material: {clips: [LJ001-0007], gap: 0.5}
+        format: {codec: mp3, rate: 44100, bitrate: 64k}
+        transcript: published
+        expected: keep
+        why: >-
+          A typical LibriVox 64k MP3 under LibriVox's public-domain dedication (no other licence
+          given). The book text is published and matches. Full band, so it beats the slower 16 kHz
+          copy e-slow-copy on tier.
+
+      - id: f-insects
+        material: {clips: [LJ001-0009], gap: 0.5}
+        transforms:
+          - {mix_noise: {esc: 1-17585-A-7, snr_db: 27.5}}
+        format: {codec: ogg, rate: 44100, bitrate: 96k}
+        transcript: published
+        expected: keep
+        why: "A volunteer reading with insects buzzing outside at 27.5 dB, just above 25 dB. The published text still matches."
+
+      - id: f-clean-of-clipped
+        material: {clips: [LJ001-0028], gap: 0.5}
+        format: {codec: mp3, rate: 44100, bitrate: 64k}
+        transcript: published
+        expected: keep
+        why: >-
+          A clean MP3 of the recording whose archive FLAC (e-clip-flac) is clipped. The FLAC is
+          higher bitrate but unusable, so it does not count and this copy is kept.
+
+      - id: f-protected
+        material: {clips: [LJ001-0019, LJ001-0020], gap: 0.6}
+        format: {codec: mp3, rate: 44100, bitrate: 64k}
+        transcript: published
+        expected: reject:protected
+        why: "A LibriVox chapter made of evaluation recordings LJ001-0019 and LJ001-0020; public domain, but protected."
+
+  # ---------------------------------------------------------------------------------------------
+  - host: townhall-library-tapes.example
+    type: archive
+    title: Town Hall Library Tapes
+    items:
+      - id: e-rain-265
+        material: {clips: [LJ001-0006], gap: 0.5}
+        transforms:
+          - {mix_noise: {esc: 1-17367-A-10, snr_db: 26.5}}
+        format: {codec: flac, rate: 44100}
+        licence: CC0-1.0
+        expected: keep
+        why: "Steady rain on the reading-room roof at 26.5 dB, just above 25 dB. CC0 licenseurl."
+
+      - id: e-quiet-30
+        material: {clips: [LJ001-0010], gap: 0.5}
+        transforms:
+          - {gain_db: -30}
+        format: {codec: flac, rate: 44100}
+        licence: PDM-1.0
+        expected: keep
+        why: >-
+          A very quiet but clean tape transfer (-30 dB, no noise), so the signal-to-noise ratio
+          is unchanged. Licensed under the Public Domain Mark, which the policy lists as usable.
+          The louder 16 kHz MP3 re-upload e-louder-copy loses on tier.
+
+      - id: e-louder-copy
+        material: {copy_of: e-quiet-30}
+        transforms:
+          - {gain_db: 12}
+        format: {codec: mp3, rate: 16000, bitrate: 64k}
+        licence: CC-BY-4.0
+        expected: reject:duplicate
+        why: "A louder (+12 dB) re-upload of e-quiet-30 as a 16 kHz MP3, so it is `wide` against `full`."
+
+      - id: e-nolicence-copy
+        material: {copy_of: c-feed-licence}
+        transforms:
+          - {gain_db: 8}
+        format: {codec: flac, rate: 44100}
+        expected: reject:licence
+        why: >-
+          An archive item with no licenseurl, so no licence is stated. A deliberate lossless
+          copy of the podcast episode c-feed-licence; it is unusable, so it does not displace it.
+
+      - id: e-val-clean
+        material: {valentini: clean}
+        format: {codec: ogg, rate: 16000, bitrate: 64k}
+        licence: CC-BY-4.0
+        expected: keep
+        why: >-
+          Clean read speech at 16 kHz, so it is `wide` (content up to about 8 kHz) and kept. It
+          beats b-val-noisy-rain on signal-to-noise ratio despite the lower bitrate.
+          e-val-noisy is unusable (noise) and does not count.
+
+      - id: e-val-noisy
+        material: {valentini: noisy}
+        format: {codec: mp3, rate: 16000, bitrate: 64k}
+        licence: CC-BY-4.0
+        expected: reject:noise
+        why: "The same sentences recorded with background noise well below 25 dB."
+
+      - id: e-clip-flac
+        material: {clips: [LJ001-0028], gap: 0.5}
+        transforms:
+          - {clip_gain_db: 14}
+        format: {codec: flac, rate: 44100}
+        licence: CC-BY-4.0
+        expected: reject:clipping
+        why: >-
+          Clipped (+14 dB) lossless transfer of the recording also published cleanly as
+          f-clean-of-clipped. The higher bitrate does not help: a clipped copy is not usable.
+
+      - id: e-protected-fast
+        material: {copy_of: a-protected}
+        transforms:
+          - {speed: 1.06}
+          - {gain_db: -4}
+        format: {codec: flac, rate: 44100}
+        licence: CC0-1.0
+        expected: reject:protected
+        why: "A 6% faster, quieter FLAC copy of the protected a-protected. Protected in any copy."
+
+      - id: e-synth
+        material: {synthetic: "The library opens at nine on weekdays and at ten on Saturdays, and returned books can be left in the box by the side door.", voice: amy}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        licence: CC0-1.0
+        expected: reject:synthetic
+        why: "An undeclared TTS opening-hours announcement. It sounds synthetic, so it is held, and held files are not released."
+
+      - id: e-laugh
+        material: {esc: 1-1791-A-26}
+        format: {codec: flac, rate: 44100}
+        licence: CC-BY-3.0
+        expected: reject:not_speech
+        why: "Laughter only. The policy explicitly lists laughter as not speech."
+
+      - id: e-fsdd
+        material: {fsdd: {speaker: theo, n: 20}}
+        format: {codec: wav, rate: 44100}
+        licence: CC-BY-SA-4.0
+        expected: reject:bandwidth
+        why: >-
+          An 8 kHz digit recording (content below 4 kHz) stored at 44.1 kHz. That fails the
+          7 kHz floor whatever the sample rate. Single-digit segments would also fail on word
+          count, but bandwidth is a property of the whole file.
+
+      - id: e-lowpass-6600
+        material: {clips: [LJ001-0031], gap: 0.5}
+        transforms:
+          - {lowpass_hz: 6600}
+        format: {codec: flac, rate: 44100}
+        licence: CC-BY-SA-4.0
+        expected: reject:bandwidth
+        why: "Content stops at about 6.6 kHz, just under the 7 kHz floor, though the file is lossless at 44.1 kHz."
+
+      - id: e-slow-copy
+        material: {copy_of: f-chapter1}
+        transforms:
+          - {speed: 0.93}
+        format: {codec: ogg, rate: 16000, bitrate: 64k}
+        licence: CC-BY-4.0
+        expected: reject:duplicate
+        why: >-
+          A 7% slower re-upload of the LibriVox chapter f-chapter1, re-encoded to 16 kHz Ogg
+          (`wide`). f-chapter1 is `full` and kept.
+
+  # ---------------------------------------------------------------------------------------------
+  - host: audiobook-freebies.example
+    type: html
+    title: Audiobook Freebies
+    licence: CC-BY-4.0
+    blocked: true
+    items:
+      - id: g-mirror
+        path: /mirror/seed-potatoes.flac
+        material: {copy_of: a-seed}
+        format: {codec: flac, rate: 44100}
+        expected: reject:blocked_domain
+        why: >-
+          The domain is on the piracy blocklist and is never contacted. It mirrors a-seed in
+          identical quality; because it is never fetched, it has no effect on a-seed.
+
+      - id: g-protected
+        path: /mirror/history-of-type.mp3
+        material: {clips: [LJ001-0021, LJ001-0022], gap: 0.6}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        expected: reject:blocked_domain
+        why: "Blocked domain: never contacted, so its content (evaluation recordings) is never seen."

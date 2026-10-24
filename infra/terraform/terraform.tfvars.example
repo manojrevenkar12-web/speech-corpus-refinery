@@ -1,0 +1,4 @@
+project_id       = "my-speech-data"
+image            = "europe-west3-docker.pkg.dev/my-speech-data/scr-images/scr@sha256:0000000000000000000000000000000000000000000000000000000000000000"
+console_invokers = ["group:data-review@example.com"]
+alert_email      = "data-oncall@example.com"

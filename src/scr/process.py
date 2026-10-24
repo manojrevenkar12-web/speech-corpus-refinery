@@ -17,7 +17,7 @@ import tempfile
 import time
 from collections.abc import Iterator
 from contextlib import contextmanager
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 from typing import Any
 
@@ -134,6 +134,11 @@ def analyse(item_id: int, store: Store, url: str | None = None) -> dict[str, Any
         segments: list[Segment] | None = None,
     ) -> dict[str, Any]:
         with db.tx(url) as c:
+            now = c.execute("SELECT state, reason, detail FROM items WHERE id = %s FOR UPDATE", (item_id,)).fetchone()
+            if now and now["state"] == "rejected" and now["reason"] == "duplicate" and (now["detail"] or {}).get("replaced_by_better_copy"):
+                # a better copy was kept while this one was being analysed: that verdict stands
+                state, reason, detail = "rejected", "duplicate", {**detail, **now["detail"]}
+                segments = [replace(sg, state="withdrawn", reason="duplicate") for sg in segments or []]
             c.execute("DELETE FROM segments WHERE item_id = %s", (item_id,))
             if analysis is not None:
                 cols = ["item_id", "config_hash", *analysis]
@@ -167,6 +172,10 @@ def analyse(item_id: int, store: Store, url: str | None = None) -> dict[str, Any
                 "UPDATE items SET state = %s, reason = %s, detail = %s, decided_config = %s, decided_at = now() WHERE id = %s",
                 (state, reason, json.dumps(detail, default=float), chash, item_id),
             )
+            if state == "kept":
+                demote_replaced(c, item_id, detail.get("replaces") or [])
+            elif state == "rejected" and reason != "duplicate":
+                requeue_duplicates_of(c, item_id)
             for name, cpu, wall, audio_s in costs.rows:
                 c.execute(
                     "INSERT INTO costs (stage, item_id, source_id, cpu_seconds, wall_seconds, audio_seconds) VALUES (%s, %s, %s, %s, %s, %s)",
@@ -218,7 +227,7 @@ def analyse(item_id: int, store: Store, url: str | None = None) -> dict[str, Any
             "snr_db": snr_item.db,
             "snr_method": snr_item.method,
             "dbfs": probes.dbfs(x),
-            "clipped_ratio": probes.clipped_ratio(x, float(a_cfg["clip_threshold"])),
+            "clipped_ratio": probes.clipped_ratio(x, float(a_cfg["clip_level"])),
         }
 
         # 4. fingerprint: the protected evaluation set, then duplicates (one dedup at a time)
@@ -238,6 +247,7 @@ def analyse(item_id: int, store: Store, url: str | None = None) -> dict[str, Any
             return finish("rejected", "protected", dup, base | {"match": dup})
         if dup.get("duplicate_of"):
             return finish("rejected", "duplicate", dup, base | {"canonical_of": dup["duplicate_of"], "match": dup})
+        replaces: list[int] = dup.get("replaces", [])
 
         # 5. is it speech, wide enough, without music, in the right language?
         with costs.stage("tags", min(seconds, 120.0)):
@@ -249,6 +259,8 @@ def analyse(item_id: int, store: Store, url: str | None = None) -> dict[str, Any
             "bandwidth_hz": round(bw),
             "snr_db": round(snr_item.db, 1),
         }
+        if replaces:  # worse copies this one supersedes, if it is kept (or cleared after review)
+            detail["replaces"] = replaces
         if speech_s / seconds < float(d["min_speech_ratio"]) or tags["speech"] < float(d["speech_tag_min"]):
             return finish("rejected", "not_speech", detail, base)
         if bw < float(d["min_bandwidth_hz"]):
@@ -285,7 +297,7 @@ def analyse(item_id: int, store: Store, url: str | None = None) -> dict[str, Any
             sg = Segment(i, s0, s1)
             ctx0, ctx1 = max(0, int((s0 - 5) * 16000)), min(len(x), int((s1 + 5) * 16000))
             sg.snr_db = probes.snr(x[ctx0:ctx1], 16000, mask[int(ctx0 / 160) : int(ctx1 / 160) + 1]).db
-            sg.clipped = probes.clipped_ratio(y, float(a_cfg["clip_threshold"]))
+            sg.clipped = probes.clipped_ratio(y, float(a_cfg["clip_level"]))
             with costs.stage("asr", s1 - s0):
                 sg.asr = models.transcribe(y, cfg["target"]["language"])
             if book is not None:
@@ -325,6 +337,41 @@ def analyse(item_id: int, store: Store, url: str | None = None) -> dict[str, Any
         return finish("kept", None, detail, base, segs)
 
 
+def demote_replaced(c: Any, item_id: int, others: list[int]) -> list[int]:
+    """This copy is kept and better than `others`: they become its duplicates (unless something
+    else already decided them), and their segments leave the corpus."""
+    if not others:
+        return []
+    rows = c.execute(
+        """UPDATE items SET state = 'rejected', reason = 'duplicate',
+                  detail = detail || jsonb_build_object('duplicate_of', %s::bigint, 'replaced_by_better_copy', true)
+           WHERE id = ANY(%s) AND state IN ('new', 'kept', 'held') RETURNING id""",
+        (item_id, others),
+    ).fetchall()
+    ids = [int(r["id"]) for r in rows]
+    if ids:
+        c.execute("UPDATE segments SET state = 'withdrawn', reason = 'duplicate' WHERE item_id = ANY(%s) AND state = 'kept'", (ids,))
+    return ids
+
+
+def requeue_duplicates_of(c: Any, item_id: int) -> list[int]:
+    """This copy turned out unusable, so copies rejected as its duplicates were rejected for
+    nothing: they go back to the queue and are judged on their own."""
+    rows = c.execute(
+        """UPDATE items SET state = 'new', reason = NULL
+           WHERE state = 'rejected' AND reason = 'duplicate' AND (detail->>'duplicate_of')::bigint = %s RETURNING id""",
+        (item_id,),
+    ).fetchall()
+    ids = [int(r["id"]) for r in rows]
+    if ids:
+        c.execute(
+            """UPDATE jobs SET state = 'queued', attempts = 0, not_before = now(), lease_owner = NULL, lease_until = NULL,
+                      last_error = NULL WHERE kind = 'analyse' AND ref = ANY(%s)""",
+            (ids,),
+        )
+    return ids
+
+
 def speed_factors(max_change: float, step: float) -> list[float]:
     """Stretch factors that undo a speed change of up to `max_change`, nearest first, both ways."""
     out: list[float] = []
@@ -344,7 +391,9 @@ def quality_key(bandwidth_hz: float, snr_db: float, bytes_per_second: float) -> 
     return (tier, float(round(snr_db / 5.0)), float(bytes_per_second))
 
 
-def _match(c: Any, queries: list[tuple[float, list[tuple[int, int]]]], dd: dict[str, Any]) -> tuple[list[tuple[float, fp.Match]], dict[int, dict[str, Any]]]:
+def _match(
+    c: Any, queries: list[tuple[float, list[tuple[int, int]]]], dd: dict[str, Any]
+) -> tuple[list[tuple[float, fp.Match]], dict[int, dict[str, Any]]]:
     """Hits for the plain fingerprint and every speed variant, from one index lookup; for each
     indexed recording, the speed at which it matched best."""
     hashes = sorted({h for _, marks in queries for h, _ in marks})
@@ -408,7 +457,16 @@ def _dedup(
         if prot:
             out = {
                 "protected": True,
-                "matches": [{"label": meta[m.other]["label"], "votes": m.votes, "ratio": round(m.ratio, 3), "offset_s": round(m.offset_seconds, 2), **found(m)} for m in prot],
+                "matches": [
+                    {
+                        "label": meta[m.other]["label"],
+                        "votes": m.votes,
+                        "ratio": round(m.ratio, 3),
+                        "offset_s": round(m.offset_seconds, 2),
+                        **found(m),
+                    }
+                    for m in prot
+                ],
             }
         else:
             for m in hits:
@@ -419,17 +477,22 @@ def _dedup(
                 if o["state"] == "withdrawn" or (o["state"] == "rejected" and o["reason"] != "duplicate"):
                     continue  # an unusable copy does not stop this one
                 if tuple(o["quality"]) >= quality:
-                    out = {"duplicate_of": other, "votes": m.votes, "ratio": round(m.ratio, 3), "offset_s": round(m.offset_seconds, 2), **found(m)}
+                    out = {
+                        "duplicate_of": other,
+                        "votes": m.votes,
+                        "ratio": round(m.ratio, 3),
+                        "offset_s": round(m.offset_seconds, 2),
+                        **found(m),
+                    }
                     break
-                # this copy is better: the earlier one becomes the duplicate
-                c.execute(
-                    "UPDATE items SET state = 'rejected', reason = 'duplicate', detail = detail || %s WHERE id = %s",
-                    (json.dumps({"duplicate_of": item_id, "replaced_by_better_copy": True}), other),
-                )
-                c.execute("UPDATE segments SET state = 'withdrawn', reason = 'duplicate' WHERE item_id = %s", (other,))
+                # this copy is better, but it may still fail (clipping, noise...): the earlier copy is
+                # demoted only once this one is kept (finish), never before
+                out.setdefault("replaces", []).append(other)
         if not out.get("protected"):
             c.execute("DELETE FROM fp_items WHERE item_id = %s", (item_id,))
-            r = c.execute("INSERT INTO fp_items (item_id, n, quality) VALUES (%s, %s, %s) RETURNING id", (item_id, len(marks), list(quality))).fetchone()
+            r = c.execute(
+                "INSERT INTO fp_items (item_id, n, quality) VALUES (%s, %s, %s) RETURNING id", (item_id, len(marks), list(quality))
+            ).fetchone()
             assert r is not None
             with c.cursor().copy("COPY fp_hashes (h, fp_id, t) FROM STDIN") as cp:
                 for h, t in marks:

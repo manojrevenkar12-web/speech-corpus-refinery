@@ -1,7 +1,7 @@
 import { motion as m, useReducedMotion } from "framer-motion";
 
 import type { Loss } from "../../shared/api/types";
-import { duration } from "../../shared/lib/format";
+import { count, duration } from "../../shared/lib/format";
 import { reasonOf } from "../../shared/lib/reasons";
 import { motion, tapeDelay } from "../../shared/theme/motion";
 import styles from "./HoursTape.module.css";
@@ -45,14 +45,14 @@ export function HoursTape({ total, kept, losses }: { total: number; kept: number
                 <span className={styles.swatch} aria-hidden />
                 <span className={styles.label}>{r.label}</span>
                 <span className={styles.hours}>{duration(p.hours)}</span>
-                {p.files > 0 && <span className={styles.files}>{p.files} files</span>}
+                {p.files > 0 && <span className={styles.files}>{count(p.files, "file")}</span>}
               </li>
             );
           })}
         </ol>
         {untimed.length > 0 && (
           <p className={styles.untimed}>
-            Rejected before decoding, so no hours measured: {untimed.map((l) => `${reasonOf(l.reason).label.toLowerCase()} (${l.files} files)`).join(", ")}.
+            Rejected before decoding, so no hours measured: {untimed.map((l) => `${reasonOf(l.reason).label.toLowerCase()} (${count(l.files, "file")})`).join(", ")}.
           </p>
         )}
       </figcaption>

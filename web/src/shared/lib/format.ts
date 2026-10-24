@@ -32,3 +32,8 @@ export function fileOf(url: string): string {
   const parts = url.split("/");
   return parts[parts.length - 1] || url;
 }
+
+/** "1 file", "3 files". */
+export function count(n: number, one: string, many = `${one}s`): string {
+  return `${n.toLocaleString("en")} ${n === 1 ? one : many}`;
+}

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { duration, fileOf, hostOf, pct, seconds, usd } from "./format";
+import { count, duration, fileOf, hostOf, pct, seconds, usd } from "./format";
 import { reasonOf } from "./reasons";
 
 describe("format", () => {
@@ -16,6 +16,8 @@ describe("format", () => {
     expect(pct(0.605)).toBe("61%");
     expect(hostOf("http://a.example/x/y.mp3")).toBe("a.example");
     expect(fileOf("http://a.example/x/y.mp3")).toBe("y.mp3");
+    expect(count(1, "file")).toBe("1 file");
+    expect(count(1200, "file")).toBe("1,200 files");
   });
 
   it("names every reason, including segment-level ones", () => {

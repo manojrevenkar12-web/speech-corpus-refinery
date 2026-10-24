@@ -21,7 +21,7 @@ audio:
   analysis_rate: 16000        # models and probes run at 16 kHz
   min_item_seconds: 1.0
   max_item_seconds: 14400     # 4 hours
-  clip_threshold: 0.98        # |sample| at or above this, three samples in a row, counts as clipped
+  clip_level: 0.9             # |sample| at or above this share of full scale counts as clipped (survives mp3/ogg ripple)
   bandwidth_floor_db: -50     # HiFiTTS-2: highest frequency within 50 dB of the spectral peak
   bandwidth_window_seconds: 30
   pause_floor_dbfs: -65       # pauses quieter than this are silence, not a bed

@@ -1,7 +1,7 @@
 import { useSearchParams } from "react-router-dom";
 
 import { useItems } from "../../shared/api/queries";
-import { fileOf, hostOf, seconds } from "../../shared/lib/format";
+import { count, fileOf, hostOf, seconds } from "../../shared/lib/format";
 import { REASONS } from "../../shared/lib/reasons";
 import { Reason } from "../../shared/ui/marks";
 import { EmptyState, QueryView } from "../../shared/ui/states";
@@ -63,7 +63,7 @@ export function ItemsPage() {
           {(d) => (
             <>
               <p className={styles.count}>
-                {d.total} files{d.total > d.items.length ? `, ${offset + 1} to ${offset + d.items.length} shown` : ""}
+                {count(d.total, "file")}{d.total > d.items.length ? `, ${offset + 1} to ${offset + d.items.length} shown` : ""}
               </p>
               <ul className={styles.list}>
                 {d.items.map((it) => (

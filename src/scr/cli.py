@@ -94,10 +94,16 @@ def work(processes: int = 1) -> None:
 @app.command("release")
 def release_cmd(name: str) -> None:
     """Freeze the kept segments into an immutable release."""
-    from . import release
-    from .store import default
+    import os
 
-    _out(release.build(name, default()))
+    from . import release
+    from .store import default, publish_dir
+
+    out = release.build(name, default())
+    bucket = os.environ.get("SCR_RELEASES_BUCKET")
+    if bucket:  # in the cloud the container's disk goes away; the bucket is the release
+        out["published"] = publish_dir(bucket, name, config.DATA_DIR / "releases" / name)
+    _out(out)
 
 
 @app.command()

@@ -1,0 +1,10 @@
+.git
+data
+**/node_modules
+web/dist
+**/__pycache__
+.pytest_cache
+.ruff_cache
+.mypy_cache
+infra/terraform/.terraform
+reports

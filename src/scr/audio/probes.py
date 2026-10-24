@@ -13,16 +13,19 @@ def dbfs(x: np.ndarray) -> float:
     return 20 * np.log10(rms) if rms > 0 else -120.0
 
 
-def clipped_ratio(x: np.ndarray, threshold: float) -> float:
-    """Share of samples at full scale that sit in runs of three or more (single peaks at full
-    scale are legitimate; flat-topped runs are clipping)."""
+def clipped_ratio(x: np.ndarray, level: float) -> float:
+    """Share of samples at or above `level` of full scale.
+
+    Hard clipping piles samples up at full scale. In a lossless file they sit on flat tops; a
+    lossy codec (mp3, ogg) and resampling turn the flat tops into ripple around full scale, often
+    overshooting it, so a test for runs of identical samples finds nothing. The share of samples
+    near full scale survives both: at 0.9 it matched the true clipped share within a factor of two
+    on 240 test files in flac, mp3 and ogg (docs/MEASUREMENTS.md). Unclipped speech normalised to
+    full scale has under 0.03% of its samples there.
+    """
     if not len(x):
         return 0.0
-    hot = np.abs(x) >= threshold
-    if not hot.any():
-        return 0.0
-    run3 = hot[:-2] & hot[1:-1] & hot[2:]
-    return float(run3.sum()) / len(x)
+    return float(np.count_nonzero(np.abs(x) >= level)) / len(x)
 
 
 def bandwidth(x: np.ndarray, rate: int, floor_db: float) -> float:

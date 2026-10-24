@@ -21,7 +21,7 @@ from fastapi import Depends, FastAPI, Header, HTTPException, Query
 from fastapi.responses import FileResponse, Response
 from pydantic import BaseModel, Field
 
-from . import audit, config, cost, db, release, takedown
+from . import audit, config, cost, db, process, release, takedown
 from .audio import decode as dec
 from .store import Store
 from .store import default as default_store
@@ -100,13 +100,20 @@ def create_app(url: str | None = None, store: Store | None = None) -> FastAPI:
     @app.get("/api/overview", dependencies=viewer)
     def overview() -> dict[str, Any]:
         with tx() as c:
-            urls = {f"{r['state']}:{r['reason'] or ''}".rstrip(":"): r["n"] for r in c.execute("SELECT state, reason, count(*) AS n FROM urls WHERE kind = 'audio' GROUP BY state, reason")}
-            not_fetched = {r["reason"]: r["n"] for r in c.execute("SELECT reason, count(*) AS n FROM urls WHERE state = 'skipped' GROUP BY reason")}
+            urls = {
+                f"{r['state']}:{r['reason'] or ''}".rstrip(":"): r["n"]
+                for r in c.execute("SELECT state, reason, count(*) AS n FROM urls WHERE kind = 'audio' GROUP BY state, reason")
+            }
+            not_fetched = {
+                r["reason"]: r["n"] for r in c.execute("SELECT reason, count(*) AS n FROM urls WHERE state = 'skipped' GROUP BY reason")
+            }
             funnel_rows = c.execute(
                 """SELECT i.state, i.reason, count(*) AS n, coalesce(sum(a.seconds), 0) AS secs
                    FROM items i LEFT JOIN analyses a ON a.item_id = i.id GROUP BY i.state, i.reason"""
             ).fetchall()
-            kept = c.execute("SELECT coalesce(sum(s.end_s - s.start_s), 0) AS secs FROM segments s JOIN items i ON i.id = s.item_id WHERE i.state = 'kept' AND s.state = 'kept'").fetchone()
+            kept = c.execute(
+                "SELECT coalesce(sum(s.end_s - s.start_s), 0) AS secs FROM segments s JOIN items i ON i.id = s.item_id WHERE i.state = 'kept' AND s.state = 'kept'"
+            ).fetchone()
             seg_rej = c.execute(
                 "SELECT s.reason, coalesce(sum(s.end_s - s.start_s), 0) AS secs FROM segments s JOIN items i ON i.id = s.item_id WHERE i.state = 'kept' AND s.state <> 'kept' GROUP BY s.reason"
             ).fetchall()
@@ -114,11 +121,30 @@ def create_app(url: str | None = None, store: Store | None = None) -> FastAPI:
             latest = c.execute("SELECT name, created_at, stats FROM releases ORDER BY id DESC LIMIT 1").fetchone()
             held = c.execute("SELECT count(*) AS n FROM items WHERE state = 'held'").fetchone()
             v = audit.verify(c)
-            jobs = {f"{r['kind']}:{r['state']}": r["n"] for r in c.execute("SELECT kind, state, count(*) AS n FROM jobs GROUP BY kind, state")}
+            jobs = {
+                f"{r['kind']}:{r['state']}": r["n"] for r in c.execute("SELECT kind, state, count(*) AS n FROM jobs GROUP BY kind, state")
+            }
         files = sum(r["n"] for r in funnel_rows)
         secs = sum(float(r["secs"]) for r in funnel_rows)
         stages = []
-        order = ["licence", "synthetic", "corrupt", "too_short", "takedown", "protected", "duplicate", "not_speech", "bandwidth", "music", "language", "synthetic_suspected", "noise", "clipping", "misaligned", "no_text"]
+        order = [
+            "licence",
+            "synthetic",
+            "corrupt",
+            "too_short",
+            "takedown",
+            "protected",
+            "duplicate",
+            "not_speech",
+            "bandwidth",
+            "music",
+            "language",
+            "synthetic_suspected",
+            "noise",
+            "clipping",
+            "misaligned",
+            "no_text",
+        ]
         by_reason: dict[str, dict[str, float]] = {}
         for r in funnel_rows:
             if r["state"] in ("rejected", "held", "withdrawn"):
@@ -158,11 +184,25 @@ def create_app(url: str | None = None, store: Store | None = None) -> FastAPI:
             seeds = {r["name"]: r for r in c.execute("SELECT name, kind, seed_url FROM sources")}
         out = []
         for name, s in rep["sources"].items():
-            out.append({"name": name, **s, "kind": seeds.get(name, {}).get("kind"), "seed": seeds.get(name, {}).get("seed_url"), "discovery": scores.get(name)})
+            out.append(
+                {
+                    "name": name,
+                    **s,
+                    "kind": seeds.get(name, {}).get("kind"),
+                    "seed": seeds.get(name, {}).get("seed_url"),
+                    "discovery": scores.get(name),
+                }
+            )
         return sorted(out, key=lambda s: -s["kept_hours"])
 
     @app.get("/api/items", dependencies=viewer)
-    def items(state: str | None = None, reason: str | None = None, source: str | None = None, limit: int = Query(50, ge=1, le=500), offset: int = Query(0, ge=0)) -> dict[str, Any]:
+    def items(
+        state: str | None = None,
+        reason: str | None = None,
+        source: str | None = None,
+        limit: int = Query(50, ge=1, le=500),
+        offset: int = Query(0, ge=0),
+    ) -> dict[str, Any]:
         where, args = ["true"], []
         if state:
             where.append("i.state = %s")
@@ -173,7 +213,7 @@ def create_app(url: str | None = None, store: Store | None = None) -> FastAPI:
         if source:
             where.append("src.name = %s")
             args.append(source)
-        q = f"""FROM items i JOIN urls u ON u.id = i.url_id JOIN sources src ON src.id = i.source_id LEFT JOIN analyses a ON a.item_id = i.id WHERE {' AND '.join(where)}"""
+        q = f"""FROM items i JOIN urls u ON u.id = i.url_id JOIN sources src ON src.id = i.source_id LEFT JOIN analyses a ON a.item_id = i.id WHERE {" AND ".join(where)}"""
         with tx() as c:
             total = c.execute(f"SELECT count(*) AS n {q}", args).fetchone()
             rows = c.execute(
@@ -194,15 +234,20 @@ def create_app(url: str | None = None, store: Store | None = None) -> FastAPI:
                 raise HTTPException(404, "no such item")
             a = c.execute("SELECT * FROM analyses WHERE item_id = %s", (item_id,)).fetchone()
             segs = c.execute(
-                "SELECT id, idx, start_s, end_s, text, asr, cer, snr_db, clipped_ratio, tier, speaker, state, reason FROM segments WHERE item_id = %s ORDER BY idx", (item_id,)
+                "SELECT id, idx, start_s, end_s, text, asr, cer, snr_db, clipped_ratio, tier, speaker, state, reason FROM segments WHERE item_id = %s ORDER BY idx",
+                (item_id,),
             ).fetchall()
-            reviews = c.execute("SELECT reviewer, verdict, note, at, segment_id FROM reviews WHERE item_id = %s ORDER BY at", (item_id,)).fetchall()
+            reviews = c.execute(
+                "SELECT reviewer, verdict, note, at, segment_id FROM reviews WHERE item_id = %s ORDER BY at", (item_id,)
+            ).fetchall()
             blob = c.execute("SELECT deleted_at FROM blobs WHERE sha256 = %s", (r["sha256"],)).fetchone()
         return {"item": r, "analysis": a, "segments": segs, "reviews": reviews, "audio_available": bool(blob and not blob["deleted_at"])}
 
     def _audio_path(item_id: int, tmp: Path) -> Path:
         with tx() as c:
-            r = c.execute("SELECT i.sha256, b.deleted_at FROM items i JOIN blobs b ON b.sha256 = i.sha256 WHERE i.id = %s", (item_id,)).fetchone()
+            r = c.execute(
+                "SELECT i.sha256, b.deleted_at FROM items i JOIN blobs b ON b.sha256 = i.sha256 WHERE i.id = %s", (item_id,)
+            ).fetchone()
         if r is None:
             raise HTTPException(404, "no such item")
         if r["deleted_at"]:
@@ -222,7 +267,12 @@ def create_app(url: str | None = None, store: Store | None = None) -> FastAPI:
             return Response(out.read_bytes(), media_type="audio/wav", headers={"Cache-Control": "private, max-age=3600"})
 
     @app.get("/api/items/{item_id}/spectrogram", dependencies=viewer)
-    def spectrogram(item_id: int, width: int = Query(600, ge=50, le=2000), bands: int = Query(64, ge=16, le=128), seconds: float = Query(120.0, gt=0, le=600)) -> dict[str, Any]:
+    def spectrogram(
+        item_id: int,
+        width: int = Query(600, ge=50, le=2000),
+        bands: int = Query(64, ge=16, le=128),
+        seconds: float = Query(120.0, gt=0, le=600),
+    ) -> dict[str, Any]:
         """A log-frequency spectrogram (dB, 0 to 1 scaled) and the peak envelope, for drawing."""
         from scipy.signal import stft
 
@@ -250,11 +300,16 @@ def create_app(url: str | None = None, store: Store | None = None) -> FastAPI:
         }
 
     @app.get("/api/review/queue", dependencies=viewer)
-    def queue(kind: str = Query("held", pattern="^(held|kept|rejected)$"), n: int = Query(20, ge=1, le=100), seed: int = 0) -> list[dict[str, Any]]:
+    def queue(
+        kind: str = Query("held", pattern="^(held|kept|rejected)$"), n: int = Query(20, ge=1, le=100), seed: int = 0
+    ) -> list[dict[str, Any]]:
         """Held files first; then random spot checks of decisions, stratified by reason."""
         with tx() as c:
             if kind == "held":
-                rows = c.execute("SELECT i.id, u.url, i.state, i.reason, i.detail FROM items i JOIN urls u ON u.id = i.url_id WHERE i.state = 'held' ORDER BY i.id LIMIT %s", (n,)).fetchall()
+                rows = c.execute(
+                    "SELECT i.id, u.url, i.state, i.reason, i.detail FROM items i JOIN urls u ON u.id = i.url_id WHERE i.state = 'held' ORDER BY i.id LIMIT %s",
+                    (n,),
+                ).fetchall()
             else:
                 rows = c.execute(
                     """SELECT i.id, u.url, i.state, i.reason, i.detail FROM items i JOIN urls u ON u.id = i.url_id
@@ -262,7 +317,7 @@ def create_app(url: str | None = None, store: Store | None = None) -> FastAPI:
                        AND (i.reason IS NULL OR i.reason NOT IN ('licence', 'synthetic'))""",
                     (kind,),
                 ).fetchall()
-                rng = random.Random(seed)
+                rng = random.Random(seed)  # noqa: S311 - sampling files for spot checks, not security
                 by: dict[str, list[dict[str, Any]]] = {}
                 for r in rows:
                     by.setdefault(r["reason"] or "kept", []).append(r)
@@ -307,7 +362,7 @@ def create_app(url: str | None = None, store: Store | None = None) -> FastAPI:
     def resolve(item_id: int, body: ResolveBody, who: str = Depends(require("reviewer"))) -> dict[str, Any]:
         """A person decides a held file."""
         with tx() as c:
-            r = c.execute("SELECT state FROM items WHERE id = %s FOR UPDATE", (item_id,)).fetchone()
+            r = c.execute("SELECT state, detail FROM items WHERE id = %s FOR UPDATE", (item_id,)).fetchone()
             if r is None:
                 raise HTTPException(404, "no such item")
             if r["state"] != "held":
@@ -317,6 +372,10 @@ def create_app(url: str | None = None, store: Store | None = None) -> FastAPI:
                 "UPDATE items SET state = %s, reason = %s, detail = detail || %s WHERE id = %s",
                 (state, reason, json.dumps({"resolved_by": who, "resolution_note": body.note}), item_id),
             )
+            if state == "kept":  # it may be the better copy of something already kept
+                process.demote_replaced(c, item_id, (r["detail"] or {}).get("replaces") or [])
+            else:
+                process.requeue_duplicates_of(c, item_id)
             audit.append(c, who, "review.resolve", {"item_id": item_id, "decision": body.decision, "note": body.note})
         return {"item_id": item_id, "state": state}
 
@@ -326,9 +385,18 @@ def create_app(url: str | None = None, store: Store | None = None) -> FastAPI:
             return c.execute("SELECT name, created_at, manifest_sha256, stats, parent FROM releases ORDER BY id DESC").fetchall()
 
     @app.get("/api/releases/{name}/files/{fname}", dependencies=viewer)
-    def release_file(name: str, fname: str) -> FileResponse:
+    def release_file(name: str, fname: str) -> Response:
         if fname not in ("CARD.md", "AI_ACT_SUMMARY.md", "ATTRIBUTION.md", "ai_act_summary.json"):
             raise HTTPException(404, "no such file")
+        media = "application/json" if fname.endswith(".json") else "text/markdown; charset=utf-8"
+        bucket = os.environ.get("SCR_RELEASES_BUCKET")
+        if bucket:  # in the cloud, the published release is the bucket's copy
+            from google.cloud import storage
+
+            blob = storage.Client().bucket(bucket).blob(f"{name}/{fname}")
+            if "/" in name or not blob.exists():
+                raise HTTPException(404, "no such release file")
+            return Response(blob.download_as_bytes(), media_type=media)
         p = config.DATA_DIR / "releases" / name / fname
         if not p.exists() or p.parent.parent != config.DATA_DIR / "releases":
             raise HTTPException(404, "no such release file")
@@ -380,4 +448,3 @@ def _mount_web(app: FastAPI, web: Path) -> None:
 
 def app_from_env() -> FastAPI:  # pragma: no cover - wiring
     return create_app()
-

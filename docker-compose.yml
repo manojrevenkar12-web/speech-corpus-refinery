@@ -1,0 +1,32 @@
+# Local stack: PostgreSQL, the API and console on http://localhost:8080, and one-shot jobs.
+#   docker compose up -d db api
+#   docker compose run --rm job migrate && docker compose run --rm job protect
+#   docker compose run --rm job demo
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: scr
+      POSTGRES_PASSWORD: scr-local-only
+      POSTGRES_DB: scr
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "scr"]
+      interval: 2s
+      retries: 30
+    volumes: [pg:/var/lib/postgresql/data]
+  api:
+    build: .
+    environment:
+      SCR_DATABASE_URL: postgresql://scr:scr-local-only@db:5432/scr
+      SCR_API_KEYS: ${SCR_API_KEYS:-}
+    ports: ["8080:8080"]
+    depends_on: { db: { condition: service_healthy } }
+    volumes: [store:/app/data/store, releases:/app/data/releases]
+  job:
+    build: .
+    profiles: [jobs]
+    environment:
+      SCR_DATABASE_URL: postgresql://scr:scr-local-only@db:5432/scr
+    depends_on: { db: { condition: service_healthy } }
+    volumes: [store:/app/data/store, releases:/app/data/releases]
+volumes: { pg: {}, store: {}, releases: {} }

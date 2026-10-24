@@ -23,6 +23,9 @@ mimetypes.add_type("audio/mpeg", ".mp3")
 mimetypes.add_type("audio/wav", ".wav")
 mimetypes.add_type("application/rss+xml", ".xml")
 
+LOG: web.AppKey[list[dict[str, Any]]] = web.AppKey("log")
+ATTEMPTS: web.AppKey[Counter[str]] = web.AppKey("attempts")
+
 
 def make_app(root: Path) -> web.Application:
     sites = root / "sites"
@@ -97,8 +100,8 @@ def make_app(root: Path) -> web.Application:
         return web.Response(body=body, headers={"Content-Type": ctype, "ETag": etag, **extra})
 
     app = web.Application()
-    app["log"] = log
-    app["attempts"] = attempts
+    app[LOG] = log
+    app[ATTEMPTS] = attempts
     app.router.add_route("*", "/{tail:.*}", handle)
     return app
 
@@ -148,4 +151,5 @@ class WorldServer:
 
     @property
     def log(self) -> list[dict[str, Any]]:
-        return list(self.runner.app["log"])
+        entries: list[dict[str, Any]] = self.runner.app[LOG]
+        return list(entries)

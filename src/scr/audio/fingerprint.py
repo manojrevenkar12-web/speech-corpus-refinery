@@ -65,7 +65,7 @@ def at_speed(pk: list[tuple[int, int]], s: float, max_bin: int = N_FFT // 2 - 1)
     """Peaks as they would sit if the audio were played at 1/s of its speed: times stretch by s,
     frequencies divide by s. Hashing these finds a copy that was sped up by s without decoding
     or resampling anything again."""
-    out = sorted({(int(round(t * s)), int(round((f + 1) / s)) - 1) for t, f in pk})
+    out = sorted({(round(t * s), round((f + 1) / s) - 1) for t, f in pk})
     return [(t, f) for t, f in out if 0 <= f <= max_bin]
 
 

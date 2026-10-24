@@ -102,6 +102,21 @@ class GcsStore:
         self.bucket.blob(key).upload_from_string(body)
 
 
+def publish_dir(bucket: str, prefix: str, folder: Path, client: Any = None) -> int:
+    """Upload a finished release folder to `gs://bucket/prefix/`. Each object is created once
+    (if-generation-match=0): publishing a release name that already exists fails rather than
+    overwriting what people may have trained on."""
+    from google.cloud import storage
+
+    b = (client or storage.Client()).bucket(bucket)
+    n = 0
+    for p in sorted(folder.rglob("*")):
+        if p.is_file():
+            b.blob(f"{prefix}/{p.relative_to(folder).as_posix()}").upload_from_filename(str(p), if_generation_match=0)
+            n += 1
+    return n
+
+
 def default() -> Store:
     bucket = os.environ.get("SCR_GCS_BUCKET")
     if bucket:

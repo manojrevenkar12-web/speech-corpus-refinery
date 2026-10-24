@@ -1,0 +1,527 @@
+# Held-out set 4. Written blind from docs/POLICY.md, heldout/WRITING_SETS.md and heldout/MATERIALS.md only.
+sites:
+  # ---------------------------------------------------------------- A: html, site licence, robots groups, tdmrep.json
+  - host: letterpress-talks.example
+    type: html
+    title: Letterpress Society talks
+    licence: CC-BY-4.0
+    robots: |
+      User-agent: *
+      Disallow: /
+
+      User-agent: ScrBot
+      Disallow: /drafts/
+      Allow: /drafts/final/
+    tdmrep:
+      - {location: "/members/*", tdm-reservation: 1}
+      - {location: "/open-lectures/*", tdm-reservation: 0}
+    items:
+      - id: lp-blockbooks
+        path: /archive/2019/block-books.flac
+        material: {clips: [LJ001-0003, LJ001-0004], gap: 0.5}
+        transforms:
+          - {gain_db: -6}
+        format: {codec: flac, rate: 44100}
+        expected: keep
+        why: >-
+          Duplicate group D1, best copy: lossless, full band, clean. Licence only at site level (rel=license CC BY).
+          robots.txt disallows everything for *, but ScrBot has its own group, which replaces * and only
+          disallows /drafts/, so /archive/ is allowed.
+      - id: lp-letterform-final
+        path: /drafts/final/letter-form.mp3
+        material: {clips: [LJ001-0011], gap: 0.5}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        expected: keep
+        why: "Allow: /drafts/final/ is longer than Disallow: /drafts/, so the longest match allows it. Clean, site-level CC BY."
+      - id: lp-letterform-take1
+        path: /drafts/letter-form-take1.mp3
+        material: {copy_of: lp-letterform-final}
+        transforms:
+          - {gain_db: -4}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        expected: reject:robots
+        why: "Under /drafts/ but not /drafts/final/: disallowed for ScrBot. Never fetched, so it is not a duplicate."
+      - id: lp-calligraphy
+        path: /member-news/calligraphy.mp3
+        material: {clips: [LJ001-0016], gap: 0.5}
+        format: {codec: mp3, rate: 44100, bitrate: 160k}
+        expected: keep
+        why: "TDMRep reserves /members/*; /member-news/ does not match that rule. Clean, full band, site CC BY."
+      - id: lp-members-workshop
+        path: /members/workshop-2021.mp3
+        material: {copy_of: lp-calligraphy}
+        transforms:
+          - {silence_suffix: 2.0}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        expected: reject:tdm
+        why: "Reserved only in /.well-known/tdmrep.json (/members/*); no header, no meta tag. The request is never made."
+      - id: lp-freer-hand
+        path: /talks/freer-hand.mp3
+        material: {clips: [LJ001-0025], gap: 0.5}
+        transforms:
+          - {lowpass_hz: 7800}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        expected: keep
+        why: "Hard case: content reaches 7.8 kHz, just above the 7 kHz floor, so it is usable as the wide tier. Stored at 44.1 kHz."
+      - id: lp-printing-intro
+        path: /open-lectures/printing-intro.mp3
+        material: {clips: [LJ001-0001], gap: 0.5}
+        transforms:
+          - {silence_prefix: 3.0}
+          - {silence_suffix: 2.5}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        expected: keep
+        why: >-
+          tdmrep.json has an explicit tdm-reservation 0 rule for /open-lectures/*, so this path is not reserved.
+          9.7 s of speech in a 15.2 s file (about 64%) is above the half-speech rule.
+      - id: lp-black-letter
+        path: /talks/black-letter.mp3
+        material: {clips: [LJ001-0016, LJ001-0017], gap: 0.6}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        expected: reject:protected
+        why: >-
+          Begins with an ordinary clip (LJ001-0016, also in lp-calligraphy) and runs on into protected LJ001-0017.
+          The policy says protected material must never enter in any copy or excerpt; I expect the whole file to be
+          rejected rather than only its protected part. The policy does not say this outright; a careful data lead
+          would not keep a file that contains evaluation audio.
+      - id: lp-site-news
+        path: /news/opening-hours.mp3
+        material: {synthetic: "Our reading room opens at ten in the morning and closes at six, Monday to Saturday.", voice: lessac}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        declared_synthetic: true
+        expected: reject:synthetic
+        why: "The page declares the audio AI-generated (trainedAlgorithmicMedia). Site licence is fine."
+
+  # ---------------------------------------------------------------- D: librivox
+  - host: readaloud-library.example
+    type: librivox
+    title: Read-Aloud Library volunteer recordings
+    licence: CC-PDM-1.0
+    items:
+      - id: ral-ugly-ones
+        material: {clips: [LJ001-0012, LJ001-0013], gap: 0.5}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        transcript: published
+        expected: keep
+        why: "Group D6 original. LibriVox public-domain dedication, clean, full band, speech matches the published text."
+      - id: ral-missal-type
+        material: {clips: [LJ001-0023, LJ001-0024], gap: 0.7}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        transcript: published
+        expected: reject:protected
+        why: "LJ001-0023 and LJ001-0024 are evaluation recordings. Public domain does not matter."
+      - id: ral-rainy-window
+        material: {clips: [LJ001-0029], gap: 0.5}
+        transforms:
+          - {mix_noise: {esc: 1-17367-A-10, snr_db: 28}}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        transcript: published
+        expected: keep
+        why: "Hard case: a volunteer recorded with rain on the window at 28 dB SNR, a little above the 25 dB floor. Rain clip is CC0."
+      - id: ral-gutenberg
+        material: {clips: [LJ001-0007], gap: 0.5}
+        transforms:
+          - {lowpass_hz: 6300}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        transcript: published
+        expected: reject:bandwidth
+        why: "Hard case: content stops at 6.3 kHz, a little under the 7 kHz floor, although the file is stored at 44.1 kHz."
+
+  # ---------------------------------------------------------------- C: archive, per-item licenseurl
+  - host: community-sound-archive.example
+    type: archive
+    title: Community Sound Archive
+    items:
+      - id: csa-block-books
+        material: {clips: [LJ001-0005, LJ001-0006], gap: 0.7}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        licence: CC-PDM-1.0
+        expected: keep
+        why: "Group D2 original: full band. It beats the lossless re-upload rr-block-books-hq because that one is only wide band."
+      - id: csa-gothic-type
+        material: {clips: [LJ001-0027, LJ001-0028], gap: 0.5}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        licence: CC-BY-SA-3.0
+        expected: keep
+        why: >-
+          Group D5. CC BY-SA 3.0 is allowed. Its two copies, ND (rr-gothic-type-hq) and clipped (gw-gothic-type-loud),
+          are higher-bitrate flac, but neither is usable, so this copy is the only usable one.
+      - id: csa-letterpress
+        material: {clips: [LJ001-0009, LJ001-0010], gap: 0.6}
+        format: {codec: mp3, rate: 44100, bitrate: 96k}
+        licence: CC-BY-4.0
+        expected: keep
+        why: >-
+          Group D3. The podcast copy rrp-ep01 has a higher bitrate (192k) but has rain mixed in at 32 dB.
+          Both are full band, and higher SNR comes before bitrate, so this 96k copy is kept.
+      - id: csa-voice-memo
+        material: {synthetic: "Please remember to bring your library card when you visit the new branch on Station Road.", voice: lessac}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        licence: CC0-1.0
+        expected: reject:synthetic
+        why: "Undeclared synthetic voice. An archive cannot declare it, so the file is held for review and not released."
+      - id: csa-inaugural
+        material: {jfk: true}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        licence: CC-PDM-1.0
+        expected: reject:bandwidth
+        why: >-
+          Public domain, but MATERIALS describes it as an old recording stored at 44.1 kHz. I expect its content to stay
+          below 7 kHz. Judgement: the materials do not state its bandwidth, and it may also be noisy; bandwidth is the
+          file-level check, so I expect it to fail there.
+      - id: csa-digits-theo
+        material: {fsdd: {speaker: theo, n: 30}}
+        format: {codec: flac, rate: 44100}
+        licence: CC-BY-SA-4.0
+        expected: reject:bandwidth
+        why: "FSDD is recorded at 8 kHz (content to 4 kHz). Storing it as 44.1 kHz flac adds no bandwidth."
+      - id: csa-roman-letters
+        material: {clips: [LJ001-0019, LJ001-0020], gap: 0.5}
+        transforms:
+          - {speed: 0.95}
+          - {lowpass_hz: 8000}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        licence: CC-BY-4.0
+        expected: reject:protected
+        why: "Protected clips, slowed 5% and band-limited. The policy covers any copy or re-encoding."
+      - id: csa-calligraphy-mirror
+        material: {copy_of: lp-calligraphy}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        licence: CC-BY-2.0
+        expected: reject:licence
+        why: >-
+          The policy allows CC BY and BY-SA only in versions 3.0 and 4.0, so CC BY 2.0 is not usable. It is also a copy
+          of lp-calligraphy, but a copy we may not use does not count as a duplicate.
+      - id: csa-sea-waves
+        material: {esc: 1-28135-A-11}
+        format: {codec: ogg, rate: 44100, bitrate: 128k}
+        licence: CC-BY-3.0
+        expected: reject:not_speech
+        why: "Sea waves only. The licence (CC BY 3.0, as ESC-50 publishes it) is fine."
+
+  # ---------------------------------------------------------------- E: html, no site licence, meta reservation
+  - host: riverside-radio.example
+    type: html
+    title: Riverside Community Radio
+    items:
+      - id: rr-middle-ages
+        path: /shows/middle-ages.flac
+        material: {clips: [LJ001-0014, LJ001-0015], gap: 0.8}
+        format: {codec: flac, rate: 44100}
+        licence: CC-BY-NC-4.0
+        expected: reject:licence
+        why: >-
+          Group D4 original and technically the best copy (lossless), but non-commercial. It does not count for dedup,
+          so a re-upload with a usable licence (rrp-ep02) is kept instead.
+      - id: rr-read-sentences
+        path: /shows/read-sentences.wav
+        material: {valentini: clean}
+        format: {codec: wav, rate: 16000}
+        licence: CC-BY-4.0
+        expected: keep
+        why: "Clean Valentini read speech at 16 kHz: content reaches about 8 kHz, so it is the wide tier (7 to 9.5 kHz) and usable."
+      - id: rr-street-sentences
+        path: /shows/street-sentences.wav
+        material: {valentini: noisy}
+        format: {codec: wav, rate: 16000}
+        licence: CC-BY-4.0
+        expected: reject:noise
+        why: >-
+          The same sentences with background noise, well under 25 dB SNR. Judgement: it is arguably the same recording
+          as rr-read-sentences, but it is unusable in its own right, so I expect its own reason (noise), not duplicate.
+      - id: rr-reading-hour
+        path: /shows/reading-hour.mp3
+        material: {copy_of: ral-ugly-ones}
+        transforms:
+          - {music_bed: {level_db: -18}}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        licence: CC-BY-4.0
+        expected: reject:music
+        why: >-
+          Rebroadcast of the LibriVox reading with a music bed under it. Music fails the file. Judgement: being an unusable
+          copy, it gets its own reason, not duplicate.
+      - id: rr-members-replay
+        path: /members-area/replay.wav
+        material: {copy_of: rr-read-sentences}
+        transforms:
+          - {gain_db: -2}
+        format: {codec: wav, rate: 16000}
+        licence: CC-BY-4.0
+        meta_tdm_reserved: true
+        expected: reject:tdm
+        why: >-
+          Reserved only by the page's tdm-reservation meta tag (no tdmrep.json, no header). The audio is linked only from
+          that page, so it is never discovered.
+      - id: rr-letterform-rebroadcast
+        path: /shows/letter-form.mp3
+        material: {copy_of: lp-letterform-final}
+        transforms:
+          - {gain_db: -2}
+        format: {codec: mp3, rate: 44100, bitrate: 96k}
+        expected: reject:licence
+        why: "No licence on the file and none on the site: no licence stated is not usable."
+      - id: rr-station-ident
+        path: /idents/station-ident.mp3
+        material: {clips: [LJ001-0002], gap: 0.5}
+        transforms:
+          - {silence_suffix: 6.0}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        licence: CC-BY-4.0
+        expected: reject:not_speech
+        why: >-
+          1.9 s of speech followed by 6 s of silence: under a quarter of the file is speech, below the half-speech rule.
+          Judgement: I count trailing silence as part of the file.
+      - id: rr-gothic-type-hq
+        path: /shows/gothic-type.flac
+        material: {copy_of: csa-gothic-type}
+        format: {codec: flac, rate: 44100}
+        licence: CC-BY-ND-4.0
+        expected: reject:licence
+        why: "No-derivatives licence is not usable, even though this lossless copy would otherwise beat the archive copy."
+      - id: rr-block-books-hq
+        path: /shows/block-books.flac
+        material: {copy_of: csa-block-books}
+        transforms:
+          - {lowpass_hz: 8500}
+          - {gain_db: -3}
+        format: {codec: flac, rate: 44100}
+        licence: CC-BY-4.0
+        expected: reject:duplicate
+        why: >-
+          Group D2 re-upload: quieter, lossless, but band-limited to 8.5 kHz, which makes it the wide tier. The higher
+          tier comes first, so the full-band mp3 csa-block-books is kept despite this copy's higher bitrate.
+      - id: rr-studio-laughter
+        path: /idents/laughter.mp3
+        material: {esc: 1-1791-A-26}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        licence: CC-BY-3.0
+        expected: reject:not_speech
+        why: "Laughter only. The policy names laughter as not speech."
+      - id: rr-phone-in-numbers
+        path: /shows/phone-in-numbers.mp3
+        material: {fsdd: {speaker: jackson, n: 20}}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        licence: CC-BY-SA-4.0
+        expected: reject:bandwidth
+        why: "8 kHz phone-quality digits stored at 44.1 kHz: content reaches only about 4 kHz."
+
+  # ---------------------------------------------------------------- B: rss, feed licence, robots, header reservation
+  - host: reading-room-podcast.example
+    type: rss
+    title: The Reading Room podcast
+    licence: CC-BY-SA-4.0
+    robots: |
+      User-agent: ScrBot
+      Disallow: /media/
+      Allow: /media/public/
+    reserve_header_prefixes: ["/media/public/bonus/"]
+    items:
+      - id: rrp-ep01
+        path: /media/public/ep01.mp3
+        material: {copy_of: csa-letterpress}
+        transforms:
+          - {mix_noise: {esc: 1-21189-A-10, snr_db: 32}}
+          - {speed: 1.06}
+        format: {codec: mp3, rate: 44100, bitrate: 192k}
+        expected: reject:duplicate
+        why: >-
+          Group D3 re-upload: 6% faster, light rain at 32 dB (usable on its own), higher bitrate. The archive copy has the
+          higher SNR, and SNR comes before bitrate, so this one is the duplicate.
+      - id: rrp-ep02
+        path: /media/public/ep02.mp3
+        material: {copy_of: rr-middle-ages}
+        transforms:
+          - {gain_db: -4}
+          - {speed: 1.04}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        expected: keep
+        why: >-
+          Group D4: the licence is stated only at feed level (podcast:license CC BY-SA 4.0). The lossless original is NC
+          and does not count. This copy beats gw-middle-ages-walk (noise, 64k), so it is kept.
+      - id: rrp-ep01-extended
+        path: /media/public/bonus/ep01-extended.mp3
+        material: {copy_of: csa-letterpress}
+        transforms:
+          - {silence_suffix: 4.0}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        expected: reject:tdm
+        why: "Allowed by robots, but responses under /media/public/bonus/ send tdm-reservation: 1 (the header is the only one of the three places that reserves it). The body is not read."
+      - id: rrp-ep03-unedited
+        path: /media/raw/ep03-unedited.mp3
+        material: {copy_of: ral-rainy-window}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        expected: reject:robots
+        why: "Disallow: /media/ applies and no Allow is longer, so it is never fetched."
+      - id: rrp-ep03-outro
+        path: /media/public/ep03-outro.mp3
+        material: {synthetic: "Thanks for listening. Next week we visit a bakery that has been open since nineteen twenty.", voice: amy}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        expected: reject:synthetic
+        why: "Undeclared synthetic voice in a feed (feeds cannot carry the declaration). It is held for review, so it is not released."
+      - id: rrp-ep04-clip
+        path: /media/public/ep04-clip.mp3
+        material: {clips: [LJ001-0021, LJ001-0022], gap: 0.5}
+        transforms:
+          - {excerpt: {start: 3.0, end: 11.0}}
+          - {gain_db: 4}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        expected: reject:protected
+        why: "An 8 s excerpt spanning two protected clips, made louder. Excerpts are explicitly covered."
+      - id: rrp-ep04
+        path: /media/public/ep04.mp3
+        material: {clips: [LJ001-0032], gap: 0.5}
+        transforms:
+          - {music_bed: {level_db: -12}}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        expected: reject:music
+        why: "The theme tune runs under the reading at -12 dB. Music under speech fails the file."
+      - id: rrp-ep05
+        path: /media/public/ep05.mp3
+        material: {copy_of: lp-blockbooks}
+        transforms:
+          - {gain_db: 4}
+          - {silence_prefix: 3.0}
+          - {speed: 0.93}
+        format: {codec: mp3, rate: 44100, bitrate: 64k}
+        expected: reject:duplicate
+        why: >-
+          Group D1 re-upload: louder, longer (3 s lead-in), 7% slower and 64k mp3. It is still within the 10% speed
+          window, and the lossless lp-blockbooks is at least as good on every criterion.
+      - id: rrp-ep05-quote
+        path: /media/public/ep05-quote.mp3
+        material: {copy_of: ral-ugly-ones}
+        transforms:
+          - {excerpt: {start: 0.0, end: 6.0}}
+          - {gain_db: -3}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        expected: reject:duplicate
+        why: >-
+          A 6 s quoted excerpt of the kept LibriVox reading. Judgement: the policy lists excerpts only for protected
+          recordings, not for duplicates. Its speech is already in the data through ral-ugly-ones, and a careful data lead
+          would not keep the same speech twice, so I expect duplicate.
+      - id: rrp-ep06
+        path: /media/public/ep06.mp3
+        material: {copy_of: lp-printing-intro}
+        transforms:
+          - {gain_db: -1}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        licence: "all rights reserved"
+        expected: reject:licence
+        why: "The item's podcast:license (all rights reserved) overrides the feed's CC BY-SA, and all rights reserved is not usable."
+
+  # ---------------------------------------------------------------- G: html, NC site licence with per-file overrides
+  - host: greenway-walks.example
+    type: html
+    title: Greenway Walks audio guides
+    licence: CC-BY-NC-4.0
+    items:
+      - id: gw-old-print-works
+        path: /guides/old-print-works.mp3
+        material: {clips: [LJ001-0026], gap: 0.5}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        licence: CC-BY-4.0
+        expected: keep
+        why: >-
+          The site is NC, but this file's own schema.org license is CC BY 4.0. The licence is what the source states for
+          that file, so it is usable.
+      - id: gw-birdsong
+        path: /guides/birdsong.mp3
+        material: {esc: 1-100038-A-14}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        licence: CC-BY-3.0
+        expected: reject:not_speech
+        why: "Birdsong only. The file licence is CC BY 3.0, so the rejection is for content, not licence."
+      - id: gw-freer-hand-repost
+        path: /guides/freer-hand.mp3
+        material: {copy_of: lp-freer-hand}
+        transforms:
+          - {gain_db: -2}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        expected: reject:licence
+        why: "No file licence, so the site-level CC BY-NC applies, which is not usable. As an unusable copy it is not a duplicate."
+      - id: gw-rainy-stop
+        path: /guides/rainy-stop.mp3
+        material: {clips: [LJ001-0030], gap: 0.5}
+        transforms:
+          - {mix_noise: {esc: 1-21189-A-10, snr_db: 21}}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        licence: CC-BY-4.0
+        expected: reject:noise
+        why: "Hard case: rain at 21 dB SNR, a little under the 25 dB floor. Its single segment fails, so the file fails."
+      - id: gw-mill-intro
+        path: /guides/mill-intro.mp3
+        material: {clips: [LJ001-0031], gap: 0.5}
+        transforms:
+          - {music_bed: {level_db: -24}}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        licence: CC-BY-4.0
+        expected: reject:music
+        why: "Hard case: a quiet music bed at -24 dB. The policy says beds fail the file, whatever their level."
+      - id: gw-directions
+        path: /guides/directions.mp3
+        material: {synthetic: "Turn left at the old mill and follow the river path for about ten minutes.", voice: amy}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        licence: CC-BY-4.0
+        declared_synthetic: true
+        expected: reject:synthetic
+        why: "Declared AI-generated on its page."
+      - id: gw-dog-park
+        path: /guides/dog-park.mp3
+        material: {esc: 1-100032-A-0}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        licence: CC0-1.0
+        expected: reject:not_speech
+        why: "A dog barking only."
+      - id: gw-gothic-type-loud
+        path: /guides/gothic-type.flac
+        material: {copy_of: csa-gothic-type}
+        transforms:
+          - {clip_gain_db: 18}
+        format: {codec: flac, rate: 44100}
+        licence: CC-BY-4.0
+        expected: reject:clipping
+        why: >-
+          Re-upload pushed 18 dB into hard clipping, so every segment is far over 0.05% clipped. Judgement: as an unusable
+          copy it is rejected for its own reason (clipping), not as a duplicate.
+      - id: gw-middle-ages-walk
+        path: /guides/middle-ages.mp3
+        material: {copy_of: rr-middle-ages}
+        transforms:
+          - {speed: 0.96}
+          - {mix_noise: {esc: 1-17367-A-10, snr_db: 38}}
+        format: {codec: mp3, rate: 44100, bitrate: 64k}
+        licence: CC-BY-4.0
+        expected: reject:duplicate
+        why: >-
+          Group D4 third copy, with a usable licence: 4% slower, light rain at 38 dB, 64k. rrp-ep02 has the same tier,
+          higher SNR and higher bitrate, so it is kept and this is the duplicate. The two copies differ in speed by
+          about 8%, within the 10% window.
+      - id: gw-letterpress-loud
+        path: /guides/letterpress.mp3
+        material: {copy_of: csa-letterpress}
+        transforms:
+          - {clip_gain_db: 14}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        licence: CC-BY-4.0
+        expected: reject:clipping
+        why: "Group D3 copy amplified 14 dB into hard clipping. Same judgement as gw-gothic-type-loud: its own reason, not duplicate."
+
+  # ---------------------------------------------------------------- F: blocked mirror
+  - host: free-audiobook-mirror.example
+    type: html
+    title: Free audiobook mirror
+    licence: CC0-1.0
+    blocked: true
+    items:
+      - id: fam-block-books
+        path: /mirror/block-books.mp3
+        material: {copy_of: csa-block-books}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        expected: reject:blocked_domain
+        why: "The domain is on the piracy blocklist and is never contacted. The CC0 claim does not matter."
+      - id: fam-printing
+        path: /mirror/printing.mp3
+        material: {copy_of: lp-blockbooks}
+        format: {codec: mp3, rate: 44100, bitrate: 128k}
+        expected: reject:blocked_domain
+        why: "Blocked domain. It is never fetched, so it neither counts nor competes as a duplicate."
